@@ -20,6 +20,12 @@ android {
     lintOptions {
         abortOnError false
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent,"PAXSTORE SDK Demo-" + buildType.name + "-v" +
+                    defaultConfig.versionName +".apk" );
+        }
+    }
 }
 
 
