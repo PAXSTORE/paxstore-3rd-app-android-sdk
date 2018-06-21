@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PAXSTORE SDK Demo</string>
+    <string name="app_title">PAXSTORE SDK Demo</string>
+    <string name="label_banner_title">SDK Integration Usage</string>
+    <string name="label_banner_text">Demonstrate how to integrate SDK functions into your application</string>
+    <string name="label_param_detail">Parameter Detail</string>
+    <string name="label_no_data">No Data</string>
+    <string name="label_function">Function</string>
+    <string name="label_trading_status">App ready to be updated</string>
+    <string name="label_open_paxstore_client">View app detail from PAXSTORE client</string>
+    <string name="label_version_text">Current version: </string>
+    <string name="label_copyright_text">Copyright @ 2018 PAX All Rights Reserved</string>
+    <string name="label_ready_to_update">App could be updated by PAXSTORE app now.</string>
+    <string name="label_not_ready_to_update">App is busy, can not be updated by PAXSTORE app now.</string>
+</resources>

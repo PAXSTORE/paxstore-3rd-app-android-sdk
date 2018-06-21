@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_weight="0"
+        android:id="@+id/header"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:background="#0b2148">
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:text="@string/app_title"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="179dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:background="@mipmap/banner_bg">
+        <TextView
+            android:id="@+id/banner_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/label_banner_title"
+            android:gravity="center"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="normal"
+            android:textColor="#eeff41"
+            android:textSize="24sp"
+            />
+        <TextView
+            android:id="@+id/banner_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:fontFamily="sans-serif"
+            android:text="@string/label_banner_text"
+            android:textStyle="normal"
+            android:textColor="#8affffff"
+            android:textSize="12sp"
+            android:lineSpacingMultiplier="1.2"
+            />
+        <TextView
+            android:id="@+id/banner_sub_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#8affffff"
+            android:textSize="12sp"
+            android:lineSpacingMultiplier="1.2"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/parameterDetailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/label_param_detail"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="left"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#a9aabd"
+            android:textSize="12sp"
+            />
+
+        <com.pax.android.demoapp.ListViewForScrollView
+            android:id="@+id/parameter_detail_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </com.pax.android.demoapp.ListViewForScrollView>
+        <LinearLayout
+            android:id="@+id/nodata"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:text="@string/label_no_data"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/FucntionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/label_function"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="left"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#a9aabd"
+            android:textSize="12sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:text="@string/label_trading_status"/>
+
+            <Switch
+                android:id="@+id/tradingStateSwitch"
+                android:theme="@style/MySwitchStyle"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:switchMinWidth="60dp"
+                android:textOn="Yes"
+                android:textOff="No"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#DDDDDD"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:id="@+id/openAppDetail">
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/label_open_paxstore_client"/>
+
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/right_icon"
+                android:layout_gravity="right|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="#ffffff"
+                android:src="@mipmap/list_btn_arrow"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/versionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_version_text"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#a9aabd"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:id="@+id/copyrightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_copyright_text"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#a9aabd"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>
