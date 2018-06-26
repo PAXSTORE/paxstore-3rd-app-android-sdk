@@ -18,9 +18,9 @@ Gradle:
 ## Step 3: Check for permissions
 PAXSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.
 
-`<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`
+`<uses-permission android:name="android.permission.INTERNET" />`<br>
+`<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`<br>
+`<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
 
 ## Step 4: Initialization
 Configuring the application element, edit AndroidManifest.xml, it will have an application element. You need to configure the android:name attribute to point to your Application class (put the full name with package if the application class package is not the same as manifest root element declared package)
