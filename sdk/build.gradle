@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.novoda.bintray-release'
 
 
 android {
@@ -34,4 +34,16 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.0.+'
+}
+
+publish {
+    userOrg = 'paxstore-support'
+    repoName = 'paxstore'
+    groupId = 'com.pax.market'
+    artifactId = 'paxstoresdk'//上传到bintray的package名
+    publishVersion = '5.02.02'
+    desc = 'This is the SDK of PAXSTORE'
+    website = 'https://github.com/PAXSTORE/paxstoresdk'
+    override = true
+    licences = ["Apache-2.0"]
 }
