@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.android.app.sdk.utils.SdkXmlUtils;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
@@ -110,7 +111,20 @@ public class DownloadParamService extends Service {
                 try {
                     //parse the download parameter xml file for display.
                     InputStream inputStream = new FileInputStream(parameterFile);
-                    List datalist = pullFromXml(inputStream);
+                    List<Map<String, Object>> datalist = new ArrayList();
+
+                    HashMap<String,String> resultMap = SdkXmlUtils.parseDownloadParamXml(inputStream);
+
+                    if(resultMap!=null) {
+                        //convert result map to list for ListView display.
+                        for (Map.Entry<String, String> entry : resultMap.entrySet()) {
+                            HashMap<String,Object> map = new HashMap<>();
+                            map.put("label", entry.getKey());
+                            map.put("value",entry.getValue());
+                            datalist.add(map);
+                        }
+                    }
+
                     //save result for demo display
                     spUtil.setDataList(DemoConstants.PUSH_RESULT_DETAIL,datalist);
                 }catch (Exception e){
@@ -123,41 +137,6 @@ public class DownloadParamService extends Service {
         //update successful info in main page for Demo
         updateUI(DemoConstants.DOWNLOAD_STATUS_SUCCESS);
     }
-
-
-    public List<Map<String,Object>> pullFromXml(InputStream is) throws Exception {
-        List<Map<String,Object>>  resultMapList = null;
-        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-        XmlPullParser parser =  factory.newPullParser();
-        parser.setInput(is, "utf-8");
-        int type = parser.getEventType();
-        //todo shoud parse the xml base on your own template. here is only for demo
-        while (type != XmlPullParser.END_DOCUMENT) {
-            if(type == parser.START_DOCUMENT) {
-                Log.i("Start document","====");
-                resultMapList = new ArrayList();
-            }else if(type == parser.START_TAG) {
-                if ("parameter".equals(parser.getName())) {
-                    Log.i("pull2xml: ", "parameter start");
-                } else {
-                    HashMap map = new HashMap<String,Object>();
-                    String key = parser.getName();
-                    int index =key.lastIndexOf(".");
-                    if(index!=-1){
-                        key = key.substring(index+1);
-                    }
-                    parser.next();
-                    String value = parser.getText();
-                    map.put("label",key);
-                    map.put("value",value);
-                    resultMapList.add(map);
-                }
-            }
-            type = parser.next();
-        }
-        return resultMapList;
-    }
-
 
 
     /**

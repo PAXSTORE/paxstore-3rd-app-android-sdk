@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 
@@ -36,7 +37,7 @@ public class MainActivity extends Activity {
     private SPUtil spUtil;
 
     private LinearLayout nodataLayout;
-    private List datalist;
+    private List<Map<String, Object>> datalist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
