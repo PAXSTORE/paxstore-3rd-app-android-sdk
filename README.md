@@ -1,4 +1,4 @@
-# PAXSTORE SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstoresdk/images/download.svg?version=5.02.02) ](https://bintray.com/paxstore-support/paxstore/paxstoresdk/5.02.02/link)
+# PAXSTORE SDK  [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstoresdk/images/download.svg?version=5.02.02) ](https://bintray.com/paxstore-support/paxstore/paxstoresdk/5.02.02/link)
 PAXSTORE Android SDK provides simple and easy-to-use service interfaces for Android Apps. The services currently include the following points:
 
 1. Download parameter
