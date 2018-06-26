@@ -78,7 +78,9 @@ public class MainActivity extends Activity {
         openClientlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openAppDetail(BuildConfig.APPLICATION_ID);
+                //put app 'NeptuneService' package name here for demo.
+                //if the market don't have this app, it will show app not found, else will go to detail page in PAXSTORE market
+                openAppDetail("com.pax.ipp.neptune");
             }
         });
 
