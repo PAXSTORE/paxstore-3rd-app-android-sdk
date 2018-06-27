@@ -32,8 +32,11 @@ android {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.0.+'
+    api (project(':sdk-lib')) {
+        exclude group: 'org.slf4j'
+    }
 }
 
 publish {
