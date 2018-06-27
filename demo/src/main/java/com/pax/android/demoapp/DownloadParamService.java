@@ -7,17 +7,13 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.pax.market.android.app.sdk.StoreSdk;
-import com.pax.market.android.app.sdk.utils.SdkXmlUtils;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
+import org.dom4j.DocumentException;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,12 +106,11 @@ public class DownloadParamService extends Service {
                 spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT,bannerSubTextValue);
                 try {
                     //parse the download parameter xml file for display.
-                    InputStream inputStream = new FileInputStream(parameterFile);
-                    List<Map<String, Object>> datalist = new ArrayList();
+                    List<Map<String, Object>> datalist = new ArrayList<>();
 
-                    HashMap<String,String> resultMap = SdkXmlUtils.parseDownloadParamXml(inputStream);
+                    HashMap<String,String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXml(parameterFile);
 
-                    if(resultMap!=null) {
+                    if(resultMap!=null && resultMap.size()>0) {
                         //convert result map to list for ListView display.
                         for (Map.Entry<String, String> entry : resultMap.entrySet()) {
                             HashMap<String,Object> map = new HashMap<>();
@@ -127,7 +122,9 @@ public class DownloadParamService extends Service {
 
                     //save result for demo display
                     spUtil.setDataList(DemoConstants.PUSH_RESULT_DETAIL,datalist);
-                }catch (Exception e){
+                }catch (NotInitException e) {
+                    Log.e(TAG, "e:" + e);
+                }catch (DocumentException e){
                     Log.e("MainActivity:", "parse xml failed: "+e.getMessage());
                 }
             }else{

@@ -27,11 +27,17 @@ import com.pax.market.api.sdk.java.base.util.Md5Utils;
 import com.pax.market.api.sdk.java.base.util.ReplaceUtils;
 import com.pax.market.api.sdk.java.base.util.ZipUtil;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -281,6 +287,21 @@ public class ParamApi extends BaseApi {
             updateActionObjectList.add(updateActionObject);
         }
         return updateActionObjectList;
+    }
+
+
+    public HashMap<String,String> parseDownloadParamXml(File file) throws DocumentException {
+        HashMap<String,String> resultMap = new HashMap<>();
+        if(file!=null){
+            SAXReader saxReader = new SAXReader();
+            Document document = saxReader.read(file);
+            Element root = document.getRootElement();
+            for (Iterator it = root.elementIterator(); it.hasNext(); ) {
+                Element element = (Element) it.next();
+                resultMap.put(element.getName(),element.getName());
+            }
+        }
+        return resultMap;
     }
 
 
