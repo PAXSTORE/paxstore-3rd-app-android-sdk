@@ -34,7 +34,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.0.+'
-    api (project(':sdk-lib')) {
+    api ('com.pax.market:paxstoresdk-lib:5.02.02') {
         exclude group: 'org.slf4j'
     }
 }
