@@ -298,7 +298,7 @@ public class ParamApi extends BaseApi {
             Element root = document.getRootElement();
             for (Iterator it = root.elementIterator(); it.hasNext(); ) {
                 Element element = (Element) it.next();
-                resultMap.put(element.getName(),element.getName());
+                resultMap.put(element.getName(),element.getText());
             }
         }
         return resultMap;
