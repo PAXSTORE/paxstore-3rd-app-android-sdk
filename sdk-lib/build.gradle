@@ -22,6 +22,6 @@ publish {
     publishVersion = '5.02.02'
     desc = 'This is the SDK lib of PAXSTORE'
     website = 'https://github.com/PAXSTORE/paxstoresdk'
-    override = true
+    //override = true
     licences = ["Apache-2.0"]
 }
