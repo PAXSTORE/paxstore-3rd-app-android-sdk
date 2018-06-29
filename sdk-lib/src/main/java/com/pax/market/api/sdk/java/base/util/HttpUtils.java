@@ -245,6 +245,9 @@ public abstract class HttpUtils {
 				stringBuilder.append(str);
 			}
 
+			if ("".equals(stringBuilder.toString())) {
+				return JsonUtils.getSdkJson(urlConnection.getResponseCode(), stringBuilder.toString());
+			}
 			return stringBuilder.toString();
 
 		} catch (SocketTimeoutException localSocketTimeoutException) {
