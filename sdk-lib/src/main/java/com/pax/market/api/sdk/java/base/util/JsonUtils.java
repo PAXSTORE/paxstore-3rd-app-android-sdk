@@ -70,40 +70,40 @@ public class JsonUtils {
         String message = "";
         switch (resultCode) {
             case ResultCode.SDK_PARAM_ERROR:
-                message = "16100";
+                message = "Sdk param error";
                 break;
             case ResultCode.SDK_UNINIT:
-                message = "16101";
+                message = "Sdk uninit";
                 break;
             case ResultCode.SDK_DEC_ERROR:
-                message = "16102";
+                message = "Sdk decrypt error";
                 break;
             case ResultCode.SDK_JSON_ERROR:
-                message = "16103";
+                message = "Sdk json error";
                 break;
             case ResultCode.SDK_CONNECT_TIMEOUT:
-                message = "16104";
+                message = "Sdk connect timeout";
                 break;
             case ResultCode.SDK_UN_CONNECT:
-                message = "16105";
+                message = "Sdk unconnect";
                 break;
             case ResultCode.SDK_RQUEST_EXCEPTION:
-                message = "16106";
+                message = "Sdk rquest exception";
                 break;
             case ResultCode.SDK_UNZIP_FAILED:
-                message = "16107";
+                message = "Sdk unzip failed";
                 break;
             case ResultCode.SDK_MD_FAILED:
-                message = "16108";
+                message = "Sdk md failed";
                 break;
             case ResultCode.SDK_REPLACE_VARIABLES_FAILED:
-                message = "16109";
+                message = "Sdk replace variables failed";
                 break;
             case ResultCode.SDK_INIT_FAILED:
-                message = "16110";
+                message = "Sdk init failed";
                 break;
             case ResultCode.SDK_FILE_NOT_FOUND:
-                message = "16111";
+                message = "Sdk file not found";
                 break;
 
         }

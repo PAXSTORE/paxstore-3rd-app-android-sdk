@@ -238,7 +238,7 @@ public class ParamApi extends BaseApi {
             if (sdkObject.getBusinessCode() != ResultCode.SUCCESS) {
                 result.setBusinessCode(sdkObject.getBusinessCode());
                 result.setMessage(sdkObject.getMessage());
-                remarks = sdkObject.getMessage();
+                remarks = sdkObject.getBusinessCode() + "";
                 break;
             }
         }

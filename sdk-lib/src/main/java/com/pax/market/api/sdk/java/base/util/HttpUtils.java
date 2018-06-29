@@ -14,6 +14,7 @@ package com.pax.market.api.sdk.java.base.util;
 
 import com.pax.market.api.sdk.java.base.constant.Constants;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.SdkObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,12 +162,12 @@ public abstract class HttpUtils {
 			return finalRequest(urlConnection, requestMethod, userData, compressData, headerMap, saveFilePath);
 		} catch (IOException e) {
 			logger.error("IOException Occurred. Details: {}", e.toString());
+			return JsonUtils.getSdkJson(ResultCode.SDK_RQUEST_EXCEPTION, e.getMessage());
 		} finally {
 			if(urlConnection != null) {
 				urlConnection.disconnect();
 			}
 		}
-		return JsonUtils.getSdkJson(ResultCode.SDK_RQUEST_EXCEPTION);
 	}
 
 	private static String finalRequest(HttpURLConnection urlConnection, String requestMethod, String userData, boolean compressData,
@@ -244,11 +245,8 @@ public abstract class HttpUtils {
 				stringBuilder.append(str);
 			}
 
-			if(urlConnection.getResponseCode() == 200) {
-				return stringBuilder.toString();
-			} else {
-				return JsonUtils.getSdkJson(urlConnection.getResponseCode(), stringBuilder.toString());
-			}
+			return stringBuilder.toString();
+
 		} catch (SocketTimeoutException localSocketTimeoutException) {
 			FileUtils.deleteFile(filePath);
 			logger.error("SocketTimeoutException Occurred. Details: {}", localSocketTimeoutException.toString());
@@ -264,6 +262,7 @@ public abstract class HttpUtils {
 		} catch (Exception ignored) {
 			FileUtils.deleteFile(filePath);
 			logger.error("Exception Occurred. Details: {}", ignored.toString());
+			return JsonUtils.getSdkJson(ResultCode.SDK_RQUEST_EXCEPTION, ignored.getMessage());
 		} finally {
 			if(bufferedReader != null) {
 				try {
@@ -283,8 +282,6 @@ public abstract class HttpUtils {
 				urlConnection.disconnect();
 			}
 		}
-
-		return JsonUtils.getSdkJson(ResultCode.SDK_RQUEST_EXCEPTION);
 	}
 
 	private static HttpURLConnection getConnection(String requestUrl, int connectTimeout, int readTimeout) throws IOException {
