@@ -245,9 +245,16 @@ public abstract class HttpUtils {
 				stringBuilder.append(str);
 			}
 
-			if ("".equals(stringBuilder.toString())) {
-				return JsonUtils.getSdkJson(urlConnection.getResponseCode(), stringBuilder.toString());
-			}
+
+			try {
+                SdkObject sdkObject = JsonUtils.fromJson(stringBuilder.toString(), SdkObject.class);
+                if (sdkObject == null) {
+                    return JsonUtils.getSdkJson(urlConnection.getResponseCode(), stringBuilder.toString());
+                }
+            } catch (IllegalStateException e ) {
+                logger.error("IllegalStateException Occurred. Details: {}", e.toString());
+                return JsonUtils.getSdkJson(urlConnection.getResponseCode(), stringBuilder.toString());
+            }
 			return stringBuilder.toString();
 
 		} catch (SocketTimeoutException localSocketTimeoutException) {
