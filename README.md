@@ -149,7 +149,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
 
          private void initInquirer() {
                 //2. Init whether app can be updated
-                PaxStoreSdk.initInquirer(new RPCService.Inquirer() {
+                PaxStoreSdk.initInquirer(new StoreSdk.Inquirer() {
                     @Override
                     public boolean isReadyUpdate() {
                         Log.i(TAG, "call business function....isReadyUpdate = " + !isTrading());
