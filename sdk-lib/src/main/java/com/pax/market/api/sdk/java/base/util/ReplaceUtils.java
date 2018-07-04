@@ -1,11 +1,10 @@
 package com.pax.market.api.sdk.java.base.util;
 
+import com.google.gson.Gson;
 import com.pax.market.api.sdk.java.base.constant.Constants;
 import com.pax.market.api.sdk.java.base.dto.ParamsVariableObject;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -71,18 +72,17 @@ public class ReplaceUtils {
     private static List<ParamsVariableObject> exchangeValues(String json) {
         if (json != null) {
             List<ParamsVariableObject> list = new ArrayList<ParamsVariableObject>();
-            JSONObject object = null;
-            try {
-                object = new JSONObject(json);
-                Iterator<String> iterator = object.keys();
+            Gson gson = new Gson();
+            HashMap<String, String> object = gson.fromJson(json, HashMap.class);
+            if (object != null && object.size() > 0) {
+                Iterator iterator = object.entrySet().iterator();
                 while (iterator.hasNext()) {
+                    Map.Entry entry = (Map.Entry) iterator.next();
                     ParamsVariableObject dto = new ParamsVariableObject();
-                    dto.setKey(iterator.next());
-                    dto.setValue(object.get(dto.getKey()).toString());
+                    dto.setKey((String) entry.getKey());
+                    dto.setValue((String)entry.getValue());
                     list.add(dto);
                 }
-            } catch (JSONException e) {
-                logger.error("new JSONObject error, replace failed", e);
             }
             return list;
         }
