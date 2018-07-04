@@ -8,8 +8,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +40,12 @@ public class RPCService extends Service {
         RPCService.inquirer = inquirer;
     }
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return messenger.getBinder();
     }
 
-    private String generateToken(@NonNull String appKey, @NonNull String appSecret) {
+    private String generateToken(String appKey, String appSecret) {
         return Jwts.builder()
                 .setSubject(appKey)
                 .setExpiration(generateExpirationDate())

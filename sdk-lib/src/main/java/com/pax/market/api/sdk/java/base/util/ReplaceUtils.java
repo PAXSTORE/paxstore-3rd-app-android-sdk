@@ -73,7 +73,7 @@ public class ReplaceUtils {
         if (json != null) {
             List<ParamsVariableObject> list = new ArrayList<ParamsVariableObject>();
             Gson gson = new Gson();
-            HashMap<String, String> object = gson.fromJson(json, HashMap.class);
+            HashMap object = gson.fromJson(json, HashMap.class);
             if (object != null && object.size() > 0) {
                 Iterator iterator = object.entrySet().iterator();
                 while (iterator.hasNext()) {

@@ -33,8 +33,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.0.+'
-    api ('com.pax.market:paxstoresdk-lib:5.02.02') {
+    implementation 'org.slf4j:slf4j-android:1.7.25'
+    implementation 'io.jsonwebtoken:jjwt:0.9.0'
+    api ('com.pax.market:paxstoresdk-lib:5.02.03'){
         exclude group: 'org.slf4j'
     }
 }
@@ -44,7 +45,7 @@ publish {
     repoName = 'paxstore'
     groupId = 'com.pax.market'
     artifactId = 'paxstoresdk'//上传到bintray的package名
-    publishVersion = '5.02.02'
+    publishVersion = '5.02.03'
     desc = 'This is the SDK of PAXSTORE'
     website = 'https://github.com/PAXSTORE/paxstoresdk'
     //override = true

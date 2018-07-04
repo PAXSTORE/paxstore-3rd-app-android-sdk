@@ -10,8 +10,7 @@ import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
-
-import org.dom4j.DocumentException;
+import com.pax.market.api.sdk.java.base.exception.ParseXMLException;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -124,7 +123,7 @@ public class DownloadParamService extends Service {
                     spUtil.setDataList(DemoConstants.PUSH_RESULT_DETAIL,datalist);
                 }catch (NotInitException e) {
                     Log.e(TAG, "e:" + e);
-                }catch (DocumentException e){
+                }catch (ParseXMLException e){
                     Log.e("MainActivity:", "parse xml failed: "+e.getMessage());
                 }
             }else{

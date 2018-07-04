@@ -2,13 +2,10 @@ apply plugin: 'java-library'
 apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    api 'com.google.code.gson:gson:2.3'
-    api 'commons-io:commons-io:2.4'
-    api 'dom4j:dom4j:1.6.1'
-    implementation 'org.json:json:20160810'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'commons-io:commons-io:2.4'
+    implementation 'dom4j:dom4j:1.6.1'
     implementation 'org.slf4j:slf4j-api:1.7.12'
-    implementation 'org.slf4j:slf4j-log4j12:1.7.12'
 }
 
 sourceCompatibility = "1.8"
@@ -19,7 +16,7 @@ publish {
     repoName = 'paxstore'
     groupId = 'com.pax.market'
     artifactId = 'paxstoresdk-lib'//上传到bintray的package名
-    publishVersion = '5.02.02'
+    publishVersion = '5.02.03'
     desc = 'This is the SDK lib of PAXSTORE'
     website = 'https://github.com/PAXSTORE/paxstoresdk'
     //override = true

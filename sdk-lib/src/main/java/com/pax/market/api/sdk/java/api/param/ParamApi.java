@@ -20,6 +20,7 @@ import com.pax.market.api.sdk.java.base.dto.ParamListObject;
 import com.pax.market.api.sdk.java.base.dto.ParamObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateActionObject;
+import com.pax.market.api.sdk.java.base.exception.ParseXMLException;
 import com.pax.market.api.sdk.java.base.request.SdkRequest;
 import com.pax.market.api.sdk.java.base.util.FileUtils;
 import com.pax.market.api.sdk.java.base.util.JsonUtils;
@@ -290,15 +291,19 @@ public class ParamApi extends BaseApi {
     }
 
 
-    public HashMap<String,String> parseDownloadParamXml(File file) throws DocumentException {
+    public HashMap<String,String> parseDownloadParamXml(File file) throws ParseXMLException {
         HashMap<String,String> resultMap = new HashMap<>();
         if(file!=null){
-            SAXReader saxReader = new SAXReader();
-            Document document = saxReader.read(file);
-            Element root = document.getRootElement();
-            for (Iterator it = root.elementIterator(); it.hasNext(); ) {
-                Element element = (Element) it.next();
-                resultMap.put(element.getName(),element.getText());
+            try {
+                SAXReader saxReader = new SAXReader();
+                Document document = saxReader.read(file);
+                Element root = document.getRootElement();
+                for (Iterator it = root.elementIterator(); it.hasNext(); ) {
+                    Element element = (Element) it.next();
+                    resultMap.put(element.getName(),element.getText());
+                }
+            }catch (Exception e){
+                throw new ParseXMLException(e);
             }
         }
         return resultMap;
