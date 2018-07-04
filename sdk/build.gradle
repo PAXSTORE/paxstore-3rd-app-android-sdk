@@ -43,7 +43,7 @@ publish {
     repoName = 'paxstore'
     groupId = 'com.pax.market'
     artifactId = 'paxstoresdk'//上传到bintray的package名
-    publishVersion = '5.02.03'
+    publishVersion = '5.02.04'
     desc = 'This is the SDK of PAXSTORE'
     website = 'https://github.com/PAXSTORE/paxstoresdk'
     //override = true
