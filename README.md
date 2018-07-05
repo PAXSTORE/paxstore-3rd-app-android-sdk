@@ -15,7 +15,7 @@ Gradle:
 
     implementation 'com.pax.market:paxstoresdk:5.02.02'
 
-## Step 3: Check for permissions
+## Step 3: Check for Permissions
 PAXSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.
 
 `<uses-permission android:name="android.permission.INTERNET" />`<br>
@@ -165,27 +165,42 @@ Integrate with this function only need to call initInquirer() after you init Sto
         }
     }
 
-## Step 7：ProGaurd exclusions
+## Step 7：ProGaurd Exclusions
 ProGaurd exclusions for SDK
 
-````
-#Gson
--dontwarn com.google.gson.**
--keep class sun.misc.Unsafe { *; }
--keep class com.google.gson.** { *; }
--keep class com.google.gson.examples.android.model.** { *; }
+    #Gson
+    -dontwarn com.google.gson.**
+    -keep class sun.misc.Unsafe { *; }
+    -keep class com.google.gson.** { *; }
+    -keep class com.google.gson.examples.android.model.** { *; }
 
-#JJWT
--keepnames class com.fasterxml.jackson.databind.** { *; }
--dontwarn com.fasterxml.jackson.databind.*
--keepattributes InnerClasses
--keep class org.bouncycastle.** { *; }
--keepnames class org.bouncycastle.** { *; }
--dontwarn org.bouncycastle.**
--keep class io.jsonwebtoken.** { *; }
--keepnames class io.jsonwebtoken.* { *; }
--keepnames interface io.jsonwebtoken.* { *; }
--dontwarn javax.xml.bind.DatatypeConverter
--dontwarn io.jsonwebtoken.impl.Base64Codec
--keepnames class com.fasterxml.jackson.** { *; }
--keepnames interface com.fasterxml.jackson.** { *; }
+    #JJWT
+    -keepnames class com.fasterxml.jackson.databind.** { *; }
+    -dontwarn com.fasterxml.jackson.databind.*
+    -keepattributes InnerClasses
+    -keep class org.bouncycastle.** { *; }
+    -keepnames class org.bouncycastle.** { *; }
+    -dontwarn org.bouncycastle.**
+    -keep class io.jsonwebtoken.** { *; }
+    -keepnames class io.jsonwebtoken.* { *; }
+    -keepnames interface io.jsonwebtoken.* { *; }
+    -dontwarn javax.xml.bind.DatatypeConverter
+    -dontwarn io.jsonwebtoken.impl.Base64Codec
+    -keepnames class com.fasterxml.jackson.** { *; }
+    -keepnames interface com.fasterxml.jackson.** { *; }`
+
+#FAQ
+###How to resolve dependencies conflict?
+When have dependencies conflict, the error message may like below:
+'Program type already present: xxx.xxx.xxx '
+
+You can use **exclude()** method to exclude the conflict dependencies by group or module or both.
+
+e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
+
+`implementation ('com.pax.market:paxstoresdk:5.02.02'){
+    exclude group: 'com.google.code.gson', module: 'gson'
+}`
+
+
+
