@@ -28,10 +28,6 @@ allprojects {
     }
 }
 
-tasks.getByPath(":sdk:bintrayUpload").enabled = false
-tasks.getByPath(":sdk-lib:bintrayUpload").enabled = false
-
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

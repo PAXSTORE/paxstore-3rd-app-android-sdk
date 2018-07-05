@@ -42,10 +42,9 @@ publish {
     userOrg = 'paxstore-support'
     repoName = 'paxstore'
     groupId = 'com.pax.market'
-    artifactId = 'paxstoresdk'//上传到bintray的package名
-    publishVersion = '5.02.04'
-    desc = 'This is the SDK of PAXSTORE'
-    website = 'https://github.com/PAXSTORE/paxstoresdk'
-    //override = true
+    artifactId = 'paxstore-3rd-app-android-sdk'//上传到bintray的package名
+    publishVersion = '5.02.02'
+    desc = 'This is the 3rd app android SDK of PAXSTORE'
+    website = 'https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk'
     licences = ["Apache-2.0"]
 }
