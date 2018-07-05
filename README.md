@@ -189,8 +189,11 @@ ProGaurd exclusions for SDK
     -keepnames class com.fasterxml.jackson.** { *; }
     -keepnames interface com.fasterxml.jackson.** { *; }`
 
-#FAQ
+
+##FAQ
+
 ###How to resolve dependencies conflict?
+
 When have dependencies conflict, the error message may like below:
 'Program type already present: xxx.xxx.xxx '
 
@@ -198,9 +201,9 @@ You can use **exclude()** method to exclude the conflict dependencies by group o
 
 e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
 
-`implementation ('com.pax.market:paxstoresdk:5.02.02'){
-    exclude group: 'com.google.code.gson', module: 'gson'
-}`
+    implementation ('com.pax.market:paxstoresdk:5.02.02'){
+        exclude group: 'com.google.code.gson', module: 'gson'
+    }
 
 
 
