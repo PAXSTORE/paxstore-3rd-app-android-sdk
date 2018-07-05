@@ -208,7 +208,7 @@ e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
 #### When use download parameters API, app client broadcast receiver can't receive download broadcast.
 
 Please make sure you have replaced the right **package name** in your receiver.
-The package name is in your app AndroidManifest.xml -> package="xxx.xxx.xxx"
+The package name is in your project file AndroidManifest.xml -> package="xxx.xxx.xxx.xxx"
 
     <receiver android:name=".YourReceiver">
           <intent-filter>
