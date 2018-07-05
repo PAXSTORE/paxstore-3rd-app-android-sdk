@@ -187,17 +187,17 @@ ProGaurd exclusions for SDK
     -dontwarn javax.xml.bind.DatatypeConverter
     -dontwarn io.jsonwebtoken.impl.Base64Codec
     -keepnames class com.fasterxml.jackson.** { *; }
-    -keepnames interface com.fasterxml.jackson.** { *; }`
+    -keepnames interface com.fasterxml.jackson.** { *; }
 
 
-##FAQ
+## FAQ
 
-###How to resolve dependencies conflict?
+#### How to resolve dependencies conflict?
 
 When have dependencies conflict, the error message may like below:
 'Program type already present: xxx.xxx.xxx '
 
-You can use **exclude()** method to exclude the conflict dependencies by group or module or both.
+You can use **exclude()** method to exclude the conflict dependencies by **group** or **module** or **both**.
 
 e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
 
@@ -205,5 +205,15 @@ e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
         exclude group: 'com.google.code.gson', module: 'gson'
     }
 
+#### When use download parameters API, app client broadcast receiver can't receive download broadcast.
 
+Please make sure you have replaced the right **package name** in your receiver.
+The package name is in your app AndroidManifest.xml -> package="xxx.xxx.xxx"
+
+    <receiver android:name=".YourReceiver">
+          <intent-filter>
+              <action android:name="com.paxmarket.ACTION_TO_DOWNLOAD_PARAMS" />
+              <category android:name="**Your PackageName**" />
+          </intent-filter>
+    </receiver>
 
