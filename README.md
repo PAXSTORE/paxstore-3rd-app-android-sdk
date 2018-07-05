@@ -217,3 +217,5 @@ The package name is in your project file AndroidManifest.xml -> package="xxx.xxx
           </intent-filter>
     </receiver>
 
+
+More questions, please refer to [FAQ](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/wiki/FAQ)
