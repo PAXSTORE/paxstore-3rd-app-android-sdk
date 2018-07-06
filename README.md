@@ -221,13 +221,13 @@ When attribute conflict occur, the error message may like below:
 
 **Solution:**
 
-* Add **xmlns:tools="http\://schemas.android.com/tools"** in your manifest header
+Add **xmlns:tools="http\://<span></span>schemas.android.com/tools"** in your manifest header
 
-        <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+       <manifest xmlns:android="http://schemas.android.com/apk/res/android"
             package="com.yourpackage"
             xmlns:tools="http://schemas.android.com/tools">
 
-* Add **tools:replace = "the confilct attribute"** to your application tag:
+Add **tools:replace = "the confilct attribute"** to your application tag:
 
         <application
             ...
