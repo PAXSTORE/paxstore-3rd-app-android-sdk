@@ -192,30 +192,46 @@ ProGaurd exclusions for SDK
 
 ## FAQ
 
-#### How to resolve dependencies conflict?
+#### 1. How to resolve dependencies conflict?
 
-When have dependencies conflict, the error message may like:
-'Program type already present: xxx.xxx.xxx '
+When dependencies conflict occur, the error message may like below:
+
+    Program type already present: xxx.xxx.xxx
+
+**Solution:**
 
 You can use **exclude()** method to exclude the conflict dependencies by **group** or **module** or **both**.
 
 e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
 
-    implementation ('com.pax.market:paxstore-3rd-app-android-sdk:5.02.03'){
+    implementation ('com.pax.market:paxstoresdk:x.xx.xx'){
         exclude group: 'com.google.code.gson', module: 'gson'
     }
 
-#### When use download parameters API, app client broadcast receiver can't receive download broadcast.
+#### 2. How to resolve attribute conflict?
 
-Please make sure you have replaced the right **package name** in your receiver.
-The package name is in your project file AndroidManifest.xml -> package="xxx.xxx.xxx.xxx"
+When attribute conflict occur, the error message may like below:
 
-    <receiver android:name=".YourReceiver">
-          <intent-filter>
-              <action android:name="com.paxmarket.ACTION_TO_DOWNLOAD_PARAMS" />
-              <category android:name="**Your PackageName**" />
-          </intent-filter>
-    </receiver>
+    Manifest merger failed : Attribute application@allowBackup value=(false) from 
+    AndroidManifest.xml...
+    is also present at [com.pax.market:paxstore-3rd-app-android-sdk:x.xx.xx] 
+    AndroidManifest.xml...
+    Suggestion: add 'tools:replace="android:allowBackup"' to <application> element
+    at AndroidManifest.xml:..
+
+**Solution:**
+
+* Add **xmlns:tools="http\://schemas.android.com/tools"** in your manifest header
+
+        <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+            package="com.yourpackage"
+            xmlns:tools="http://schemas.android.com/tools">
+
+* Add **tools:replace = "the confilct attribute"** to your application tag:
+
+        <application
+            ...
+            tools:replace="allowBackup"/>
 
 
 More questions, please refer to [FAQ](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/wiki/FAQ)
