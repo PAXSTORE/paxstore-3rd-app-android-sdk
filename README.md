@@ -1,4 +1,4 @@
-# PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstoresdk/images/download.svg?version=5.02.02) ](https://bintray.com/paxstore-support/paxstore/paxstoresdk/5.02.02/link)
+# PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/images/download.svg?version=5.02.03) ](https://bintray.com/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/5.02.03/link)
 PAXSTORE 3rd App Android SDK provides simple and easy-to-use service interfaces for third-party developers to develop Android Apps on PAXSTORE. The services currently include the following points:
 
 1. Download parameter
@@ -13,7 +13,7 @@ Create a new app in PAXSTORE, and get AppKey and AppSecret from DEV INFO.
 ## Step 2: Download Dependency
 Gradle:
 
-    implementation 'com.pax.market:paxstoresdk:5.02.02'
+    implementation 'com.pax.market:paxstore-3rd-app-android-sdk:5.02.03'
 
 ## Step 3: Check for Permissions
 PAXSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.
