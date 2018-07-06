@@ -194,14 +194,14 @@ ProGaurd exclusions for SDK
 
 #### How to resolve dependencies conflict?
 
-When have dependencies conflict, the error message may like below:
+When have dependencies conflict, the error message may like:
 'Program type already present: xxx.xxx.xxx '
 
 You can use **exclude()** method to exclude the conflict dependencies by **group** or **module** or **both**.
 
 e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
 
-    implementation ('com.pax.market:paxstoresdk:5.02.02'){
+    implementation ('com.pax.market:paxstore-3rd-app-android-sdk:5.02.03'){
         exclude group: 'com.google.code.gson', module: 'gson'
     }
 
