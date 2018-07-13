@@ -26,8 +26,8 @@ PAXSTORE Android SDK need the following permissions, please add them in AndroidM
 `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`<br>
 `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
 
-## ProGaurd
-If you are using [ProGaurd](https://www.guardsquare.com/en/products/proguard/manual) in your project add the following lines to your configuration:
+## ProGuard
+If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/manual) in your project add the following lines to your configuration:
 
     #Gson
     -dontwarn com.google.gson.**
