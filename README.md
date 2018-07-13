@@ -14,9 +14,6 @@ By using this SDK, developers can easily integrate with PAXSTORE. Please take ca
 **Gradle's and Gradle plugin's version**
 >Gradle version 4.1 or higher
 
-## Get Application Key and Secret
-Create a new app in PAXSTORE, and get AppKey and AppSecret from app detail page in developer center.
-
 ## Download
 Gradle:
 
@@ -30,7 +27,7 @@ PAXSTORE Android SDK need the following permissions, please add them in AndroidM
 `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
 
 ## ProGaurd
-If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/manual) in your project add the following lines to your configuration:
+If you are using [ProGaurd](https://www.guardsquare.com/en/products/proguard/manual) in your project add the following lines to your configuration:
 
     #Gson
     -dontwarn com.google.gson.**
@@ -55,7 +52,10 @@ If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/man
 
 ## API Usage
 
-### Step 1: Initialization
+### Step 1: Get Application Key and Secret
+Create a new app in PAXSTORE, and get AppKey and AppSecret from app detail page in developer center.
+
+### Step 2: Initialization
 Configuring the application element, edit AndroidManifest.xml, it will have an application element. You need to configure the android:name attribute to point to your Application class (put the full name with package if the application class package is not the same as manifest root element declared package)
 
 <application
@@ -96,7 +96,7 @@ public class BaseApplication extends Application {
               });
     }
 }
-### Step 2：Download Parameters API
+### Step 3：Download Parameters API
 Download parameter (Optional, ignore this part if you don't have download parameter requirement)
 Register your receiver
 
@@ -143,7 +143,7 @@ After you get broadcast, download params in your service
             thread.start();
             return super.onStartCommand(intent, flags, startId);
         }
-### Step 3: Update Inquirer (Optional)
+### Step 4: Update Inquirer (Optional)
 Update inquirer: Your app will be asked whether it can be updated when there is a new version afther you
 integrated this function.
 
