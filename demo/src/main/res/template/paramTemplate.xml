@@ -1,0 +1,5407 @@
+<?xml version="1.0" encoding="gb2312"?>
+<Schema>
+  <!-- Groups Definition -->
+  <Groups>
+    <Group>
+      <ID>sys_G0</ID>
+      <Title>Industry</Title>
+      <Order>1</Order>
+      <Description></Description>
+    </Group>
+    <Group>
+      <ID>sys_G2</ID>
+      <Title>EDC</Title>
+      <Order>2</Order>
+      <Description></Description>
+    </Group>
+    <Group>
+      <ID>sys_G4</ID>
+      <Title>Receipt</Title>
+      <Order>3</Order>
+      <Description></Description>
+    </Group>
+    <Group>
+      <ID>sys_G5</ID>
+      <Title>Tip</Title>
+      <Order>4</Order>
+      <Description></Description>
+    </Group>
+    <Group>
+      <ID>sys_G7</ID>
+      <Title>Misc</Title>
+      <Order>5</Order>
+      <Description></Description>
+    </Group>
+    <Group>
+      <ID>sys_G6</ID>
+      <Title>Communication</Title>
+      <Order>7</Order>
+      <Description></Description>
+    </Group>
+    <Group>
+      <ID>sys_G3</ID>
+      <Title>Card Type</Title>
+      <Order>8</Order>
+      <Description></Description>
+    </Group>
+    <Group>
+      <ID>sys_GE</ID>
+      <Title>EMV</Title>
+      <Order>9</Order>
+      <Description></Description>
+    </Group>
+    <Group>
+      <ID>sys_G1</ID>
+      <Title>BroadPOS</Title>
+      <Order>10</Order>
+      <Description></Description>
+    </Group>
+  </Groups>
+  <!-- Files Definition -->
+  <Files>
+    <File>
+      <ID>sys_F1</ID>
+      <FileName>sys_param.p</FileName>
+      <Description></Description>
+    </File>
+    <File>
+      <ID>sys_F2</ID>
+      <FileName>sys_cap.p</FileName>
+      <Description></Description>
+    </File>
+  </Files>
+  <!-- Parameter Definition -->
+  <Parameters>
+    <!-- Sub Applications -->
+    <Header>
+      <Title>Sub Applications</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Number_String</DataType>
+        <PID>sys.param.keyAID</PID>
+        <Title>Key Injection Application ID</Title>
+        <Length>6</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>keyld</Defaultvalue>
+        <Description>Key Injection Application ID</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F1</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Number_String</DataType>
+        <PID>sys.param.tmsAID</PID>
+        <Title>TMS Application ID</Title>
+        <Length>6</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>bpagt</Defaultvalue>
+        <Description>TMS Application ID</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F1</FileID>
+      </Parameter>
+    </Header>
+    <!-- Auto Health Report -->
+    <Header>
+      <Title>Auto Health Report</Title>
+      <DisplayStyle>common</DisplayStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.param.hrType</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","T":"Specific Time","I":"Fixed Interval"}</Select>
+        <Defaultvalue>I</Defaultvalue>
+        <Description>Health Report Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G1</GroupID>
+        <FileID>sys_F1</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Time_hhmm</DataType>
+        <PID>sys.param.hrTime</PID>
+        <Title>Time(hh:mm)</Title>
+        <Length>5</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0600</Defaultvalue>
+        <Description>Time for health report</Description>
+        <Display>true</Display>
+        <GroupID>sys_G1</GroupID>
+        <FileID>sys_F1</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.param.hrInterval</PID>
+        <Title>Interval(100ms)</Title>
+        <Length>8</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>864000</Defaultvalue>
+        <Description>Interval for health report</Description>
+        <Display>true</Display>
+        <GroupID>sys_G1</GroupID>
+        <FileID>sys_F1</FileID>
+      </Parameter>
+    </Header>
+    <!--Industry Features-->
+    <Header>
+      <Title>Industry Features</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>open</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.industry</PID>
+        <Title>Industry Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"RETAIL":"Retail","RESTAURANT":"Restaurant"}</Select>
+        <Defaultvalue>RETAIL</Defaultvalue>
+        <Description>Industry Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.commercial</PID>
+        <Title>Commercial Card Support</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Commercial Card Support</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.ME.mode</PID>
+        <Title>Allow MOTO</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow MOTO</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.ME.mask</PID>
+        <Title>MOTO/eCommerce Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"M":"Manual","S":"Swipe","B":"Both Manual and Swipe"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>The Entry Mode of Moto/eCommerce</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CBPrompt</PID>
+        <Title>Cash Back Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Cash Back Prompt</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.taxPrompt</PID>
+        <Title>Tax Amount Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Tax Prompt</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.orderMode</PID>
+        <Title>Order Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","M":"Manual Entry Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Order Number Prompt</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.saleHALO</PID>
+        <Title>HALO for Sale</Title>
+        <Length>8</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>High Amount Lock Out for Sale</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.returnHALO</PID>
+        <Title>HALO for Refund</Title>
+        <Length>8</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>High Amount Lock Out for Refund</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.CBHALO</PID>
+        <Title>HALO for Cash Back/Withdrawal</Title>
+        <Length>8</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>High Amount Lock Out for Cash Back/Withdrawal</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.merchantFee</PID>
+        <Title>Merchant Surcharge Fee</Title>
+        <Length>5</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Merchant Surcharge Fee</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.chargeCBOnly</PID>
+        <Title>Surcharge for CashBack</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Yes","N":"No"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Apply Surcharge Fee for CashBack</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.tableMode</PID>
+        <Title>Table Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Table Number Prompt</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.guestMode</PID>
+        <Title>Number of Guests Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Number of Guests Prompt</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.ticketMode</PID>
+        <Title>Ticket Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Ticket Number Prompt</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.dLanguage</PID>
+        <Title>Language Setting</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"English":"English","ChineseSimplified":"Chinese Simplified"}</Select>
+        <Defaultvalue>English</Defaultvalue>
+        <Description>Multi-Language</Description>
+        <Display>true</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--FPS Features-->
+    <Header>
+      <Title>Fast Payment Service</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Visa</Title>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.FPS.V.flag</PID>
+        <Title>Allow Fast Payment</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Fast Payment</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.V.auth</PID>
+        <Title>Authorization Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Authorization Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.V.sign</PID>
+        <Title>Signature Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Signature Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.V.receipt</PID>
+        <Title>Print Receipt Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Print Receipt Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.FPS.V.mode</PID>
+        <Title>Receipt Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"0":"Both Merchant/Customer Copy","1":"Merchant Copy Only","2":"Customer Copy Only","3":"No Receipt"}</Select>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Receipt Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>MasterCard</Title>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.FPS.M.flag</PID>
+        <Title>Allow Fast Payment</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Fast Payment</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.M.auth</PID>
+        <Title>Authorization Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Authorization Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.M.sign</PID>
+        <Title>Signature Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Signature Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.M.receipt</PID>
+        <Title>Print Receipt Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Print Receipt Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.FPS.M.mode</PID>
+        <Title>Receipt Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"0":"Both Merchant/Customer Copy","1":"Merchant Copy Only","2":"Customer Copy Only","3":"No Receipt"}</Select>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Receipt Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Others</Title>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.FPS.O.flag</PID>
+        <Title>Allow Fast Payment</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Fast Payment</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.O.auth</PID>
+        <Title>Authorization Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Authorization Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.O.sign</PID>
+        <Title>Signature Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Signature Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.FPS.O.receipt</PID>
+        <Title>Print Receipt Limit</Title>
+        <Length>9</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Print Receipt Limit Amount</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.FPS.O.mode</PID>
+        <Title>Receipt Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"0":"Both Merchant/Customer Copy","1":"Merchant Copy Only","2":"Customer Copy Only","3":"No Receipt"}</Select>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Receipt Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G0</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- CREDIT Features -->
+    <Header>
+      <Title>CREDIT Features</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>open</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.support</PID>
+        <Title>CREDIT EDC Support</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>CREDIT EDC Support</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Transactions</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Sale</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Sale</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Verify</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Verify</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Forced</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Forced</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Refund</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Refund</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Balance Inquiry</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Balance Inquiry</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Void Sale</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Void Sale</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Void Forced</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Void Forced</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>8</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Void Refund</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Void Refund</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>9</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Pre-Authorization</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Pre-Authorization</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>10</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Completion</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Completion</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>11</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Void Pre-Authorization</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Void Pre-Authorization</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>12</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.masks</PID>
+        <Title>Void Completion</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Void Completion</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Account Truncation</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.fullOnReport</PID>
+        <Title>On Report</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Report</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.fullOnDisplay</PID>
+        <Title>On Display</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Display</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Others</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.manualEntry</PID>
+        <Title>Manual Entry</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Allow Manual Entry</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.tip</PID>
+        <Title>Tip</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Support Tip</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.preDial</PID>
+        <Title>Pre-Dial</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","S":"Only for Swipe"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Pre-Dial</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.secureCard</PID>
+        <Title>Secure Card</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","4":"Re-enter Last 4 Digits","A":"Re-enter All Digits","D":"Confirm Card Number","5":"Re-enter Last 4 Digits and Confirm","B":"Re-enter All Digits and Confirm"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Secure Card Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.surchargeFeeMode</PID>
+        <Title>Surcharge Fee Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","D":"Flat Fee","P":"In Percentage","H":"Highest"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Credit Surcharge Fee Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>String</DataType>
+        <PID>sys.cap.surchargeFeeName</PID>
+        <Title>Surcharge Fee Name</Title>
+        <Length>24</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>Convenience Fee</Defaultvalue>
+        <Description>Surcharge Fee Name</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.surchargeFee</PID>
+        <Title>Surcharge Flat Fee</Title>
+        <Length>5</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Credit Surcharge Flat Fee</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.surchargeFeePercentage</PID>
+        <Title>Surcharge in Percentage(0-9.99)%</Title>
+        <Length>4</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>0</Defaultvalue>
+        <Description>Credit Surcharge in Percentage(0-9.99)%</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.surchargeConfirm</PID>
+        <Title>Surcharge Fee Confirm</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Credit Surcharge Fee Confirm</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CREDIT.refNoPrompt</PID>
+        <Title>Ref. Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Ref. Number Prompt for Refund</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- DEBIT Features -->
+    <Header>
+      <Title>DEBIT Features</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.support</PID>
+        <Title>DEBIT EDC Support</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>DEBIT EDC Support</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Transactions</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.masks</PID>
+        <Title>Sale</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Sale</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.masks</PID>
+        <Title>Refund</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Refund</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.masks</PID>
+        <Title>Balance Inquiry</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Balance Inquiry</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Account Truncation</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.fullOnReport</PID>
+        <Title>On Report</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Report</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.fullOnDisplay</PID>
+        <Title>On Display</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Display</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Others</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.manualEntry</PID>
+        <Title>Manual Entry</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","P":"Password Protected"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Manual Entry</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.tip</PID>
+        <Title>Tip</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Support Tip</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.preDial</PID>
+        <Title>Pre-Dial</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","S":"Only for Swipe"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Pre-Dial</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.debitPrompt</PID>
+        <Title>Prompt CREDIT/DEBIT</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Prompt CREDIT/DEBIT</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.debitAccount</PID>
+        <Title>Debit Account Selection</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Ask for Input","D":"Default Account","S":"Saving Account","C":"Checking Account"}</Select>
+        <Defaultvalue>D</Defaultvalue>
+        <Description>Debit Account Type Selection Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>keyIndex</DataType>
+        <PID>sys.cap.DEBIT.pinKeyIndex</PID>
+        <Title>PIN Key Index(1-10)</Title>
+        <Length>2</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>1</Defaultvalue>
+        <Description>PIN Key Index(1-10)</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.DEBIT.refNoPrompt</PID>
+        <Title>Ref. Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Ref. Number Prompt for Refund</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- EBT Features -->
+    <Header>
+      <Title>EBT Features</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.support</PID>
+        <Title>EBT EDC Support</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>EBT EDC Support</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Transactions</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.masks</PID>
+        <Title>Sale</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Sale</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.masks</PID>
+        <Title>Refund</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Refund</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.masks</PID>
+        <Title>Withdrawal</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Withdrawal</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.masks</PID>
+        <Title>Balance Inquiry</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Balance Inquiry</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Account Truncation</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.fullOnReport</PID>
+        <Title>On Report</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Report</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.fullOnDisplay</PID>
+        <Title>On Display</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Display</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Others</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.manualEntry</PID>
+        <Title>Manual Entry</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Allow Manual Entry</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.tip</PID>
+        <Title>Tip</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Support Tip</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.preDial</PID>
+        <Title>Pre-Dial</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","S":"Only for Swipe"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Pre-Dial</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>keyIndex</DataType>
+        <PID>sys.cap.EBT.pinKeyIndex</PID>
+        <Title>PIN Key Index(1-10)</Title>
+        <Length>2</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>1</Defaultvalue>
+        <Description>PIN Key Index(1-10)</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.refNoPrompt</PID>
+        <Title>Ref. Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Ref. Number Prompt for Refund</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.EBT.expiryPrompt</PID>
+        <Title>Expiry Date Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Expiry Date Prompt</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- GIFT Features -->
+    <Header>
+      <Title>GIFT Features</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.support</PID>
+        <Title>GIFT EDC Support</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>GIFT EDC Support</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Transactions</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.masks</PID>
+        <Title>Sale</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Sale</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.masks</PID>
+        <Title>Refund</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Refund</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.masks</PID>
+        <Title>Add Value</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Add Value</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.masks</PID>
+        <Title>Issue</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Issue</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.masks</PID>
+        <Title>Balance Inquiry</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Balance Inquiry</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.masks</PID>
+        <Title>Void</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Void</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.masks</PID>
+        <Title>Deactivation</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Deactivation</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Account Truncation</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.fullOnReport</PID>
+        <Title>On Report</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Report</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.fullOnDisplay</PID>
+        <Title>On Display</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Display</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Others</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.manualEntry</PID>
+        <Title>Manual Entry</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Allow Manual Entry</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.tip</PID>
+        <Title>Tip</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Support Tip</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.preDial</PID>
+        <Title>Pre-Dial</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","S":"Only for Swipe"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Pre-Dial</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.refNoPrompt</PID>
+        <Title>Ref. Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Ref. Number Prompt for Refund</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.GIFT.expiryPrompt</PID>
+        <Title>Expiry Date Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Expiry Date Prompt</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- LOYALTY Features -->
+    <Header>
+      <Title>LOYALTY Features</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.LOYALTY.support</PID>
+        <Title>LOYALTY EDC Support</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>LOYALTY EDC Support</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Transactions</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.LOYALTY.masks</PID>
+        <Title>Redemption</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Redemption</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Account Truncation</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.LOYALTY.fullOnReport</PID>
+        <Title>On Report</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Report</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.LOYALTY.fullOnDisplay</PID>
+        <Title>On Display</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Full","N":"Truncated"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Account Truncation On Display</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Others</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.LOYALTY.manualEntry</PID>
+        <Title>Manual Entry</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Allow Manual Entry</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.LOYALTY.tip</PID>
+        <Title>Tip</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Support Tip</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.LOYALTY.preDial</PID>
+        <Title>Pre-Dial</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","S":"Only for Swipe"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Pre-Dial</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.LOYALTY.refNoPrompt</PID>
+        <Title>Ref. Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Ref. Number Prompt for Refund</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- CASH Features -->
+    <Header>
+      <Title>CASH Features</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CASH.support</PID>
+        <Title>Cash EDC Support</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Cash EDC Support</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Transactions</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CASH.masks</PID>
+        <Title>Sale</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Sale</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CASH.masks</PID>
+        <Title>Refund</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Refund</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CASH.masks</PID>
+        <Title>Void Sale</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Void Sale</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.CASH.masks</PID>
+        <Title>Void Refund</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Enabled","N":"Disabled","P":"Password Protected"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Security for Void Refund</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Others</Title>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CASH.tip</PID>
+        <Title>Tip</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Support Tip</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CASH.preDial</PID>
+        <Title>Pre-Dial</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled","S":"Only for Swipe"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Allow Pre-Dial</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.CASH.refNoPrompt</PID>
+        <Title>Ref. Number Prompt</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Ref. Number Prompt for Refund</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--Card BIN File-->
+    <Header>
+      <Title>Card BIN</Title>
+      <DisplayStyle>common</DisplayStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>upload</InputType>
+        <DataType>File</DataType>
+        <PID>sys.param.cardBIN</PID>
+        <Title>Card BIN File</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>sys_bin.l</Defaultvalue>
+        <Description>Card BIN File</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F1</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>upload</InputType>
+        <DataType>File</DataType>
+        <PID>sys.param.bizCardBIN</PID>
+        <Title>Commercial Card BIN File</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>sys_biz.l</Defaultvalue>
+        <Description>Commercial Card BIN File</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F1</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 1 related -->
+    <Header>
+      <Title>Visa</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>open</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue>Visa</Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>M</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 2 related -->
+    <Header>
+      <Title>Master Card</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue>MasterCard</Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>M</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 3 related -->
+    <Header>
+      <Title>American Express</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue>AMEX</Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>M</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 4 related -->
+    <Header>
+      <Title>Diner Club</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue>Diners</Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>M</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 5 related -->
+    <Header>
+      <Title>Discover</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue>Discover</Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>5</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>M</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 6 related -->
+    <Header>
+      <Title>JCB</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue>JCB</Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>6</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>M</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 7 related -->
+    <Header>
+      <Title>enRoute</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue>enRoute</Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>7</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 8 related -->
+    <Header>
+      <Title>Others</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>8</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue>Extended</Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>8</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>8</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>8</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>8</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>8</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>true</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>8</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 9 related -->
+    <Header>
+      <Title>Card Type 9</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>9</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue></Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>9</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>9</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>9</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>9</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>9</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>9</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 10 related -->
+    <Header>
+      <Title>Card Type 10</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>10</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue></Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>10</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>10</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>10</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>10</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>10</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>10</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 11 related -->
+    <Header>
+      <Title>Card Type 11</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>11</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue></Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>11</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>11</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>11</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>11</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>11</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>11</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 12 related -->
+    <Header>
+      <Title>Card Type 12</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>12</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue></Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>12</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>12</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>12</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>12</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>12</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>12</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 13 related -->
+    <Header>
+      <Title>Card Type 13</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>13</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue></Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>13</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>13</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>13</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>13</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>13</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>13</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 14 related -->
+    <Header>
+      <Title>Card Type 14</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>14</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue></Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>14</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>14</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>14</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>14</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>14</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>14</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 15 related -->
+    <Header>
+      <Title>Card Type 15</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>15</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue></Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>15</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>15</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>15</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>15</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>15</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>15</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!-- Card Type 16 related -->
+    <Header>
+      <Title>Card Type 16</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>16</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardTypes</PID>
+        <Title>Type</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Visa":"Visa","MasterCard":"Master Card","AMEX":"American Express","Diners":"Diner Club","Discover":"Discover","enRoute":"enRoute","JCB":"JCB","Extended":"Others"}</Select>
+        <Defaultvalue></Defaultvalue>
+        <Description>Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title></Title>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>16</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cardMasks</PID>
+        <Title>Mask</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Disable or Enable this Card Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>16</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cp.mode</PID>
+        <Title>Card Present Mode</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"Y":"Always Present","N":"Always Not Present","A":"Prompt"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Card Present Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>16</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.swipe</PID>
+        <Title>AVS for SWIPE</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>AVS for SWIPE</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>16</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CP</PID>
+        <Title>AVS for CardPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>Z</Defaultvalue>
+        <Description>AVS for CardPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>16</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.avs.CNP</PID>
+        <Title>AVS for CardNotPresent</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","A":"Address Only","Z":"Zip Only","B":"Both"}</Select>
+        <Defaultvalue>B</Defaultvalue>
+        <Description>AVS for CardNotPresent</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>16</Index>
+        <Separator>" "</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cvv.mode</PID>
+        <Title>CVV</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","M":"Manual Entry Only","C":"Manual and Card Not Present Only"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>CVV</Description>
+        <Display>false</Display>
+        <GroupID>sys_G3</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--Receipt Configs-->
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptHeader0</PID>
+      <Title>Header Line 1</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Header Line 1</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptHeader1</PID>
+      <Title>Header Line 2</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Header Line 2</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptHeader2</PID>
+      <Title>Header Line 3</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Header Line 3</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptHeader3</PID>
+      <Title>Header Line 4</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Header Line 4</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptHeader4</PID>
+      <Title>Header Line 5</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Header Line 5</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <InputType>label</InputType>
+      <Title></Title>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptTrailer0</PID>
+      <Title>Trailer Line 1</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Trailer Line 1</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptTrailer1</PID>
+      <Title>Trailer Line 2</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Trailer Line 2</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptTrailer2</PID>
+      <Title>Trailer Line 3</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Trailer Line 3</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptTrailer3</PID>
+      <Title>Trailer Line 4</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Trailer Line 4</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.receiptTrailer4</PID>
+      <Title>Trailer Line 5</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>Trailer Line 5</Description>
+      <Display>true</Display>
+      <GroupID>sys_G4</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <!--Tip Configs-->
+    <Header>
+      <Title>General</Title>
+      <DisplayStyle>common</DisplayStyle>
+      <Display>true</Display>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Additional Feature</Title>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.tip.selectMode</PID>
+        <Title>Tip Select</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Tip Select Mode</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.tip.threshold</PID>
+        <Title>Amount Threshold</Title>
+        <Length>8</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>2000</Defaultvalue>
+        <Description>Amount Threshold</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.tip.unit</PID>
+        <Title>Tip Unit</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"C":"In Cents","D":"In Dollars"}</Select>
+        <Defaultvalue>C</Defaultvalue>
+        <Description>Tip Unit</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Amount Options</Title>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.tip.amount</PID>
+        <Title>Amount Option 1</Title>
+        <Length>8</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>300</Defaultvalue>
+        <Description>Amount Option 1</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.tip.amount</PID>
+        <Title>Amount Option 2</Title>
+        <Length>8</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>500</Defaultvalue>
+        <Description>Amount Option 2</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.tip.amount</PID>
+        <Title>Amount Option 3</Title>
+        <Length>8</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>700</Defaultvalue>
+        <Description>Amount Option 3</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Percentage Options</Title>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>" "</Separator>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.cap.tip.percent</PID>
+        <Title>Percentage Option 1</Title>
+        <Length>2</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>20</Defaultvalue>
+        <Description>Percentage Option 1</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>" "</Separator>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.cap.tip.percent</PID>
+        <Title>Percentage Option 2</Title>
+        <Length>2</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>30</Defaultvalue>
+        <Description>Percentage Option 2</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>" "</Separator>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.cap.tip.percent</PID>
+        <Title>Percentage Option 3</Title>
+        <Length>2</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>40</Defaultvalue>
+        <Description>Percentage Option 3</Description>
+        <Display>true</Display>
+        <GroupID>sys_G5</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--Communication Configs-->
+    <Header>
+      <Title>General</Title>
+      <DisplayStyle>common</DisplayStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.comm.primary</PID>
+        <Title>Primary Comm. Type</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"L":"LAN"}</Select>
+        <Defaultvalue>L</Defaultvalue>
+        <Description>Primary Comm. Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.comm.secondary</PID>
+        <Title>Backup Comm. Type</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","L":"LAN"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Backup Comm. Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.cap.comm.maxTries</PID>
+        <Title>Maximum Tries(1-9)</Title>
+        <Length>1</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>1</Defaultvalue>
+        <Description>Maximum Tries(1-9)</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.cap.comm.connTimeout</PID>
+        <Title>Connect Timeout(100ms)</Title>
+        <Length>4</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>300</Defaultvalue>
+        <Description>Connect Timeout(100ms)</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.cap.comm.recvTimeout</PID>
+        <Title>Receive Timeout(100ms)</Title>
+        <Length>4</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>450</Defaultvalue>
+        <Description>Receive Timeout(100ms)</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--LAN-->
+    <Header>
+      <Title>LAN</Title>
+      <DisplayStyle>common</DisplayStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.comm.DHCP</PID>
+        <Title>DHCP</Title>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>DHCP</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>IP</DataType>
+        <PID>sys.cap.comm.IP</PID>
+        <Title>Local IP</Title>
+        <Length>15</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue></Defaultvalue>
+        <Description>Local IP</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>IP</DataType>
+        <PID>sys.cap.comm.netmask</PID>
+        <Title>Netmask</Title>
+        <Length>15</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue></Defaultvalue>
+        <Description>Netmask</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>IP</DataType>
+        <PID>sys.cap.comm.gateway</PID>
+        <Title>Gateway IP</Title>
+        <Length>15</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue></Defaultvalue>
+        <Description>Gateway IP</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>IP</DataType>
+        <PID>sys.cap.comm.DNS</PID>
+        <Title>DNS IP</Title>
+        <Length>15</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue></Defaultvalue>
+        <Description>DNS IP</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--Dial Up-->
+    <Header>
+      <Title>Dial Up</Title>
+      <DisplayStyle>common</DisplayStyle>
+      <Display>false</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>String</DataType>
+        <PID>sys.cap.comm.dialPrefix</PID>
+        <Title>Prefix</Title>
+        <Length>9</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue></Defaultvalue>
+        <Description>Dial Prefix</Description>
+        <Display>false</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.comm.dialType</PID>
+        <Title>Dial Mode</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"T":"Tone","P":"Pulse"}</Select>
+        <Defaultvalue>T</Defaultvalue>
+        <Description>Dial Mode</Description>
+        <Display>false</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.comm.checkDialTone</PID>
+        <Title>Dial Tone Check</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Dial Tone Check</Description>
+        <Display>false</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.comm.deviceType</PID>
+        <Title>Device Type</Title>
+        <Required>true</Required>
+        <Readonly>true</Readonly>
+        <Select>{"E":"EM100"}</Select>
+        <Defaultvalue>E</Defaultvalue>
+        <Description>Dial Device Type</Description>
+        <Display>false</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--Communication Between ECR/POS and PAX terminal-->
+    <Header>
+      <Title>Communication between ECR/POS and PAX terminal</Title>
+      <DisplayStyle>common</DisplayStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.cap.limitLen</PID>
+        <Title>Limit Length</Title>
+        <Length>4</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>240</Defaultvalue>
+        <Description>The Package Length</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Number</DataType>
+        <PID>sys.cap.port</PID>
+        <Title>Port</Title>
+        <Length>5</Length>
+        <Required>false</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>10009</Defaultvalue>
+        <Description>The Port for POS</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.commType</PID>
+        <Title>Communication Type</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"2":"COM2","B":"USB","E":"Ethernet"}</Select>
+        <Defaultvalue>2</Defaultvalue>
+        <Description>Communication Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.ecrBaudRate</PID>
+        <Title>UART Baudrate</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"9600":"9600 bps","115200":"115200 bps"}</Select>
+        <Defaultvalue>9600</Defaultvalue>
+        <Description>UART Baudrate</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <Header>
+      <Title>POS System Feature(Ethernet Only)</Title>
+      <DisplayStyle>common</DisplayStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.commProtocolType</PID>
+        <Title>Protocol Type</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"E":"TCP/IP","H":"HTTP"}</Select>
+        <Defaultvalue>E</Defaultvalue>
+        <Description>Protocol Type</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.accessControlAllowed</PID>
+        <Title>Browser Cross Scripting</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Browser Cross Scripting</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>String</DataType>
+        <PID>sys.cap.registerKey</PID>
+        <Title>POS Register Key</Title>
+        <Length>64</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>345144782-635436-564832</Defaultvalue>
+        <Description>POS Register Key</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>String</DataType>
+        <PID>sys.cap.registerURL</PID>
+        <Title>POS Register URL</Title>
+        <Length>64</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>econduit.blacklinepartners.com</Defaultvalue>
+        <Description>POS Register URL</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>String</DataType>
+        <PID>sys.cap.registerPage</PID>
+        <Title>POS Register Page</Title>
+        <Length>64</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>integration.asmx/AddUpdateIPAddress</Defaultvalue>
+        <Description>POS Register URL</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Port</DataType>
+        <PID>sys.cap.registerPort</PID>
+        <Title>POS Register Port</Title>
+        <Length>5</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>80</Defaultvalue>
+        <Description>POS Register Port</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.autoRegister</PID>
+        <Title>POS Auto Register</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>POS Auto Register</Description>
+        <Display>true</Display>
+        <GroupID>sys_G6</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--System Configs-->
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.integrationMode</PID>
+      <Title>Integration Mode</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"S":"Semi-Integration","F":"Full Integration"}</Select>
+      <Defaultvalue>S</Defaultvalue>
+      <Description>Integration Mode</Description>
+      <Display>false</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>Number</DataType>
+      <PID>sys.cap.menuTimeout</PID>
+      <Title>Menu Timeout(100ms)</Title>
+      <Length>4</Length>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>300</Defaultvalue>
+      <Description>Menu Timeout(100ms)</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>password</InputType>
+      <DataType>Number</DataType>
+      <PID>sys.cap.password</PID>
+      <Title>System Password</Title>
+      <Length>16</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>System Password</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.batch.mask</PID>
+      <Title>Batch Protection</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"Y":"Not Protected","P":"Password Protected"}</Select>
+      <Defaultvalue>Y</Defaultvalue>
+      <Description>Batch Protection</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.btnSound</PID>
+      <Title>Key Sound</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+      <Defaultvalue>Y</Defaultvalue>
+      <Description>Key Sound</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.swpSound</PID>
+      <Title>Swipe Sound</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+      <Defaultvalue>Y</Defaultvalue>
+      <Description>Swipe Sound</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.emvCardRemoveBeep</PID>
+      <Title>EMV Card Remove Beep</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"0":"No Beep","1":"One Beep","2":"Continuous Beep"}</Select>
+      <Defaultvalue>1</Defaultvalue>
+      <Description>EMV Card Remove Beep</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.demoMode</PID>
+      <Title>Demo Mode</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+      <Defaultvalue>N</Defaultvalue>
+      <Description>Demo Mode</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.accountMenu</PID>
+      <Title>Account Menu for Postauth</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+      <Defaultvalue>N</Defaultvalue>
+      <Description>Prompt Input Account when do Post Auth</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.hasCTLESS</PID>
+      <Title>Contactless Module</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","I":"Internal"}</Select>
+      <Defaultvalue>N</Defaultvalue>
+      <Description>Contactless Module</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.hasSCANNER</PID>
+      <Title>Scanner Module</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","M":"MOTO DS9208"}</Select>
+      <Defaultvalue>N</Defaultvalue>
+      <Description>Scanner Module</Description>
+      <Display>false</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.logPort</PID>
+      <Title>System Log Output</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","2":"COM2","U":"UDP Server"}</Select>
+      <Defaultvalue>N</Defaultvalue>
+      <Description>System Log Output</Description>
+      <Display>false</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.logServer</PID>
+      <Title>UDP Server(IP:Port)</Title>
+      <Length>32</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue></Defaultvalue>
+      <Description>System Log UDP Server(IP:Port)</Description>
+      <Display>false</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>Number</DataType>
+      <PID>sys.cap.logCountLimit</PID>
+      <Title>Max Transactions Count</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Length>4</Length>
+      <Defaultvalue>1500</Defaultvalue>
+      <Description>Max Transactions Count</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.idleMsg</PID>
+      <Title>Idle Message</Title>
+      <Length>16</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>READY</Defaultvalue>
+      <Description>Idle Message</Description>
+      <Display>false</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>upload</InputType>
+      <DataType>File</DataType>
+      <PID>sys.cap.idleImageName</PID>
+      <Title>Idle Image File</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>mt30_ad1.r</Defaultvalue>
+      <Description>File Name as "xxxx.r", PNG Only, Size in W x H: 800X440</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>Number</DataType>
+      <PID>sys.cap.intervalTime</PID>
+      <Title>Idle Image Interval(100ms)</Title>
+      <Length>4</Length>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>300</Defaultvalue>
+      <Description>Interval for IDLE Image</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>Number</DataType>
+      <PID>sys.cap.hostRspTimeout</PID>
+      <Title>Host Response Timeout(100ms)</Title>
+      <Length>3</Length>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>50</Defaultvalue>
+      <Description>Host Response Timeout(100ms)</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>Number</DataType>
+      <PID>sys.cap.accountMenuTimeout</PID>
+      <Title>Enter Account Menu Timeout(100ms)</Title>
+      <Length>3</Length>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>300</Defaultvalue>
+      <Description>Enter Account Menu Timeout(100ms)</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.signPrompt</PID>
+      <Title>Signature Prompt</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+      <Defaultvalue>N</Defaultvalue>
+      <Description>Signature Prompt</Description>
+      <Display>false</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.signLine1</PID>
+      <Title>Signature Prompt Line 1</Title>
+      <Length>36</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>Transaction Approved</Defaultvalue>
+      <Description>Signature Prompt Line 1</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.signLine2</PID>
+      <Title>Signature Prompt Line 2</Title>
+      <Length>36</Length>
+      <Required>false</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>Please Sign Your Name</Defaultvalue>
+      <Description>Signature Prompt Line 2</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.swipeAnyTime</PID>
+      <Title>Swipe Any Time</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+      <Defaultvalue>N</Defaultvalue>
+      <Description>Swipe Any Time</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>Number</DataType>
+      <PID>sys.cap.cardSwipedTimeout</PID>
+      <Title>Card Swiped Timeout(100ms)</Title>
+      <Length>3</Length>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Defaultvalue>300</Defaultvalue>
+      <Description>Valid between 150 - 999</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>select</InputType>
+      <PID>sys.cap.hostRspBeep</PID>
+      <Title>Host Response Beep</Title>
+      <Required>true</Required>
+      <Readonly>false</Readonly>
+      <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+      <Defaultvalue>Y</Defaultvalue>
+      <Description>Host Response Beep</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>text</InputType>
+      <DataType>String</DataType>
+      <PID>sys.cap.validKeySlots</PID>
+      <Title>Valid Key Slots</Title>
+      <Length>16</Length>
+      <Required>true</Required>
+      <Readonly>true</Readonly>
+      <Defaultvalue>1</Defaultvalue>
+      <Description>Key Slots for GETPINBLOCK/INPUTACCOUNT, separated by space</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>upload</InputType>
+      <DataType>File</DataType>
+      <PID>sys.cap.GLBIN</PID>
+      <Title>GIFT/LOYALTY BIN File</Title>
+      <Required>true</Required>
+      <Readonly>true</Readonly>
+      <Defaultvalue>sys_glbin.l</Defaultvalue>
+      <Description>BIN File for INPUTACCOUNT</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <Parameter>
+      <Type>single</Type>
+      <InputType>upload</InputType>
+      <DataType>File</DataType>
+      <PID>sys.cap.validStringFile</PID>
+      <Title>String List File</Title>
+      <Required>true</Required>
+      <Readonly>true</Readonly>
+      <Defaultvalue>sys_strlist.l</Defaultvalue>
+      <Description>File Contains all Valid Titles for INPUTTEXT</Description>
+      <Display>true</Display>
+      <GroupID>sys_G7</GroupID>
+      <FileID>sys_F2</FileID>
+    </Parameter>
+    <!--Cash Back-->
+    <Header>
+      <Title>Cash Back Features</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <InputType>label</InputType>
+        <Title>Cash Back</Title>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>1</Index>
+        <Separator>","</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cashBack</PID>
+        <Title>Amount Option 1</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"0":"0.00","1000":"10.00","2000":"20.00","3000":"30.00","5000":"50.00"}</Select>
+        <Defaultvalue>1000</Defaultvalue>
+        <Description>Amount Option 1</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>2</Index>
+        <Separator>","</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cashBack</PID>
+        <Title>Amount Option 2</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"1000":"10.00","2000":"20.00","3000":"30.00","5000":"50.00","6000":"60.00"}</Select>
+        <Defaultvalue>2000</Defaultvalue>
+        <Description>Amount Option 2</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>3</Index>
+        <Separator>","</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cashBack</PID>
+        <Title>Amount Option 3</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"2000":"20.00","3000":"30.00","5000":"50.00","6000":"60.00","8000":"80.00"}</Select>
+        <Defaultvalue>3000</Defaultvalue>
+        <Description>Amount Option 3</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>combo</Type>
+        <Index>4</Index>
+        <Separator>","</Separator>
+        <InputType>select</InputType>
+        <PID>sys.cap.cashBack</PID>
+        <Title>Amount Option 4</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"3000":"30.00","5000":"50.00","6000":"60.00","8000":"80.00","10000":"100.00"}</Select>
+        <Defaultvalue>5000</Defaultvalue>
+        <Description>Amount Option 4</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <!--Confirm Configuration-->
+    <Header>
+      <Title>Confirmation Prompts</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>close</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.transConfirm</PID>
+        <Title>Sale/Auth/Forced/Others</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Confirmation Page for Sale/Auth/Forced</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.voidConfirm</PID>
+        <Title>Void/Completion</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Confirmation Page for Void/Completion</Description>
+        <Display>true</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.adjustConfirm</PID>
+        <Title>Tip Adjustment</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>N</Defaultvalue>
+        <Description>Confirmation Page for Tip Adjustment</Description>
+        <Display>false</Display>
+        <GroupID>sys_G2</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <Header>
+      <Title>Enable/Disable EMV</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>open</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>select</InputType>
+        <PID>sys.cap.enableEMV</PID>
+        <Title>Enable EMV Feature</Title>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Select>{"N":"Disabled","Y":"Enabled"}</Select>
+        <Defaultvalue>Y</Defaultvalue>
+        <Description>Enable EMV Feature</Description>
+        <Display>true</Display>
+        <GroupID>sys_GE</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <Header>
+      <Title>Contact Parameters</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>open</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.contactFloorLimit</PID>
+        <Title>Terminal Online Floor Limit</Title>
+        <Length>10</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>1</Defaultvalue>
+        <Description>Floor Limit For Online Trans</Description>
+        <Display>true</Display>
+        <GroupID>sys_GE</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.contactPINLimit</PID>
+        <Title>PIN Floor Limit</Title>
+        <Length>10</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>2500</Defaultvalue>
+        <Description>Floor Limit For Offline/Online PIN</Description>
+        <Display>true</Display>
+        <GroupID>sys_GE</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+    <Header>
+      <Title>Contactless Parameters</Title>
+      <DisplayStyle>foldable</DisplayStyle>
+      <DefaultStyle>open</DefaultStyle>
+      <Display>true</Display>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.terminalCtlessTranLimit</PID>
+        <Title>Contactless Trans Limit</Title>
+        <Length>10</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>10000</Defaultvalue>
+        <Description>Floor Limit For Contactless Trans</Description>
+        <Display>true</Display>
+        <GroupID>sys_GE</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.terminalFloorLimit</PID>
+        <Title>Terminal Online Floor Limit</Title>
+        <Length>10</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>1</Defaultvalue>
+        <Description>Floor Limit For Online Trans</Description>
+        <Display>true</Display>
+        <GroupID>sys_GE</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.terminalCtlessLimit</PID>
+        <Title>Contactless Online Floor Limit</Title>
+        <Length>10</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>1</Defaultvalue>
+        <Description>Floor Limit For Contactless Online Trans</Description>
+        <Display>true</Display>
+        <GroupID>sys_GE</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+      <Parameter>
+        <Type>single</Type>
+        <InputType>text</InputType>
+        <DataType>Amount</DataType>
+        <PID>sys.cap.CVMRequiredLimit</PID>
+        <Title>CVM Required Limit</Title>
+        <Length>10</Length>
+        <Required>true</Required>
+        <Readonly>false</Readonly>
+        <Defaultvalue>5000</Defaultvalue>
+        <Description>Floor Limit For CVM</Description>
+        <Display>true</Display>
+        <GroupID>sys_GE</GroupID>
+        <FileID>sys_F2</FileID>
+      </Parameter>
+    </Header>
+  </Parameters>
+</Schema>

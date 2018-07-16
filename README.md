@@ -198,6 +198,8 @@ Integrate with this function only need to call initInquirer() after you init Sto
         }
     }
 
+## Template
+You can get the **parameter template** for **demo project** from .../res/template folder.
 
 ## FAQ
 
