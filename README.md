@@ -1,4 +1,4 @@
-# PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/images/download.svg?version=5.02.03) ](https://bintray.com/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/5.02.03/link)
+# PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/images/download.svg?version=5.02.04) ](https://bintray.com/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/5.02.04/link)
 PAXSTORE 3rd App Android SDK provides simple and easy-to-use service interfaces for third party developers to develop android apps on PAXSTORE. The services currently include the following points:
 
 1. Download parameter
@@ -17,7 +17,7 @@ By using this SDK, developers can easily integrate with PAXSTORE. Please take ca
 ## Download
 Gradle:
 
-    implementation 'com.pax.market:paxstore-3rd-app-android-sdk:5.02.03'
+    implementation 'com.pax.market:paxstore-3rd-app-android-sdk:5.02.04'
 
 ## Permissions
 PAXSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.
@@ -53,23 +53,26 @@ If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/man
 ## API Usage
 
 ### Step 1: Get Application Key and Secret
-Create a new app in PAXSTORE, and get AppKey and AppSecret from app detail page in developer center.
+Create a new app in PAXSTORE, and get **AppKey** and **AppSecret** from app detail page in developer center.
 
 ### Step 2: Initialization
 Configuring the application element, edit AndroidManifest.xml, it will have an application element. You need to configure the android:name attribute to point to your Application class (put the full name with package if the application class package is not the same as manifest root element declared package)
 
-<application
-    android:name=".BaseApplication"
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:theme="@style/AppTheme">
+    <application
+        android:name=".BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        
 Initializing AppKey,AppSecret and SN
+>Please note, make sure you have put your own app's AppKey and AppSecret correctly
 
 public class BaseApplication extends Application {
 
     private static final String TAG = BaseApplication.class.getSimpleName();
-
+    
+    //todo make sure to replace with your own app's appKey and appSecret
     private String APP_KEY = "Your APPKEY";
     private String APP_SECRET = "Your APPSECRET";
     private String SN = Build.SERIAL;
@@ -81,7 +84,7 @@ public class BaseApplication extends Application {
     }
 
     private void initPaxStoreSdk() {
-
+       //todo Init AppKey，AppSecret and SN, make sure the appKey and appSecret is corret.
        StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, SN, new BaseApiService.Callback() {
                   @Override
                   public void initSuccess() {
@@ -98,20 +101,24 @@ public class BaseApplication extends Application {
 }
 ### Step 3：Download Parameters API
 Download parameter (Optional, ignore this part if you don't have download parameter requirement)
-Register your receiver
 
+Register your receiver (**Replace the category name with your own app package name**)
+       
      <receiver android:name=".YourReceiver">
               <intent-filter>
                   <action android:name="com.paxmarket.ACTION_TO_DOWNLOAD_PARAMS" />
                   <category android:name="Your PackageName" />
               </intent-filter>
      </receiver>
-Create your receiver. Since download will cost some time, we recommand you do it in your own service
+     
+Create your receiver. Since download will cost some time, we recommend you do it in your own service
 
       public class YourReceiver extends BroadcastReceiver {
           @Override
           public void onReceive(Context context, Intent intent) {
-              // since download may cost a long time, we recommand you do it in your own service
+              //todo add log to see if the broadcast is received, if not, please check whether the bradcast config is correct
+              Log.i("DownloadParamReceiver", "broadcast received");
+              //since download may cost a long time, we recommend you do it in your own service
               context.startService(new Intent(context, YourService.class));
           }
       }
@@ -123,7 +130,7 @@ After you get broadcast, download params in your service
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    //Call this method to download into your specific directory
+                    //todo Call this method to download into your specific directory, you can add some log here to monitor
                     DownloadResultObject downloadResult = null;
                     try {
                         downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(), BuildConfig.VERSION_CODE, saveFilePath);
@@ -133,10 +140,12 @@ After you get broadcast, download params in your service
 
                     //businesscode==0, means download successful, if not equal to 0, please check the return message when need.
                     if(downloadResult != null && downloadResult.getBusinessCode()==0){
+                        Log.i("downloadParamToPath: ", "download successful");
                         //file download to saveFilePath above.
                         //todo can start to add your logic.
                     }else{
-                        //failed do your logic here
+                        //todo check the Error Code and Error Message for fail reason
+                        Log.e("downloadParamToPath: ", "ErrorCode: "+downloadResult.getBusinessCode()+"ErrorMessage: "+downloadResult.getMessage());
                     }
                 }
             });
@@ -154,7 +163,8 @@ Integrate with this function only need to call initInquirer() after you init Sto
     public class BaseApplication extends Application {
 
         private static final String TAG = BaseApplication.class.getSimpleName();
-
+        
+        //todo make sure to replace with your own app's appKey and appSecret
         private String APP_KEY = "Your APPKEY";
         private String APP_SECRET = "Your APPSECRET";
         private String SN = Build.SERIAL;
@@ -165,7 +175,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
         }
 
          private void initPaxStoreSdk() {
-                //1. Init AppKey，AppSecret and SN
+                //todo Init AppKey，AppSecret and SN, make sure the appKey and appSecret is corret.
                 StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, SN, new BaseApiService.Callback() {
                            @Override
                            public void initSuccess() {
@@ -181,7 +191,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
 
 
          private void initInquirer() {
-                //2. Init whether app can be updated
+                //todo Init checking of whether app can be updated
                 PaxStoreSdk.initInquirer(new StoreSdk.Inquirer() {
                     @Override
                     public boolean isReadyUpdate() {
@@ -199,7 +209,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
     }
 
 ## Template
-You can get the **parameter template** for **demo project** from .../res/template folder.
+You can get the **parameter template file** for **demo project** from assets/param_template.xml.
 
 ## FAQ
 
