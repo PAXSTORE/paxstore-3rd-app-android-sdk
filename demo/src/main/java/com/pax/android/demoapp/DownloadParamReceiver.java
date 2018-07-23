@@ -11,8 +11,9 @@ import android.util.Log;
 public class DownloadParamReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("DownloadParamReceiver", "broadcast received");
-        //receive the broadcast from paxstore, start a service to download parameter files
+        //todo add log to see if the broadcast is received, if not, please check whether the bradcast config is correct
+        Log.i("DownloadParamReceiver", "broadcast received");
+        //todo receive the broadcast from paxstore, start a service to download parameter files
         context.startService(new Intent(context, DownloadParamService.class));
     }
 }

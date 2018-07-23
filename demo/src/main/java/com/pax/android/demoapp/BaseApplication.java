@@ -22,7 +22,7 @@ public class BaseApplication extends Application {
 
     private boolean isReadyToUpdate=true;
 
-    //replace with your appkey and appsecret
+    //todo make sure to replace with your own app's appkey and appsecret
     private static final String appkey = "GUEVVVQPUTYGYWVNYWVN";
     private static final String appSecret = "EQLNI2TXAQPYW0XCXZU4ZKTN1KOQCK1KVMA8X1XS";
     private static final String SN = Build.SERIAL;
@@ -41,15 +41,17 @@ public class BaseApplication extends Application {
 
 
     private void initPaxStoreSdk() {
-        //1. Init AppKey，AppSecret and SN
+        //todo 1. Init AppKey，AppSecret and SN, make sure the appkey and appSecret is corret.
         StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, SN, new BaseApiService.Callback() {
             @Override
             public void initSuccess() {
+                Log.i(TAG, "initSuccess.");
                 initInquirer();
             }
 
             @Override
             public void initFailed(RemoteException e) {
+                Log.i(TAG, "initFailed: "+e.getMessage());
                 Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
             }
         });
@@ -57,7 +59,7 @@ public class BaseApplication extends Application {
 
 
     private void initInquirer() {
-        //2. Init checking of whether app can be updated
+        //todo 2. Init checking of whether app can be updated
 
         StoreSdk.getInstance().initInquirer(new StoreSdk.Inquirer() {
             @Override

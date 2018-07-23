@@ -44,7 +44,7 @@ public class DownloadParamService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         spUtil=new SPUtil();
-        //Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
+        //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
         saveFilePath = getFilesDir() + "/YourPath/";
 
         //show downloading info in main page
@@ -53,24 +53,27 @@ public class DownloadParamService extends Service {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                //Call SDK API to download parameter files into your specific directory,
+                //todo Call SDK API to download parameter files into your specific directory,
                 DownloadResultObject downloadResult = null;
                 try {
+                    Log.i(TAG, "call sdk API to download parameter");
                     downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(), BuildConfig.VERSION_CODE, saveFilePath);
-                    Log.d(TAG, downloadResult.toString());
+                    Log.i(TAG, downloadResult.toString());
                 } catch (NotInitException e) {
                     Log.e(TAG, "e:" + e);
                 }
 
 //                businesscode==0, means download successful, if not equal to 0, please check the return message when need.
                 if (downloadResult != null && downloadResult.getBusinessCode() == ResultCode.SUCCESS) {
-                    //todo can start to add your logic.
+                    Log.i(TAG, "download successful.");
 
+                    //todo start to add your own logic.
                     //below is only for demo
                     handleSuccess();
                 } else {
-                    //update download fail info in main page for Demo
+                    //todo check the Error Code and Error Message for fail reason
                     Log.e(TAG, "ErrorCode: "+downloadResult.getBusinessCode()+"ErrorMessage: "+downloadResult.getMessage());
+                    //update download fail info in main page for Demo
                     spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
                     spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT,"Your push parameters file task failed at "+ sdf.format(new Date())+", please check error log.");
                     updateUI(DemoConstants.DOWNLOAD_STATUS_FAILED);
@@ -89,7 +92,7 @@ public class DownloadParamService extends Service {
         File[] filelist = new File(saveFilePath).listFiles();
         if (filelist != null && filelist.length>0) {
             for(File f :filelist){
-                //for demo only, here hard code the xml name to "sys_cap.p". this demo will only parse with the specified file name
+                //todo Noted. this is for demo only, here hard code the xml name to "sys_cap.p". this demo will only parse with the specified file name
                 if(DemoConstants.DOWNLOAD_PARAM_FILE_NAME.equals(f.getName())){
                     parameterFile=f;
                 }
@@ -106,10 +109,10 @@ public class DownloadParamService extends Service {
                 try {
                     //parse the download parameter xml file for display.
                     List<Map<String, Object>> datalist = new ArrayList<>();
-
+                    //todo call API to parse xml
                     HashMap<String,String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXml(parameterFile);
 
-                    if(resultMap!=null && resultMap.size()>0) {
+                     if(resultMap!=null && resultMap.size()>0) {
                         //convert result map to list for ListView display.
                         for (Map.Entry<String, String> entry : resultMap.entrySet()) {
                             HashMap<String,Object> map = new HashMap<>();
@@ -127,6 +130,7 @@ public class DownloadParamService extends Service {
                     Log.e("MainActivity:", "parse xml failed: "+e.getMessage());
                 }
             }else{
+                Log.i(TAG, "parameterFile is null ");
                 spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT,"Download file not found. This demo only accept parameter file with name 'sys_cap.p'");
             }
         }
