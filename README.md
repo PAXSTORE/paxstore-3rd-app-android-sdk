@@ -12,7 +12,7 @@ By using this SDK, developers can easily integrate with PAXSTORE. Please take ca
 >SDK 19 or higher, depending on the terminal's paydroid version.
 
 **Gradle's and Gradle plugin's version**
->Gradle version 4.1 or higher
+>Gradle version 4.1 or higher  
 >Gradle plugin version 3.0.0+ or higher
 
 ## Download
