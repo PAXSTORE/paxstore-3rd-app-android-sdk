@@ -13,6 +13,7 @@ By using this SDK, developers can easily integrate with PAXSTORE. Please take ca
 
 **Gradle's and Gradle plugin's version**
 >Gradle version 4.1 or higher
+>Gradle plugin version 3.0.0+ or higher
 
 ## Download
 Gradle:
