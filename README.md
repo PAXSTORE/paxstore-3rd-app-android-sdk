@@ -210,7 +210,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
     }
 
 ## Template
-You can get the **parameter template file** for **demo project** from assets/param_template.xml.
+The **parameter template file** used in **demo** is under folder assets/param_template.xml.
 
 ## FAQ
 
