@@ -1,4 +1,4 @@
-# PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/images/download.svg?version=6.00.00) ](https://bintray.com/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/6.00.00/link)
+# PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/images/download.svg?version=6.0) ](https://bintray.com/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/6.0/link)
 PAXSTORE 3rd App Android SDK provides simple and easy-to-use service interfaces for third party developers to develop android apps on PAXSTORE. The services currently include the following points:
 
 1. Download parameter
