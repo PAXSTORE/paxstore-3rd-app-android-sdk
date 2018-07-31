@@ -18,7 +18,7 @@ By using this SDK, developers can easily integrate with PAXSTORE. Please take ca
 ## Download
 Gradle:
 
-    implementation 'com.pax.market:paxstore-3rd-app-android-sdk:6.00.00'
+    implementation 'com.pax.market:paxstore-3rd-app-android-sdk:6.0'
 
 ## Permissions
 PAXSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.
