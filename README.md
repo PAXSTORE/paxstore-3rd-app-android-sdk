@@ -51,6 +51,22 @@ If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/man
     -keepnames class com.fasterxml.jackson.** { *; }
     -keepnames interface com.fasterxml.jackson.** { *; }
 
+    #dom4j
+    -dontwarn org.dom4j.**
+    -keep class org.dom4j.**{*;}
+    -dontwarn org.xml.sax.**
+    -keep class org.xml.sax.**{*;}
+    -dontwarn com.fasterxml.jackson.**
+    -keep class com.fasterxml.jackson.**{*;}
+    -dontwarn com.pax.market.api.sdk.java.base.util.**
+    -keep class com.pax.market.api.sdk.java.base.util.**{*;}
+    -dontwarn org.w3c.dom.**
+    -keep class org.w3c.dom.**{*;}
+    
+    #dto
+    -dontwarn com.pax.market.api.sdk.java.base.dto.**
+    -keep class com.pax.market.api.sdk.java.base.dto.**{*;}
+
 ## API Usage
 
 ### Step 1: Get Application Key and Secret
