@@ -163,7 +163,7 @@ public class StoreSdk {
         try {
             logger.debug(TAG, "acquireSemaphore api try acquire 2");
             Long startTime = System.currentTimeMillis();
-            semaphore.tryAcquire(2, 10, TimeUnit.SECONDS);
+            semaphore.tryAcquire(2, 5, TimeUnit.SECONDS);
             logger.debug(TAG, "tryAcquire cost Time:" + (System.currentTimeMillis() - startTime));
         } catch (InterruptedException e) {
             logger.error(TAG, "e:" + e);
