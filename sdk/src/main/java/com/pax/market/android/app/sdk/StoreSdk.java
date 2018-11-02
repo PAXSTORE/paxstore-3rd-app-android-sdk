@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
+import com.pax.market.api.sdk.java.api.terminal.TerminalApi;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class StoreSdk {
 
     private ParamApi paramApi;
     private SyncApi syncApi;
+    private TerminalApi terminalApi;
     private Semaphore semaphore;
 
     private String appKey;
@@ -56,7 +58,7 @@ public class StoreSdk {
      */
     public void init(final Context context, final String appKey, final String appSecret,
                      final String terminalSerialNo, final BaseApiService.Callback callback) throws NullPointerException {
-        if (paramApi == null && syncApi == null && semaphore.availablePermits() != 1) {
+        if (paramApi == null && syncApi == null && terminalApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret, terminalSerialNo);
             this.appKey = appKey;
             this.appSecret = appSecret;
@@ -121,12 +123,28 @@ public class StoreSdk {
     }
 
     /**
+     * Get terminalApi instance
+     *
+     * @return
+     * @throws NotInitException
+     */
+    public TerminalApi terminalApi() throws NotInitException {
+        if (terminalApi == null) {
+            acquireSemaphore();
+            if (terminalApi == null) {
+                throw new NotInitException("Not initialized");
+            }
+        }
+        return terminalApi;
+    }
+
+    /**
      * Check if initialized
      * true: initialized
      * @return
      */
     public boolean checkInitialization() {
-        if (paramApi != null && syncApi != null) {
+        if (paramApi != null && syncApi != null && terminalApi != null) {
             return true;
         }
         return false;
@@ -145,7 +163,7 @@ public class StoreSdk {
         try {
             logger.debug(TAG, "acquireSemaphore api try acquire 2");
             Long startTime = System.currentTimeMillis();
-            semaphore.tryAcquire(2, 5, TimeUnit.SECONDS);
+            semaphore.tryAcquire(2, 10, TimeUnit.SECONDS);
             logger.debug(TAG, "tryAcquire cost Time:" + (System.currentTimeMillis() - startTime));
         } catch (InterruptedException e) {
             logger.error(TAG, "e:" + e);
@@ -212,6 +230,7 @@ public class StoreSdk {
     public void initApi(String apiUrl, String appKey, String appSecret, String terminalSerialNo) {
         paramApi = new ParamApi(apiUrl, appKey, appSecret, terminalSerialNo);
         syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo);
+        terminalApi = new TerminalApi(apiUrl, appKey, appSecret, terminalSerialNo);
     }
 
     /**
