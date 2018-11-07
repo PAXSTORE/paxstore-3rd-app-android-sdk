@@ -16,6 +16,7 @@ public class TerminalInfo implements Parcelable{
     private String modelName;
     private String factoryName;
     private String merchantName;
+    private String status;
 
     public String getTid() {
         return tid;
@@ -65,6 +66,14 @@ public class TerminalInfo implements Parcelable{
         this.merchantName = merchantName;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public TerminalInfo(Parcel in) {
         tid = in.readString();
         name = in.readString();
@@ -72,6 +81,7 @@ public class TerminalInfo implements Parcelable{
         modelName = in.readString();
         factoryName = in.readString();
         merchantName = in.readString();
+        status = in.readString();
     }
 
     public static final Creator<TerminalInfo> CREATOR = new Creator<TerminalInfo>() {
@@ -99,6 +109,7 @@ public class TerminalInfo implements Parcelable{
         dest.writeString(modelName);
         dest.writeString(factoryName);
         dest.writeString(merchantName);
+        dest.writeString(status);
     }
 
     /**
@@ -113,6 +124,7 @@ public class TerminalInfo implements Parcelable{
         modelName = dest.readString();
         factoryName = dest.readString();
         merchantName = dest.readString();
+        status = dest.readString();
     }
 
     @Override
@@ -124,6 +136,7 @@ public class TerminalInfo implements Parcelable{
                 ", modelName='" + modelName + '\'' +
                 ", factoryName='" + factoryName + '\'' +
                 ", merchantName='" + merchantName + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
