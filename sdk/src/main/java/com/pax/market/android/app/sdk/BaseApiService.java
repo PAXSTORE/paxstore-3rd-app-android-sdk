@@ -8,6 +8,8 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.pax.market.android.app.aidl.IApiUrlService;
+import com.pax.market.android.app.aidl.IRemoteSdkService;
+import com.pax.market.android.app.sdk.dto.TerminalInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ public class BaseApiService {
     private static volatile BaseApiService instance;
     private Context context;
     private IApiUrlService apiUrlService;
+    private IRemoteSdkService remoteSdkService;
 
     private BaseApiService(Context context) {
         this.context = context;
@@ -97,6 +100,56 @@ public class BaseApiService {
         void initSuccess(String baseUrl);
 
         void initFailed();
+    }
+
+    public interface ICallBack {
+        void onSuccess(Object obj);
+
+        void onError(Exception e);
+    }
+
+
+    public void getBaseTerminalInfo(final ICallBack iCallBack) {
+        if (remoteSdkService == null) {
+            ServiceConnection serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    remoteSdkService = IRemoteSdkService.Stub.asInterface(service);
+                    try {
+                        TerminalInfo terminalInfo = remoteSdkService.getBaseTerminalInfo();
+                        if(terminalInfo == null || terminalInfo.getTid()==null || terminalInfo.getTid().isEmpty()){
+                            iCallBack.onError(new RemoteException("null value returned, PAXSTORE may not running."));
+                        }
+                        iCallBack.onSuccess(terminalInfo);
+                    } catch (RemoteException e) {
+                        logger.error(">>> getBaseTerminalInfo error", e);
+                        iCallBack.onError(e);
+                    }
+                    context.unbindService(this);
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    remoteSdkService = null;
+                }
+            };
+
+            Intent intent = new Intent("com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE");
+            intent.setPackage("com.pax.market.android.app");
+            boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+            if (!bindResult) {
+                iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not installed."));
+                context.unbindService(serviceConnection);
+            }
+        } else {
+            try {
+                TerminalInfo terminalInfo = remoteSdkService.getBaseTerminalInfo();
+                iCallBack.onSuccess(terminalInfo);
+            } catch (RemoteException e) {
+                logger.error(">>> getBaseTerminalInfo error", e);
+                iCallBack.onError(e);
+            }
+        }
     }
 
 }

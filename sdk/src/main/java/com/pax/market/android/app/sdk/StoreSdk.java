@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
-import com.pax.market.api.sdk.java.api.terminal.TerminalApi;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import org.slf4j.Logger;
@@ -25,7 +24,6 @@ public class StoreSdk {
 
     private ParamApi paramApi;
     private SyncApi syncApi;
-    private TerminalApi terminalApi;
     private Semaphore semaphore;
 
     private String appKey;
@@ -58,7 +56,7 @@ public class StoreSdk {
      */
     public void init(final Context context, final String appKey, final String appSecret,
                      final String terminalSerialNo, final BaseApiService.Callback callback) throws NullPointerException {
-        if (paramApi == null && syncApi == null && terminalApi == null && semaphore.availablePermits() != 1) {
+        if (paramApi == null && syncApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret, terminalSerialNo);
             this.appKey = appKey;
             this.appSecret = appSecret;
@@ -122,21 +120,6 @@ public class StoreSdk {
         return syncApi;
     }
 
-    /**
-     * Get terminalApi instance
-     *
-     * @return
-     * @throws NotInitException
-     */
-    public TerminalApi terminalApi() throws NotInitException {
-        if (terminalApi == null) {
-            acquireSemaphore();
-            if (terminalApi == null) {
-                throw new NotInitException("Not initialized");
-            }
-        }
-        return terminalApi;
-    }
 
     /**
      * Check if initialized
@@ -144,7 +127,7 @@ public class StoreSdk {
      * @return
      */
     public boolean checkInitialization() {
-        if (paramApi != null && syncApi != null && terminalApi != null) {
+        if (paramApi != null && syncApi != null) {
             return true;
         }
         return false;
@@ -230,7 +213,6 @@ public class StoreSdk {
     public void initApi(String apiUrl, String appKey, String appSecret, String terminalSerialNo) {
         paramApi = new ParamApi(apiUrl, appKey, appSecret, terminalSerialNo);
         syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo);
-        terminalApi = new TerminalApi(apiUrl, appKey, appSecret, terminalSerialNo);
     }
 
     /**
@@ -240,4 +222,9 @@ public class StoreSdk {
     public interface Inquirer {
         boolean isReadyUpdate();
     }
+
+    public void getBaseTerminalInfo(Context context, BaseApiService.ICallBack callback) {
+        BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
+    }
+
 }
