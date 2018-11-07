@@ -10,7 +10,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 85
-        versionName "5.02.02"
+        versionName "${version}"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -43,7 +43,7 @@ publish {
     repoName = 'paxstore'
     groupId = 'com.pax.market'
     artifactId = 'paxstore-3rd-app-android-sdk'
-    publishVersion = '6.0'
+    publishVersion = "${version}"
     desc = 'Simple and easy-to-use service interfaces for third party developers to develop android apps on PAXSTORE.'
     website = 'https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk'
     licences = ["Apache-2.0"]
