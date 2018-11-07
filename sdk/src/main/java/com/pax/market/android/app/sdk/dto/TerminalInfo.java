@@ -11,12 +11,12 @@ public class TerminalInfo implements Parcelable{
     public TerminalInfo(){}
 
     private String tid;
-    private String name;
+    private String terminalName;
     private String serialNo;
     private String modelName;
     private String factoryName;
     private String merchantName;
-    private String status;
+    private String terminalStatus;
 
     public String getTid() {
         return tid;
@@ -26,12 +26,20 @@ public class TerminalInfo implements Parcelable{
         this.tid = tid;
     }
 
-    public String getName() {
-        return name;
+    public String getTerminalName() {
+        return terminalName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTerminalName(String terminalName) {
+        this.terminalName = terminalName;
+    }
+
+    public String getTerminalStatus() {
+        return terminalStatus;
+    }
+
+    public void setTerminalStatus(String terminalStatus) {
+        this.terminalStatus = terminalStatus;
     }
 
     public String getSerialNo() {
@@ -66,22 +74,15 @@ public class TerminalInfo implements Parcelable{
         this.merchantName = merchantName;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public TerminalInfo(Parcel in) {
         tid = in.readString();
-        name = in.readString();
+        terminalName = in.readString();
         serialNo = in.readString();
         modelName = in.readString();
         factoryName = in.readString();
         merchantName = in.readString();
-        status = in.readString();
+        terminalStatus = in.readString();
     }
 
     public static final Creator<TerminalInfo> CREATOR = new Creator<TerminalInfo>() {
@@ -104,12 +105,12 @@ public class TerminalInfo implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(tid);
-        dest.writeString(name);
+        dest.writeString(terminalName);
         dest.writeString(serialNo);
         dest.writeString(modelName);
         dest.writeString(factoryName);
         dest.writeString(merchantName);
-        dest.writeString(status);
+        dest.writeString(terminalStatus);
     }
 
     /**
@@ -119,24 +120,24 @@ public class TerminalInfo implements Parcelable{
     public void readFromParcel(Parcel dest) {
         //注意，此处的读值顺序应当是和writeToParcel()方法中一致的
         tid = dest.readString();
-        name = dest.readString();
+        terminalName = dest.readString();
         serialNo = dest.readString();
         modelName = dest.readString();
         factoryName = dest.readString();
         merchantName = dest.readString();
-        status = dest.readString();
+        terminalStatus = dest.readString();
     }
 
     @Override
     public String toString() {
         return "TerminalInfo{" +
                 "tid='" + tid + '\'' +
-                ", name='" + name + '\'' +
+                ", terminalName='" + terminalName + '\'' +
                 ", serialNo='" + serialNo + '\'' +
                 ", modelName='" + modelName + '\'' +
                 ", factoryName='" + factoryName + '\'' +
                 ", merchantName='" + merchantName + '\'' +
-                ", status='" + status + '\'' +
+                ", terminalStatus='" + terminalStatus + '\'' +
                 '}';
     }
 }
