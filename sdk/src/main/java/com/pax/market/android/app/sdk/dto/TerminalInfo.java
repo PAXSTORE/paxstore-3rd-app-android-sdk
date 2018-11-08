@@ -1,7 +1,5 @@
 package com.pax.market.android.app.sdk.dto;
 
-//package com.pax.market.android.app.presentation.common.model;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -16,7 +14,7 @@ public class TerminalInfo implements Parcelable{
     private String modelName;
     private String factoryName;
     private String merchantName;
-    private String terminalStatus;
+    private int statusCode; //0:online; -1:offline
 
     public String getTid() {
         return tid;
@@ -34,12 +32,12 @@ public class TerminalInfo implements Parcelable{
         this.terminalName = terminalName;
     }
 
-    public String getTerminalStatus() {
-        return terminalStatus;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setTerminalStatus(String terminalStatus) {
-        this.terminalStatus = terminalStatus;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     public String getSerialNo() {
@@ -82,7 +80,7 @@ public class TerminalInfo implements Parcelable{
         modelName = in.readString();
         factoryName = in.readString();
         merchantName = in.readString();
-        terminalStatus = in.readString();
+        statusCode = in.readInt();
     }
 
     public static final Creator<TerminalInfo> CREATOR = new Creator<TerminalInfo>() {
@@ -110,7 +108,7 @@ public class TerminalInfo implements Parcelable{
         dest.writeString(modelName);
         dest.writeString(factoryName);
         dest.writeString(merchantName);
-        dest.writeString(terminalStatus);
+        dest.writeInt(statusCode);
     }
 
     /**
@@ -125,7 +123,7 @@ public class TerminalInfo implements Parcelable{
         modelName = dest.readString();
         factoryName = dest.readString();
         merchantName = dest.readString();
-        terminalStatus = dest.readString();
+        statusCode = dest.readInt();
     }
 
     @Override
@@ -137,7 +135,7 @@ public class TerminalInfo implements Parcelable{
                 ", modelName='" + modelName + '\'' +
                 ", factoryName='" + factoryName + '\'' +
                 ", merchantName='" + merchantName + '\'' +
-                ", terminalStatus='" + terminalStatus + '\'' +
+                ", statusCode='" + statusCode + '\'' +
                 '}';
     }
 }

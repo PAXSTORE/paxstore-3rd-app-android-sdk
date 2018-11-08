@@ -204,6 +204,39 @@
             </LinearLayout>
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#DDDDDD"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:text="@string/label_retrieveTerminalInfo"/>
+
+            <Button
+                android:id="@+id/GetTerminalInfo"
+                android:textColor="#ffffff"
+                android:padding="2dp"
+                android:background="#63af57"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_margin="10dp"
+                android:gravity="right"
+                android:text="@string/label_button_retrieve"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

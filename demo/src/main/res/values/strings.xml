@@ -12,4 +12,6 @@
     <string name="label_copyright_text">Copyright @ 2018 PAX All Rights Reserved</string>
     <string name="label_ready_to_update">App could be updated by PAXSTORE app now.</string>
     <string name="label_not_ready_to_update">App is busy, can not be updated by PAXSTORE app now.</string>
+    <string name="label_retrieveTerminalInfo">Retrieve Terminal Info</string>
+    <string name="label_button_retrieve">Retrieve</string>
 </resources>

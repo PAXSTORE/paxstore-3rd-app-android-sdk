@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.pax.market.android.app.sdk.BaseApiService;
-import com.pax.market.android.app.sdk.RPCService;
 import com.pax.market.android.app.sdk.StoreSdk;
 
 import net.grandcentrix.tray.AppPreferences;
@@ -23,8 +22,8 @@ public class BaseApplication extends Application {
     private boolean isReadyToUpdate=true;
 
     //todo make sure to replace with your own app's appkey and appsecret
-    private static final String appkey = "GUEVVVQPUTYGYWVNYWVN";
-    private static final String appSecret = "EQLNI2TXAQPYW0XCXZU4ZKTN1KOQCK1KVMA8X1XS";
+    private static final String appkey = "WZOZ6Q8YEZ9KNFXE2OKO";
+    private static final String appSecret = "OGZXNP4CCABDCAIH10UXBCK3TAG0SZRK3KX5AY2C";
     private static final String SN = Build.SERIAL;
     public static AppPreferences appPreferences;
 

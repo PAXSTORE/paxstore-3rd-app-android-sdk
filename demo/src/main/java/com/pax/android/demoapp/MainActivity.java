@@ -10,13 +10,19 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.pax.market.android.app.sdk.BaseApiService;
+import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.android.app.sdk.dto.TerminalInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +36,7 @@ public class MainActivity extends Activity {
     private LinearLayout openClientlayout;
     private MsgReceiver msgReceiver;
     private Switch tradingStateSwitch;
+    private Button getTerminalInfoBtn;
 
     private ListViewForScrollView detailListView;
     private ScrollView scrollView;
@@ -118,6 +125,28 @@ public class MainActivity extends Activity {
             nodataLayout.setVisibility(View.VISIBLE);
         }
 
+        getTerminalInfoBtn = findViewById(R.id.GetTerminalInfo);
+
+        getTerminalInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoreSdk.getInstance().getBaseTerminalInfo(getApplicationContext(),new BaseApiService.ICallBack() {
+                    @Override
+                    public void onSuccess(Object obj) {
+                        TerminalInfo terminalInfo = (TerminalInfo) obj;
+                        Log.i("onSuccess2345: ",terminalInfo.toString());
+                        Toast.makeText(getApplicationContext(), terminalInfo.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.i("onError: ",e.toString());
+                        Toast.makeText(getApplicationContext(), "getTerminalInfo Error:"+e.toString(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
 
         scrollView = findViewById(R.id.root);
         scrollView.smoothScrollTo(0, 0);
