@@ -23,8 +23,6 @@ public class BaseApiService {
 
     private static volatile BaseApiService instance;
     private Context context;
-    private IApiUrlService apiUrlService;
-    private IRemoteSdkService remoteSdkService;
 
     private BaseApiService(Context context) {
         this.context = context;
@@ -44,47 +42,34 @@ public class BaseApiService {
     public void init(final String appKey, final String appSecret, final String terminalSerialNo,
                      final Callback callback1, final ApiCallBack apiCallBack) {
 
-        if (apiUrlService == null) {
-            ServiceConnection serviceConnection = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    apiUrlService = IApiUrlService.Stub.asInterface(service);
-                    try {
-                        String apiUrl = apiUrlService.getApiUrl();
-                        apiCallBack.initSuccess(apiUrl);
-                        callback1.initSuccess();
-                    } catch (RemoteException e) {
-                        logger.error(">>> Get Api URL error", e);
-                        callback1.initFailed(e);
-                        apiCallBack.initFailed();
-                    }
-                    context.unbindService(this);
+        ServiceConnection serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                try {
+                    String apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
+                    apiCallBack.initSuccess(apiUrl);
+                    callback1.initSuccess();
+                } catch (RemoteException e) {
+                    logger.error(">>> Get Api URL error", e);
+                    callback1.initFailed(e);
+                    apiCallBack.initFailed();
                 }
-
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    apiUrlService = null;
-                }
-            };
-
-            Intent intent = new Intent("com.pax.market.android.app.aidl.API_URL_SERVICE");
-            intent.setPackage("com.pax.market.android.app");
-            boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-            if (!bindResult) {
-                callback1.initFailed(new RemoteException("Bind service failed, PAXSTORE may not installed"));
-                apiCallBack.initFailed();
-                context.unbindService(serviceConnection);
+                context.unbindService(this);
             }
-        } else {
-            try {
-                String apiUrl = apiUrlService.getApiUrl();
-                callback1.initSuccess();
-                apiCallBack.initSuccess(apiUrl);
-            } catch (RemoteException e) {
-                logger.error(">>> Get Api URL error", e);
-                callback1.initFailed(e);
-                apiCallBack.initFailed();
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                logger.error("onServiceDisconnected");
             }
+        };
+
+        Intent intent = new Intent("com.pax.market.android.app.aidl.API_URL_SERVICE");
+        intent.setPackage("com.pax.market.android.app");
+        boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (!bindResult) {
+            callback1.initFailed(new RemoteException("Bind service failed, PAXSTORE may not installed"));
+            apiCallBack.initFailed();
+            context.unbindService(serviceConnection);
         }
     }
 
@@ -110,45 +95,35 @@ public class BaseApiService {
 
 
     public void getBaseTerminalInfo(final ICallBack iCallBack) {
-        if (remoteSdkService == null) {
-            ServiceConnection serviceConnection = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    remoteSdkService = IRemoteSdkService.Stub.asInterface(service);
-                    try {
-                        TerminalInfo terminalInfo = remoteSdkService.getBaseTerminalInfo();
-                        if(terminalInfo == null || terminalInfo.getTid()==null || terminalInfo.getTid().isEmpty()){
-                            iCallBack.onError(new RemoteException("Null value returned, PAXSTORE may not activated or running. please check"));
-                        }
+        ServiceConnection serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                try {
+                    TerminalInfo terminalInfo = IRemoteSdkService.Stub.asInterface(service).getBaseTerminalInfo();
+                    if(terminalInfo == null || terminalInfo.getTid()==null || terminalInfo.getTid().isEmpty()){
+                        iCallBack.onError(new RemoteException("Null value returned, PAXSTORE may not activated or not login. Please check"));
+                    }else {
                         iCallBack.onSuccess(terminalInfo);
-                    } catch (RemoteException e) {
-                        logger.error(">>> getBaseTerminalInfo error", e);
-                        iCallBack.onError(e);
                     }
-                    context.unbindService(this);
+                } catch (RemoteException e) {
+                    logger.error(">>> getBaseTerminalInfo error", e);
+                    iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not installed or started. Please check"));
                 }
-
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    remoteSdkService = null;
-                }
-            };
-
-            Intent intent = new Intent("com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE");
-            intent.setPackage("com.pax.market.android.app");
-            boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-            if (!bindResult) {
-                iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not installed."));
-                context.unbindService(serviceConnection);
+                context.unbindService(this);
             }
-        } else {
-            try {
-                TerminalInfo terminalInfo = remoteSdkService.getBaseTerminalInfo();
-                iCallBack.onSuccess(terminalInfo);
-            } catch (RemoteException e) {
-                logger.error(">>> getBaseTerminalInfo error", e);
-                iCallBack.onError(e);
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                logger.error("onServiceDisconnected");
             }
+        };
+
+        Intent intent = new Intent("com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE");
+        intent.setPackage("com.pax.market.android.app");
+        boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (!bindResult) {
+            iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not installed or started. Please check"));
+            context.unbindService(serviceConnection);
         }
     }
 
