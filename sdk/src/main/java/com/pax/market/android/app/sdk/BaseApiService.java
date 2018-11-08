@@ -118,7 +118,7 @@ public class BaseApiService {
                     try {
                         TerminalInfo terminalInfo = remoteSdkService.getBaseTerminalInfo();
                         if(terminalInfo == null || terminalInfo.getTid()==null || terminalInfo.getTid().isEmpty()){
-                            iCallBack.onError(new RemoteException("null value returned, PAXSTORE may not running."));
+                            iCallBack.onError(new RemoteException("Null value returned, PAXSTORE may not activated or running. please check"));
                         }
                         iCallBack.onSuccess(terminalInfo);
                     } catch (RemoteException e) {

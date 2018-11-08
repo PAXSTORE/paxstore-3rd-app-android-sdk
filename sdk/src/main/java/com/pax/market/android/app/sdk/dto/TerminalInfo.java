@@ -12,7 +12,7 @@ public class TerminalInfo implements Parcelable{
     private String terminalName;
     private String serialNo;
     private String modelName;
-    private String factoryName;
+    private String factoryName; //manufactory
     private String merchantName;
     private int statusCode; //0:online; -1:offline
 

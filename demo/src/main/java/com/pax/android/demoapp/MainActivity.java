@@ -134,7 +134,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onSuccess(Object obj) {
                         TerminalInfo terminalInfo = (TerminalInfo) obj;
-                        Log.i("onSuccess2345: ",terminalInfo.toString());
+                        Log.i("onSuccess: ",terminalInfo.toString());
                         Toast.makeText(getApplicationContext(), terminalInfo.toString(), Toast.LENGTH_SHORT).show();
                     }
 

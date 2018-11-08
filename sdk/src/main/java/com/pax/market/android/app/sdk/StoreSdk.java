@@ -223,6 +223,27 @@ public class StoreSdk {
         boolean isReadyUpdate();
     }
 
+    /**
+     * to retrieve the base terminal info from PAXSTORE Client.
+     *
+     * @param context
+     * @param callback refer to BaseApiService.ICallBack, you need to handle onSuccess and OnError method. when onSuccess, will return a TerminalInfo DTO as result.
+     *         e.g
+     *         new BaseApiService.Callback() {
+     *              @Override
+     *              public void onSuccess(Object obj) {
+     *                  TerminalInfo terminalInfo = (TerminalInfo) obj;
+     *                  Log.i("onSuccess: ",terminalInfo.toString());
+     *              }
+     *
+     *              @Override
+     *              public void onError(Exception e) {
+     *                  Log.i("onError: ",e.toString());
+     *              }
+     *         }
+     * For the return Object TerminalInfo,  please refer to com.pax.market.android.app.sdk.dto.TerminalInfo
+     *
+     */
     public void getBaseTerminalInfo(Context context, BaseApiService.ICallBack callback) {
         BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
     }
