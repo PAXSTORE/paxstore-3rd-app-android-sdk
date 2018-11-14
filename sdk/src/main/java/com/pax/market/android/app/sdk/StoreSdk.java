@@ -224,8 +224,8 @@ public class StoreSdk {
     }
 
     /**
-     * to retrieve the base terminal info from PAXSTORE Client.
-     *
+     * To retrieve the base terminal info from PAXSTORE Client.
+     * @Required PAXSTORE client version 6.1 and above
      * @param context
      * @param callback refer to BaseApiService.ICallBack, you need to handle onSuccess and OnError method. when onSuccess, will return a TerminalInfo DTO as result.
      *         e.g
@@ -241,7 +241,7 @@ public class StoreSdk {
      *                  Log.i("onError: ",e.toString());
      *              }
      *         }
-     * For the return Object TerminalInfo,  please refer to com.pax.market.android.app.sdk.dto.TerminalInfo
+     * For the return Object TerminalInfo, please refer to com.pax.market.android.app.sdk.dto.TerminalInfo
      *
      */
     public void getBaseTerminalInfo(Context context, BaseApiService.ICallBack callback) {

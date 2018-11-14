@@ -226,15 +226,14 @@
             <Button
                 android:id="@+id/GetTerminalInfo"
                 android:textColor="#ffffff"
-                android:padding="2dp"
                 android:background="#63af57"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
                 android:layout_margin="10dp"
-                android:gravity="right"
-                android:text="@string/label_button_retrieve"
-                android:textAlignment="center"/>
+                android:gravity="center|center_vertical"
+                android:textSize="12sp"
+                android:text="@string/label_button_retrieve"/>
         </LinearLayout>
 
     </LinearLayout>
