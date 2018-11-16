@@ -225,6 +225,25 @@ Integrate with this function only need to call initInquirer() after you init Sto
         }
     }
 
+### More API
+
+#### Get Terminal Base Information
+API to get base terminal information from PAXSTORE client.
+
+    StoreSdk.getInstance().getBaseTerminalInfo(getApplicationContext(),new BaseApiService.ICallBack() {
+        @Override
+        public void onSuccess(Object obj) {
+            TerminalInfo terminalInfo = (TerminalInfo) obj;
+            Log.i("onSuccess: ",terminalInfo.toString());
+        }
+
+        @Override
+        public void onError(Exception e) {
+            Log.i("onError: ",e.toString());
+        }
+    });
+
+
 ## Template
 The **parameter template file** used in **demo** is under folder assets/param_template.xml.
 
