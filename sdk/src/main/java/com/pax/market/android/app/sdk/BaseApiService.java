@@ -101,13 +101,13 @@ public class BaseApiService {
                 try {
                     TerminalInfo terminalInfo = IRemoteSdkService.Stub.asInterface(service).getBaseTerminalInfo();
                     if(terminalInfo == null || terminalInfo.getTid()==null || terminalInfo.getTid().isEmpty()){
-                        iCallBack.onError(new RemoteException("Null value returned, PAXSTORE may not activated or not login. Please check"));
+                        iCallBack.onError(new RemoteException("Null value returned, PAXSTORE may not activated or running. Please check"));
                     }else {
                         iCallBack.onSuccess(terminalInfo);
                     }
                 } catch (RemoteException e) {
                     logger.error(">>> getBaseTerminalInfo error", e);
-                    iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not installed or started. Please check"));
+                    iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not running or PAXSTORE client version is below 6.1. Please check"));
                 }
                 context.unbindService(this);
             }
@@ -122,7 +122,7 @@ public class BaseApiService {
         intent.setPackage("com.pax.market.android.app");
         boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         if (!bindResult) {
-            iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not installed or started. Please check"));
+            iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not running or PAXSTORE client version is below 6.1. Please check"));
             context.unbindService(serviceConnection);
         }
     }
