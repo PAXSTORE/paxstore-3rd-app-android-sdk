@@ -225,7 +225,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
         }
     }
 
-### More API:
+### More API
 
 #### Get Terminal Base Information
 API to get base terminal information from PAXSTORE client. (Support from PAXSTORE client V6.1.)
