@@ -225,18 +225,18 @@ public class StoreSdk {
 
     /**
      * To retrieve the base terminal info from PAXSTORE Client.
-     * @Required PAXSTORE client version 6.1 and above
+     * Required: PAXSTORE client version 6.1 and above
      * @param context
      * @param callback refer to BaseApiService.ICallBack, you need to handle onSuccess and OnError method. when onSuccess, will return a TerminalInfo DTO as result.
      *         e.g
      *         new BaseApiService.Callback() {
-     *              @Override
+     *              //@Override
      *              public void onSuccess(Object obj) {
      *                  TerminalInfo terminalInfo = (TerminalInfo) obj;
      *                  Log.i("onSuccess: ",terminalInfo.toString());
      *              }
      *
-     *              @Override
+     *              //@Override
      *              public void onError(Exception e) {
      *                  Log.i("onError: ",e.toString());
      *              }
