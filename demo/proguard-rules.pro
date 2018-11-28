@@ -47,6 +47,8 @@
 -keep class com.pax.market.api.sdk.java.base.util.**{*;}
 -dontwarn org.w3c.dom.**
 -keep class org.w3c.dom.**{*;}
+-dontwarn javax.xml.**
+-keep class javax.xml.**{*;}
 
 #dto
 -dontwarn com.pax.market.api.sdk.java.base.dto.**
