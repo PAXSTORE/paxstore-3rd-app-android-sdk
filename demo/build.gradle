@@ -6,7 +6,7 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 88
+        versionCode 89
         versionName "6.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

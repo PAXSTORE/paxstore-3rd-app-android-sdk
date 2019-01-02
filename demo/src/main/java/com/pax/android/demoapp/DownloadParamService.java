@@ -1,6 +1,6 @@
 package com.pax.android.demoapp;
 
-import android.app.Service;
+import android.app.IntentService;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -23,12 +23,16 @@ import java.util.Map;
 /**
  * Created by zcy on 2016/12/2 0002.
  */
-public class DownloadParamService extends Service {
+public class DownloadParamService extends IntentService {
 
     private static final String TAG = DownloadParamService.class.getSimpleName();
     public static String saveFilePath;
     private static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private SPUtil spUtil;
+
+    public DownloadParamService(){
+        super("DownloadParamService");
+    }
 
     @Nullable
     @Override
@@ -42,7 +46,7 @@ public class DownloadParamService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    protected void onHandleIntent(@Nullable Intent intent) {
         spUtil=new SPUtil();
         //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
         saveFilePath = getFilesDir() + "/YourPath/";
@@ -82,6 +86,10 @@ public class DownloadParamService extends Service {
             }
         });
         thread.start();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
     }
 
