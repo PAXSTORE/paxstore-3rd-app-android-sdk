@@ -68,7 +68,7 @@ public class DownloadParamService extends IntentService {
                 }
 
 //                businesscode==0, means download successful, if not equal to 0, please check the return message when need.
-                if (downloadResult != null && downloadResult.getBusinessCode() == ResultCode.SUCCESS) {
+                if (downloadResult != null && downloadResult.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
                     Log.i(TAG, "download successful.");
 
                     //todo start to add your own logic.

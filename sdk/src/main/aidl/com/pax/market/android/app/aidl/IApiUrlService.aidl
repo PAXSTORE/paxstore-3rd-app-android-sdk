@@ -2,7 +2,9 @@
 package com.pax.market.android.app.aidl;
 
 // Declare any non-default types here with import statements
+import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 
 interface IApiUrlService {
     String getApiUrl();
+    StoreProxyInfo getStoreProxyInfo();
 }

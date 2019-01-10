@@ -2,8 +2,10 @@ package com.pax.market.android.app.sdk;
 
 import android.content.Context;
 
+import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
+import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import org.slf4j.Logger;
@@ -71,7 +73,7 @@ public class StoreSdk {
 
                         @Override
                         public void initSuccess(String baseUrl) {
-                            initApi(baseUrl, appKey, appSecret, terminalSerialNo);
+                            initApi(baseUrl, appKey, appSecret, terminalSerialNo, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug(TAG, "initSuccess >> release acquire 1");
                         }
@@ -210,9 +212,9 @@ public class StoreSdk {
      * @param appSecret
      * @param terminalSerialNo
      */
-    public void initApi(String apiUrl, String appKey, String appSecret, String terminalSerialNo) {
-        paramApi = new ParamApi(apiUrl, appKey, appSecret, terminalSerialNo);
-        syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo);
+    public void initApi(String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
+        paramApi = new ParamApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 
     /**
@@ -248,4 +250,14 @@ public class StoreSdk {
         BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
     }
 
+    /**
+     * Sync and update PAXSTORE proxy information
+     * @param context
+     * @param storeProxyInfo
+     */
+    public void updateStoreProxyInfo(Context context, StoreProxyInfo storeProxyInfo){
+        BaseApiService.getInstance(context).setStoreProxyInfo(storeProxyInfo);
+        paramApi.setProxyDelegate(BaseApiService.getInstance(context));
+        syncApi.setProxyDelegate(BaseApiService.getInstance(context));
+    }
 }

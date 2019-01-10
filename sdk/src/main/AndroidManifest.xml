@@ -8,6 +8,14 @@
                 <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".ProxyChangeReceiver"
+                  android:enabled="true"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="com.paxstore.PROXY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
