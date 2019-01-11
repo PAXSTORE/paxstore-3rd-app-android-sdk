@@ -9,6 +9,7 @@
             </intent-filter>
         </service>
 
+        <service android:name=".ProxyChangeService"/>
         <receiver android:name=".ProxyChangeReceiver"
                   android:enabled="true"
                   android:exported="true">

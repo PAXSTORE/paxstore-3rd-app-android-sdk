@@ -257,7 +257,15 @@ public class StoreSdk {
      */
     public void updateStoreProxyInfo(Context context, StoreProxyInfo storeProxyInfo){
         BaseApiService.getInstance(context).setStoreProxyInfo(storeProxyInfo);
-        paramApi.setProxyDelegate(BaseApiService.getInstance(context));
-        syncApi.setProxyDelegate(BaseApiService.getInstance(context));
+        if(paramApi != null) {
+            paramApi.setProxyDelegate(BaseApiService.getInstance(context));
+        } else {
+            logger.warn("ParamApi is not initialized, please init StoreSdk first...");
+        }
+        if(syncApi != null) {
+            syncApi.setProxyDelegate(BaseApiService.getInstance(context));
+        } else {
+            logger.warn("SyncApi is not initialized, please init StoreSdk first...");
+        }
     }
 }
