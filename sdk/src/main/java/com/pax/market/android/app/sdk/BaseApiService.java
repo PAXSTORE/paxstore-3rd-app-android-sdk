@@ -4,28 +4,42 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.pax.market.android.app.aidl.IApiUrlService;
 import com.pax.market.android.app.aidl.IRemoteSdkService;
+import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
+import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+
 /**
  * Created by fojut on 2017/11/30.
  */
-public class BaseApiService {
+public class BaseApiService implements ProxyDelegate {
     private static final Logger logger = LoggerFactory.getLogger(BaseApiService.class);
 
+    private static final String SP_FILE_NAME = "store.sdk.cfg";
+    private static final String SP_STORE_PROXY_TYPE = "proxyType";
+    private static final String SP_STORE_PROXY_HOST = "proxyHost";
+    private static final String SP_STORE_PROXY_PORT = "proxyPort";
+    private static final String SP_STORE_PROXY_AUTH = "proxyAuthorization";
 
     private static volatile BaseApiService instance;
     private Context context;
+    private SharedPreferences sp;
+    private StoreProxyInfo storeProxy;
 
     private BaseApiService(Context context) {
         this.context = context;
+        this.sp = context.getSharedPreferences(SP_FILE_NAME, Context.MODE_PRIVATE);
     }
 
     public static BaseApiService getInstance(Context context) {
@@ -46,6 +60,15 @@ public class BaseApiService {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 try {
+                    StoreProxyInfo proxyInfo = IApiUrlService.Stub.asInterface(service).getStoreProxyInfo();
+                    if(proxyInfo != null) {
+                        logger.info(">>> Init proxy from PAXSTORE : proxy[@{}/{}:{}], has proxy authenticator={}",
+                                proxyInfo.getType() == 1 ? "HTTP" : proxyInfo.getType() == 2 ? "SOCKS" : "DIRECT",
+                                proxyInfo.getHost(), proxyInfo.getPort(), proxyInfo.getAuthorization() != null);
+                    } else {
+                        logger.warn(">>> Init proxy from PASXTORE : [NULL]");
+                    }
+                    setStoreProxyInfo(proxyInfo);
                     String apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
                     apiCallBack.initSuccess(apiUrl);
                     callback1.initSuccess();
@@ -71,6 +94,32 @@ public class BaseApiService {
             apiCallBack.initFailed();
             context.unbindService(serviceConnection);
         }
+    }
+
+    @Override
+    public Proxy retrieveProxy() {
+        Proxy proxy = null;
+        StoreProxyInfo storeProxyInfo = getStoreProxyInfo();
+        if(storeProxyInfo != null){
+            switch (storeProxyInfo.getType()){
+                case 1:     // HTTP
+                    proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(storeProxyInfo.getHost(), storeProxyInfo.getPort()));
+                    break;
+                case 2:     // SOCKS
+                    proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(storeProxyInfo.getHost(), storeProxyInfo.getPort()));
+                    break;
+                default:
+                    proxy = Proxy.NO_PROXY;
+                    break;
+            }
+        }
+        return proxy;
+    }
+
+    @Override
+    public String retrieveProxyAuthorization() {
+        StoreProxyInfo storeProxyInfo = getStoreProxyInfo();
+        return storeProxyInfo == null ? null : storeProxyInfo.getAuthorization();
     }
 
 
@@ -127,4 +176,33 @@ public class BaseApiService {
         }
     }
 
+
+    public void setStoreProxyInfo(StoreProxyInfo storeProxyInfo){
+        SharedPreferences.Editor editor = sp.edit();
+        if(storeProxyInfo == null){
+            editor.remove(SP_STORE_PROXY_TYPE)
+                    .remove(SP_STORE_PROXY_HOST)
+                    .remove(SP_STORE_PROXY_PORT)
+                    .remove(SP_STORE_PROXY_AUTH);
+        } else {
+            editor.putInt(SP_STORE_PROXY_TYPE, storeProxyInfo.getType())
+                    .putString(SP_STORE_PROXY_HOST, storeProxyInfo.getHost())
+                    .putInt(SP_STORE_PROXY_PORT, storeProxyInfo.getPort())
+                    .putString(SP_STORE_PROXY_AUTH, storeProxyInfo.getAuthorization());
+        }
+        editor.apply();
+        this.storeProxy = storeProxyInfo;
+    }
+
+    public StoreProxyInfo getStoreProxyInfo(){
+        if(this.storeProxy == null && sp.getInt(SP_STORE_PROXY_TYPE, -1) != -1){
+            StoreProxyInfo storeProxyInfo = new StoreProxyInfo();
+            storeProxyInfo.setType(sp.getInt(SP_STORE_PROXY_TYPE, -1));
+            storeProxyInfo.setHost(sp.getString(SP_STORE_PROXY_HOST, null));
+            storeProxyInfo.setPort(sp.getInt(SP_STORE_PROXY_PORT, 0));
+            storeProxyInfo.setAuthorization(sp.getString(SP_STORE_PROXY_AUTH, null));
+            this.storeProxy = storeProxyInfo;
+        }
+        return this.storeProxy;
+    }
 }
