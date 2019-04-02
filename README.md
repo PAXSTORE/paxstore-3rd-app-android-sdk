@@ -230,7 +230,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
 ### More API
 
 #### Get Terminal Base Information
-API to get base terminal information from PAXSTORE client. (Support from PAXSTORE client V6.1.)
+1.API to get base terminal information from PAXSTORE client. (Support from PAXSTORE client V6.1.)
 
     StoreSdk.getInstance().getBaseTerminalInfo(getApplicationContext(),new BaseApiService.ICallBack() {
         @Override
@@ -245,6 +245,10 @@ API to get base terminal information from PAXSTORE client. (Support from PAXSTOR
         }
     });
 
+ 
+2.Parsing the downloaded parameter xml file, convert the xml elements to HashMap<String,String>，this method will not keep the xml fields order. HashMap will have a better performance.
+     
+     HashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXml(parameterFile);
 
 ## Template
 The **parameter template file** used in **demo** is under folder assets/param_template.xml.
