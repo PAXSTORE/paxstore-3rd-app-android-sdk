@@ -14,7 +14,7 @@ import static com.pax.market.android.app.sdk.PushConstants.*;
  * Created by fojut on 2019/5/17.
  */
 public class CloudMessageService extends IntentService {
-    private static final String TAG = ProxyChangeService.class.getSimpleName();
+    private static final String TAG = CloudMessageService.class.getSimpleName();
     private static final Logger logger = LoggerFactory.getLogger(CloudMessageService.class);
 
 
