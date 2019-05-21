@@ -246,6 +246,57 @@ API to get base terminal information from PAXSTORE client. (Support from PAXSTOR
     });
 
 
+Check if your app has update in PAXSTORE.
+
+    Thread thread =  new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                final UpdateObject updateObject = StoreSdk.getInstance().updateApi().checkUpdate(BuildConfig.VERSION_CODE, getPackageName());
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (updateObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                            if (updateObject.isUpdateAvailable()) {
+                                                Toast.makeText(MainActivity.this, "Update is available", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(MainActivity.this, "No Update available", Toast.LENGTH_LONG).show();
+                                            }
+                                        } else {
+                                            Log.w("MessagerActivity", "updateObject.getBusinessCode():"
+                                                    + updateObject.getBusinessCode() + "\n msg:" + updateObject.getMessage());
+                                        }
+                                    }
+                                });
+    
+                            } catch (NotInitException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }) ;
+    
+                    thread.start();
+
+
+Open your app detail page in PAXSTORE. If the market don't have this app, it will show app not found, else will go to detail page in PAXSTORE market
+                   
+    StoreSdk.getInstance().openAppDetailPage(getPackageName(), getApplicationContext());
+
+    
+Open download page in PAXSTORE. You can see app's downloading progress in this page.
+    
+    StoreSdk.getInstance().openDownloadListPage(getPackageName(), getApplicationContext());
+    
+    
+Get location from PAXSTORE.
+
+     StoreSdk.getInstance().startLocate(getApplicationContext(), new LocationService.LocationCallback() {
+                        @Override
+                        public void locationResponse(LocationInfo locationInfo) {
+                            Log.d("MainActivity", "Get Location Result：" + locationInfo.toString());
+                        }
+                    });
+
 ## Template
 The **parameter template file** used in **demo** is under folder assets/param_template.xml.
 
