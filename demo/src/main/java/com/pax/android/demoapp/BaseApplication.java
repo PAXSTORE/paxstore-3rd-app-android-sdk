@@ -1,12 +1,14 @@
 package com.pax.android.demoapp;
 
 import android.app.Application;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.pax.market.android.app.sdk.BaseApiService;
+import com.pax.market.android.app.sdk.Notifications;
 import com.pax.market.android.app.sdk.StoreSdk;
 
 import net.grandcentrix.tray.AppPreferences;
@@ -55,6 +57,9 @@ public class BaseApplication extends Application {
                 Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
             }
         });
+        Notifications.I.init(getApplicationContext())
+                .setSmallIcon(R.drawable.logo_demo_white)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.launcher_param));
     }
 
 

@@ -17,6 +17,13 @@
                 <action android:name="com.paxstore.PROXY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".CloudMessageService" android:exported="true">
+            <intent-filter>
+                <action android:name="com.paxstore.mpush.CLOUD_MESSAGE_RECEIVED"/>
+                <category android:name="${applicationId}"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
