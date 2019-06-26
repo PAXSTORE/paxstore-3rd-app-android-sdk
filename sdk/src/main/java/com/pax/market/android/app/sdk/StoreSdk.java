@@ -7,6 +7,7 @@ import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
+import com.pax.market.api.sdk.java.base.util.CryptoUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -269,7 +270,10 @@ public class StoreSdk {
         }
     }
 
-    public String getAppSecret() {
-        return appSecret;
+    public String aesDecrypt(String encryptedData) {
+        if (appSecret == null) {
+            logger.error("Store sdk not initialized");
+        }
+        return  CryptoUtils.aesDecrypt(encryptedData, appSecret);
     }
 }
