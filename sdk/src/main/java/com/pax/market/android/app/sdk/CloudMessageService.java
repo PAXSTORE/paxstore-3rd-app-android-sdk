@@ -3,6 +3,7 @@ package com.pax.market.android.app.sdk;
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.pax.market.api.sdk.java.base.util.CryptoUtils;
 import com.pax.market.api.sdk.java.base.util.StringUtils;
 
 import org.slf4j.Logger;
@@ -79,6 +80,10 @@ public class CloudMessageService extends IntentService {
             return null;
         }
         //todo decrypt cloud message by appKey and appSecret.
-        return encryptedData;
+        String appSecret = StoreSdk.getInstance().getAppSecret();
+        if (appSecret == null) {
+            return null;
+        }
+        return CryptoUtils.aesDecrypt(encryptedData, appSecret);
     }
 }

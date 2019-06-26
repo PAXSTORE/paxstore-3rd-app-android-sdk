@@ -268,4 +268,8 @@ public class StoreSdk {
             logger.warn("SyncApi is not initialized, please init StoreSdk first...");
         }
     }
+
+    public String getAppSecret() {
+        return appSecret;
+    }
 }
