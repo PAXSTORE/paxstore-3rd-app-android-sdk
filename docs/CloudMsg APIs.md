@@ -28,3 +28,9 @@ Only jsonString you will receive.
 Only title of the notification, content of the notification you will receive.
 ##### 1.4. ACTION_NOTIFICATION_CLICK:
 You will also get notified while the notification clicked by user, and you can retreive data that you have sent to your application.
+
+
+### 3.Prequirement
+1. PAXSTORE should be the lastest one.
+2. Your market should subscribed the cloudMsg service.
+3. Your application should enable the cloudMsg service.
