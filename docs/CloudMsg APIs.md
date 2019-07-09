@@ -1,4 +1,4 @@
-# PAXSTORE CLOUDMSG SDK
+# PAXSTORE CLOUDMSG APIS
 
 By integrating with this function, developers can dilivery message to their application at a specail target device or all devices that installed their application.
 
