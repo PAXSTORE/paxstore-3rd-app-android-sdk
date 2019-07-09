@@ -21,7 +21,7 @@ You are expected to create the same "PushMessageReceiver" as we defined in our s
 
 ### 2.Understand the four actions that the receiver will receive.
 ##### 1.1.  ACTION_NOTIFY_DATA_MESSAGE_RECEIVED:  
-For this action you can get three part of data, title of the notification, content of the notification, jsonString sent to terminal that you can do logic with.
+For this action you can get three types of data, title of the notification, content of the notification, jsonString sent to terminal that you can do logic with.
 ##### 1.2. ACTION_DATA_MESSAGE_RECEIVED：
 Only jsonString you will receive.
 ##### 1.3. ACTION_NOTIFICATION_MESSAGE_RECEIVED: 
@@ -32,5 +32,5 @@ You will also get notified while the notification clicked by user, and you can r
 
 ### 3.Prequirement
 1. PAXSTORE should be the lastest one.
-2. Your market should subscribed the cloudMsg service.
+2. Your market should subscribe the cloudMsg service.
 3. Your application should enable the cloudMsg service.
