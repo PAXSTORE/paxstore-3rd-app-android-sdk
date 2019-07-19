@@ -1,19 +1,19 @@
 package com.pax.android.demoapp;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -21,8 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pax.market.android.app.sdk.BaseApiService;
+import com.pax.market.android.app.sdk.LocationService;
 import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.android.app.sdk.dto.LocationInfo;
+import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
+import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.UpdateObject;
+import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +39,7 @@ public class MainActivity extends Activity {
     private TextView bannerTextTV;
     private TextView bannerSubTextTV;
     private TextView versionTV;
-    private LinearLayout openClientlayout;
+    private LinearLayout openClientlayout, checkUpdate;
     private MsgReceiver msgReceiver;
     private Switch tradingStateSwitch;
     private Button getTerminalInfoBtn;
@@ -45,7 +51,15 @@ public class MainActivity extends Activity {
 
     private LinearLayout nodataLayout;
     private List<Map<String, Object>> datalist;
+    private static Handler handler = new Handler();
 
+    private LinearLayout lvRetrieveData, openDownloadList;
+    private ImageView mImgArrow;
+    private LinearLayout lvChildRetrieve;
+    private Button getTerminalLocation, getOnlineStatus; // todo remove
+
+
+    private boolean isExpanded;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +67,20 @@ public class MainActivity extends Activity {
         verifyStoragePermissions(this);
         spUtil=new SPUtil();
 
+
         bannerTitleTV = (TextView) findViewById(R.id.banner_title);
         bannerTextTV = (TextView) findViewById(R.id.banner_text);
         bannerSubTextTV = (TextView) findViewById(R.id.banner_sub_text);
         tradingStateSwitch = (Switch) findViewById(R.id.tradingStateSwitch);
         openClientlayout = (LinearLayout) findViewById(R.id.openAppDetail);
+        checkUpdate = (LinearLayout) findViewById(R.id.check_update);
         versionTV = (TextView)findViewById(R.id.versionText);
+
+        openDownloadList = (LinearLayout) findViewById(R.id.open_downloadlist_page);
+        lvRetrieveData = (LinearLayout) findViewById(R.id.lv_retrieve_data);
+        lvChildRetrieve = (LinearLayout) findViewById(R.id.lv_childs_retrieve);
+        mImgArrow = (ImageView) findViewById(R.id.img_retrieve_data);
+        getTerminalLocation = (Button) findViewById(R.id.get_location);
 
         versionTV.setText(getResources().getString(R.string.label_version_text)+" "+BuildConfig.VERSION_NAME);
 
@@ -81,13 +103,59 @@ public class MainActivity extends Activity {
             }
         });
 
+        checkUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // check if update available from PAXSTORE.
+
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final UpdateObject updateObject = StoreSdk.getInstance().updateApi().checkUpdate(BuildConfig.VERSION_CODE, getPackageName());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (updateObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        if (updateObject.isUpdateAvailable()) {
+                                            Toast.makeText(MainActivity.this, "Update is available", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            Toast.makeText(MainActivity.this, "No Update available", Toast.LENGTH_LONG).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "errmsg:>>" + updateObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Log.w("MessagerActivity", "updateObject.getBusinessCode():"
+                                                + updateObject.getBusinessCode() + "\n msg:" + updateObject.getMessage());
+                                    }
+                                }
+                            });
+
+                        } catch (NotInitException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }) ;
+
+                thread.start();
+
+            }
+        });
+
         //open paxtore client
         openClientlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //put app 'NeptuneService' package name here for demo.
                 //if the market don't have this app, it will show app not found, else will go to detail page in PAXSTORE market
-                openAppDetail(getPackageName());
+                StoreSdk.getInstance().openAppDetailPage(getPackageName(), getApplicationContext());
+
+            }
+        });
+
+        openDownloadList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoreSdk.getInstance().openDownloadListPage(getPackageName(), getApplicationContext());
             }
         });
 
@@ -148,23 +216,50 @@ public class MainActivity extends Activity {
             }
         });
 
+        lvRetrieveData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    isExpanded = false;
+                    mImgArrow.setImageResource(R.mipmap.list_btn_arrow);
+                    lvChildRetrieve.setVisibility(View.GONE);
+                } else {
+                    isExpanded = true;
+                    mImgArrow.setImageResource(R.mipmap.list_btn_arrow_down);
+                    lvChildRetrieve.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        getTerminalLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoreSdk.getInstance().startLocate(getApplicationContext(), new LocationService.LocationCallback() {
+                    @Override
+                    public void locationResponse(LocationInfo locationInfo) {
+                        Log.d("MainActivity", "Get Location Result：" + locationInfo.toString());
+                        Toast.makeText(MainActivity.this,
+                                "Get Location Result：" + locationInfo.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        //TODO remove
+        getOnlineStatus = (Button) findViewById(R.id.get_online_status);
+        getOnlineStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnlineStatusInfo onlineStatusFromPAXSTORE = StoreSdk.getInstance().getOnlineStatusFromPAXSTORE(getApplicationContext());
+                Toast.makeText(MainActivity.this, onlineStatusFromPAXSTORE.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         scrollView = findViewById(R.id.root);
         scrollView.smoothScrollTo(0, 0);
 
     }
 
-    private void openAppDetail(String packageName) {
-        String url = String.format("market://detail?id=%s",packageName);
-        Uri uri= Uri.parse(url);
-        Intent intent=new Intent(Intent.ACTION_VIEW,uri);
-        intent.setClassName("com.pax.market.android.app", "com.pax.market.android.app.presentation.search.view.activity.SearchAppDetailActivity");
-        intent.putExtra("app_packagename", packageName);
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {

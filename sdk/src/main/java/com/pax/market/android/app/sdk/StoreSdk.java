@@ -1,10 +1,19 @@
 package com.pax.market.android.app.sdk;
 
+import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 
+import com.pax.market.android.app.sdk.dto.LocationInfo;
+import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
+import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
+import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
@@ -21,16 +30,19 @@ import java.util.concurrent.TimeUnit;
 public class StoreSdk {
     private static final Logger logger = LoggerFactory.getLogger(StoreSdk.class);
 
-    private static final String TAG = "StoreSdk";
-    private static volatile StoreSdk instance;
+    private static final String PAXSTORE_PACKAGENAME = "com.pax.market.android.app";
+    private static final String PAXSTORE_DETAIL_PAGE = "com.pax.market.android.app.presentation.search.view.activity.SearchAppDetailActivity";
+    private static final String PAXSTORE_DOWNLOADLIST_PAGE = "com.pax.market.android.app.presentation.downloadlist.view.activity.DownloadListActivity";
 
+    private static final String TAG = "StoreSdk";
+    private static final String URI_PREFIX = "market://detail?id=%s";
+    private static volatile StoreSdk instance;
     private ParamApi paramApi;
     private SyncApi syncApi;
+    private UpdateApi updateApi;
     private Semaphore semaphore;
-
     private String appKey;
     private String appSecret;
-
 
     public StoreSdk() {
         semaphore = new Semaphore(2);
@@ -58,7 +70,7 @@ public class StoreSdk {
      */
     public void init(final Context context, final String appKey, final String appSecret,
                      final String terminalSerialNo, final BaseApiService.Callback callback) throws NullPointerException {
-        if (paramApi == null && syncApi == null && semaphore.availablePermits() != 1) {
+        if (paramApi == null && syncApi == null && updateApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret, terminalSerialNo);
             this.appKey = appKey;
             this.appSecret = appSecret;
@@ -105,7 +117,6 @@ public class StoreSdk {
         return paramApi;
     }
 
-
     /**
      * Get SyncApi instance
      *
@@ -122,14 +133,30 @@ public class StoreSdk {
         return syncApi;
     }
 
+    /**
+     * Get UpdateApi instance
+     *
+     * @return
+     * @throws NotInitException
+     */
+    public UpdateApi updateApi() throws NotInitException {
+        if (updateApi == null) {
+            acquireSemaphore();
+            if (updateApi == null) {
+                throw new NotInitException("Not initialized");
+            }
+        }
+        return updateApi;
+    }
 
     /**
      * Check if initialized
      * true: initialized
+     *
      * @return
      */
     public boolean checkInitialization() {
-        if (paramApi != null && syncApi != null) {
+        if (paramApi != null && syncApi != null && updateApi != null) {
             return true;
         }
         return false;
@@ -215,36 +242,29 @@ public class StoreSdk {
     public void initApi(String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
         paramApi = new ParamApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
-    }
-
-    /**
-     *  callback of update inquirer {@link #initInquirer}
-     *  this method will tell store app that whether your app can be updated.
-     */
-    public interface Inquirer {
-        boolean isReadyUpdate();
+        updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 
     /**
      * To retrieve the base terminal info from PAXSTORE Client.
      * Required: PAXSTORE client version 6.1 and above
+     *
      * @param context
      * @param callback refer to BaseApiService.ICallBack, you need to handle onSuccess and OnError method. when onSuccess, will return a TerminalInfo DTO as result.
-     *         e.g
-     *         new BaseApiService.Callback() {
-     *              //@Override
-     *              public void onSuccess(Object obj) {
-     *                  TerminalInfo terminalInfo = (TerminalInfo) obj;
-     *                  Log.i("onSuccess: ",terminalInfo.toString());
-     *              }
-     *
-     *              //@Override
-     *              public void onError(Exception e) {
-     *                  Log.i("onError: ",e.toString());
-     *              }
-     *         }
-     * For the return Object TerminalInfo, please refer to com.pax.market.android.app.sdk.dto.TerminalInfo
-     *
+     *                 e.g
+     *                 new BaseApiService.Callback() {
+     *                 //@Override
+     *                 public void onSuccess(Object obj) {
+     *                 TerminalInfo terminalInfo = (TerminalInfo) obj;
+     *                 Log.i("onSuccess: ",terminalInfo.toString());
+     *                 }
+     *                 <p>
+     *                 //@Override
+     *                 public void onError(Exception e) {
+     *                 Log.i("onError: ",e.toString());
+     *                 }
+     *                 }
+     *                 For the return Object TerminalInfo, please refer to com.pax.market.android.app.sdk.dto.TerminalInfo
      */
     public void getBaseTerminalInfo(Context context, BaseApiService.ICallBack callback) {
         BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
@@ -252,20 +272,122 @@ public class StoreSdk {
 
     /**
      * Sync and update PAXSTORE proxy information
+     *
      * @param context
      * @param storeProxyInfo
      */
-    public void updateStoreProxyInfo(Context context, StoreProxyInfo storeProxyInfo){
+    public void updateStoreProxyInfo(Context context, StoreProxyInfo storeProxyInfo) {
         BaseApiService.getInstance(context).setStoreProxyInfo(storeProxyInfo);
-        if(paramApi != null) {
+        if (paramApi != null) {
             paramApi.setProxyDelegate(BaseApiService.getInstance(context));
         } else {
             logger.warn("ParamApi is not initialized, please init StoreSdk first...");
         }
-        if(syncApi != null) {
+        if (syncApi != null) {
             syncApi.setProxyDelegate(BaseApiService.getInstance(context));
         } else {
             logger.warn("SyncApi is not initialized, please init StoreSdk first...");
         }
+        if (updateApi != null) {
+            updateApi.setProxyDelegate(BaseApiService.getInstance(context));
+        } else {
+            logger.warn("UpdateApi is not initialized, please init StoreSdk first...");
+        }
+
     }
+
+
+    public void openAppDetailPage(String packageName, Context context) {
+        String url = String.format(URI_PREFIX, packageName);
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setClassName(PAXSTORE_PACKAGENAME, PAXSTORE_DETAIL_PAGE);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * open PAXSTORE's download page
+     * @param packageName your app packagename
+     * @param context
+     */
+    public void openDownloadListPage(String packageName, Context context) {
+        String url = String.format(URI_PREFIX, packageName);
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setClassName(PAXSTORE_PACKAGENAME, PAXSTORE_DOWNLOADLIST_PAGE);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get PAXSTORE PUSH online status.
+     * @param context
+     * @return
+     */
+    public OnlineStatusInfo getOnlineStatusFromPAXSTORE(Context context) {
+        OnlineStatusInfo onlineStatusInfo = new OnlineStatusInfo();
+        //对location表进行操作
+        // 和上述类似,只是URI需要更改,从而匹配不同的URI CODE,从而找到不同的数据资源
+        Uri uri_location = Uri.parse("content://com.pax.market.android.app/online_status");
+        // 获取ContentResolver
+        ContentResolver resolver = context.getContentResolver();
+        // 通过ContentResolver 根据URI 向ContentProvider中插入数据
+        // 通过ContentResolver 向ContentProvider中查询数据
+        Cursor cursor = resolver.query(uri_location, null, null, null, null);
+        if (cursor == null) {
+            onlineStatusInfo.setOnline(false);
+            onlineStatusInfo.setBusinessCode(QueryResult.QUERY_FROM_CONTENT_PROVIDER_FAILED.getCode());
+            onlineStatusInfo.setMessage(QueryResult.QUERY_FROM_CONTENT_PROVIDER_FAILED.getMsg());
+            return onlineStatusInfo;
+        }
+        while (cursor.moveToNext()) {
+            System.out.println("query job:" + cursor.getInt(0) + " " + cursor.getString(1)
+                    + " " + cursor.getString(2));
+            onlineStatusInfo.setBusinessCode(cursor.getInt(0));
+            onlineStatusInfo.setMessage(cursor.getString(1));
+            boolean onlineStatus = (cursor.getString(2) != null ?
+                    Boolean.valueOf(cursor.getString(2)) : false);
+            onlineStatusInfo.setOnline(onlineStatus);
+            // 将表中数据全部输出
+        }
+        // 关闭游标
+        cursor.close();
+
+        return onlineStatusInfo;
+    }
+
+    public interface LocationCallBack {
+        void onLocationRetured(LocationInfo locationInfo);
+    }
+
+    /**
+     * callback of update inquirer {@link #initInquirer}
+     * this method will tell store app that whether your app can be updated.
+     */
+    public interface Inquirer {
+        boolean isReadyUpdate();
+    }
+
+    /**
+     * Get location from PAXSTORE.
+     * @param context
+     * @param locationCallback
+     */
+    public void startLocate(Context context, LocationService.LocationCallback locationCallback) {
+        LocationService.setCallback(locationCallback);
+        context.startService(new Intent(context, LocationService.class));
+        //如果启动service失败，有可能没有结果返回，测试需要让它自动返回一个timeout的结果。
+    }
+
+
+
 }

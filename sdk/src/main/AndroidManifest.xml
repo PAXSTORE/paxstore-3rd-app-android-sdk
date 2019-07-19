@@ -10,6 +10,8 @@
         </service>
 
         <service android:name=".ProxyChangeService"/>
+        <service android:name=".LocationService" />
+
         <receiver android:name=".ProxyChangeReceiver"
                   android:enabled="true"
                   android:exported="true">
@@ -17,6 +19,7 @@
                 <action android:name="com.paxstore.PROXY_CHANGE" />
             </intent-filter>
         </receiver>
+        <activity android:name=".MessagerActivity" />
     </application>
 
 </manifest>
