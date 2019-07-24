@@ -25,6 +25,7 @@ public class LocationService extends Service {
     private static final String LOCATION_ACTION = "com.pax.market.android.app.locationresponseservice";
     private static final String BIND_SERVICE_FAILED = "Bind service failed, PAXSTORE may not running or PAXSTORE client version is below 6.3. Please check";
     private static final String LOCATION_RESULT_KEY = "locationResult";
+    private static final String PAXSTORE_PACKAGENAME = "com.pax.market.android.app";
     private static final int GET_LOCATION_FAILED = -1;
     static LocationCallback locationCallback;
     private boolean mBond;
@@ -63,6 +64,7 @@ public class LocationService extends Service {
         conn = new MyConn();
         Intent intent2 = new Intent();
         intent2.setAction(LOCATION_ACTION);
+        intent2.setPackage(PAXSTORE_PACKAGENAME);
         boolean bindResult = bindService(intent2, conn, BIND_AUTO_CREATE);
         if (!bindResult) {
             LocationInfo locationInfo = new LocationInfo();

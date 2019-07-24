@@ -384,7 +384,9 @@ public class StoreSdk {
      */
     public void startLocate(Context context, LocationService.LocationCallback locationCallback) {
         LocationService.setCallback(locationCallback);
-        context.startService(new Intent(context, LocationService.class));
+        Intent intent = new Intent(context, LocationService.class);
+        intent.setPackage(BuildConfig.APPLICATION_ID);
+        context.startService(intent);
         //如果启动service失败，有可能没有结果返回，测试需要让它自动返回一个timeout的结果。
     }
 
