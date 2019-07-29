@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.pax.market.android.app.sdk.NotificationUtils;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
@@ -28,10 +29,10 @@ public class DownloadParamService extends IntentService {
 
     private static final String TAG = DownloadParamService.class.getSimpleName();
     public static String saveFilePath;
-    private static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private SPUtil spUtil;
 
-    public DownloadParamService(){
+    public DownloadParamService() {
         super("DownloadParamService");
     }
 
@@ -48,49 +49,43 @@ public class DownloadParamService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        spUtil=new SPUtil();
+        spUtil = new SPUtil();
         //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
         saveFilePath = getFilesDir() + "/YourPath/";
 
         //show downloading info in main page
         updateUI(DemoConstants.DOWNLOAD_STATUS_START);
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //todo Call SDK API to download parameter files into your specific directory,
-                DownloadResultObject downloadResult = null;
-                try {
-                    Log.i(TAG, "call sdk API to download parameter");
-                    downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(), BuildConfig.VERSION_CODE, saveFilePath);
-                    Log.i(TAG, downloadResult.toString());
-                } catch (NotInitException e) {
-                    Log.e(TAG, "e:" + e);
-                }
+        //todo Call SDK API to download parameter files into your specific directory,
+        DownloadResultObject downloadResult = null;
+        try {
+            Log.i(TAG, "call sdk API to download parameter");
+            downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(), BuildConfig.VERSION_CODE, saveFilePath);
+            Log.i(TAG, downloadResult.toString());
+        } catch (NotInitException e) {
+            Log.e(TAG, "e:" + e);
+        }
 
 //                businesscode==0, means download successful, if not equal to 0, please check the return message when need.
-                if (downloadResult != null && downloadResult.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                    Log.i(TAG, "download successful.");
+        if (downloadResult != null && downloadResult.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+            Log.i(TAG, "download successful.");
 
-                    //todo start to add your own logic.
-                    //below is only for demo
-                    readDataToDisplay();
-                } else {
-                    //todo check the Error Code and Error Message for fail reason
-                    Log.e(TAG, "ErrorCode: "+downloadResult.getBusinessCode()+"ErrorMessage: "+downloadResult.getMessage());
-                    //update download fail info in main page for Demo
-                    spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
-                    spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT,"Your push parameters file task failed at "+ sdf.format(new Date())+", please check error log.");
-                    updateUI(DemoConstants.DOWNLOAD_STATUS_FAILED);
-                }
-
-            }
-        });
-        thread.start();
+            //todo start to add your own logic.
+            //below is only for demo
+            readDataToDisplay();
+        } else {
+            //todo check the Error Code and Error Message for fail reason
+            Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());
+            //update download fail info in main page for Demo
+            spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
+            spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT, "Your push parameters file task failed at " + sdf.format(new Date()) + ", please check error log.");
+            updateUI(DemoConstants.DOWNLOAD_STATUS_FAILED);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        NotificationUtils.showForeGround(this, "Downloading params");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -109,6 +104,7 @@ public class DownloadParamService extends IntentService {
 
     /**
      * save data for display in main page for demo
+     *
      * @param parameterFile data resource
      */
     private void saveDisplayFileDataToSp(File parameterFile) {
@@ -132,13 +128,14 @@ public class DownloadParamService extends IntentService {
 
     /**
      * get specific display data resource <File>sys_cap.p</File>
+     *
      * @return specific file, return null if not exists
      */
     @Nullable
     private File getDisplayFile() {
-        File parameterFile=null;
+        File parameterFile = null;
         File[] filelist = new File(saveFilePath).listFiles();
-        if (filelist != null && filelist.length>0) {
+        if (filelist != null && filelist.length > 0) {
             for (File f : filelist) {
                 //todo Noted. this is for demo only, here hard code the xml name to "sys_cap.p". this demo will only parse with the specified file name
                 if (DemoConstants.DOWNLOAD_PARAM_FILE_NAME.equals(f.getName())) {

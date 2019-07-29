@@ -45,6 +45,7 @@ public class ProxyChangeService extends IntentService {
     public void onCreate() {
         super.onCreate();
         this.gson = new GsonBuilder().create();
+        NotificationUtils.showForeGround(this, "Initializing proxy");
     }
 
     @Override
