@@ -289,6 +289,11 @@ public class StoreSdk {
         } else {
             logger.warn("SyncApi is not initialized, please init StoreSdk first...");
         }
+        if (updateApi != null) {
+            updateApi.setProxyDelegate(BaseApiService.getInstance(context));
+        } else {
+            logger.warn("UpdateApi is not initialized, please init StoreSdk first...");
+        }
     }
 
     public String aesDecrypt(String encryptedData) {
@@ -296,13 +301,6 @@ public class StoreSdk {
             logger.error("Store sdk not initialized");
         }
         return  CryptoUtils.aesDecrypt(encryptedData, appSecret);
-    }
-        if (updateApi != null) {
-            updateApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("UpdateApi is not initialized, please init StoreSdk first...");
-        }
-
     }
 
 

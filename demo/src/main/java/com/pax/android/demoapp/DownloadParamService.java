@@ -162,7 +162,7 @@ public class DownloadParamService extends IntentService {
             //todo call API to parse xml
             HashMap<String, String> resultMap = null;
             if (isJsonFile(parameterFile)) {
-                resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJson(parameterFile);
+//                resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJson(parameterFile);
             } else {
                 resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXml(parameterFile);
             }
