@@ -20,6 +20,10 @@ import org.slf4j.LoggerFactory;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_FAILED;
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_NULL_RETURNED;
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED;
+
 /**
  * Created by fojut on 2017/11/30.
  */
@@ -31,6 +35,10 @@ public class BaseApiService implements ProxyDelegate {
     private static final String SP_STORE_PROXY_HOST = "proxyHost";
     private static final String SP_STORE_PROXY_PORT = "proxyPort";
     private static final String SP_STORE_PROXY_AUTH = "proxyAuthorization";
+    private static final String GET_TERMINAL_INFO_ACTION = "com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE";
+    private static final String INIT_ACTION = "com.pax.market.android.app.aidl.API_URL_SERVICE";
+    private static final String PAXSTORE_PACKAGE_NAME = "com.pax.market.android.app";
+
 
     private static volatile BaseApiService instance;
     private Context context;
@@ -86,11 +94,11 @@ public class BaseApiService implements ProxyDelegate {
             }
         };
 
-        Intent intent = new Intent("com.pax.market.android.app.aidl.API_URL_SERVICE");
-        intent.setPackage("com.pax.market.android.app");
+        Intent intent = new Intent(INIT_ACTION);
+        intent.setPackage(PAXSTORE_PACKAGE_NAME);
         boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         if (!bindResult) {
-            callback1.initFailed(new RemoteException("Bind service failed, PAXSTORE may not installed"));
+            callback1.initFailed(new RemoteException(ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED));
             apiCallBack.initFailed();
             context.unbindService(serviceConnection);
         }
@@ -150,13 +158,13 @@ public class BaseApiService implements ProxyDelegate {
                 try {
                     TerminalInfo terminalInfo = IRemoteSdkService.Stub.asInterface(service).getBaseTerminalInfo();
                     if(terminalInfo == null || terminalInfo.getTid()==null || terminalInfo.getTid().isEmpty()){
-                        iCallBack.onError(new RemoteException("Null value returned, PAXSTORE may not activated or running. Please check"));
+                        iCallBack.onError(new RemoteException(ERR_MSG_NULL_RETURNED));
                     }else {
                         iCallBack.onSuccess(terminalInfo);
                     }
                 } catch (RemoteException e) {
                     logger.error(">>> getBaseTerminalInfo error", e);
-                    iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not running or PAXSTORE client version is below 6.1. Please check"));
+                    iCallBack.onError(new RemoteException(ERR_MSG_BIND_PAXSTORE_SERVICE_FAILED));
                 }
                 context.unbindService(this);
             }
@@ -167,11 +175,11 @@ public class BaseApiService implements ProxyDelegate {
             }
         };
 
-        Intent intent = new Intent("com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE");
-        intent.setPackage("com.pax.market.android.app");
+        Intent intent = new Intent(GET_TERMINAL_INFO_ACTION);
+        intent.setPackage(PAXSTORE_PACKAGE_NAME);
         boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         if (!bindResult) {
-            iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not running or PAXSTORE client version is below 6.1. Please check"));
+            iCallBack.onError(new RemoteException(ERR_MSG_BIND_PAXSTORE_SERVICE_FAILED));
             context.unbindService(serviceConnection);
         }
     }

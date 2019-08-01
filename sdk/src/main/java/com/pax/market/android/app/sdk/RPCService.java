@@ -90,7 +90,7 @@ public class RPCService extends Service {
                     break;
                 }
                 default:
-                    super.handleMessage(msg);
+                    break;
             }
         }
     }
