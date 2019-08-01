@@ -58,7 +58,7 @@ public class DemoListViewAdapter extends BaseAdapter {
         Map<String, Object> map = data.get(position);
 
         holder.label.setText((String)map.get("label"));
-        holder.value.setText((String)map.get("value"));
+        holder.value.setText(String.valueOf(map.get("value")));
 
         return convertView;
     }

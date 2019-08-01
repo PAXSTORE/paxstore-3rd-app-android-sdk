@@ -7,6 +7,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.pax.market.android.app.sdk.NotificationUtils;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
@@ -14,7 +18,10 @@ import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 import com.pax.market.api.sdk.java.base.exception.ParseXMLException;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -153,8 +160,12 @@ public class DownloadParamService extends IntentService {
             //parse the download parameter xml file for display.
             List<Map<String, Object>> datalist = new ArrayList<>();
             //todo call API to parse xml
-            HashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXml(parameterFile);
-
+            HashMap<String, String> resultMap = null;
+            if (isJsonFile(parameterFile)) {
+                resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJson(parameterFile);
+            } else {
+                resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXml(parameterFile);
+            }
             if (resultMap != null && resultMap.size() > 0) {
                 //convert result map to list for ListView display.
                 for (Map.Entry<String, String> entry : resultMap.entrySet()) {
@@ -166,13 +177,30 @@ public class DownloadParamService extends IntentService {
             }
             return datalist;
 
-        } catch (ParseXMLException e) {
+        } catch (JsonParseException e) {
             e.printStackTrace();
         } catch (NotInitException e) {
+            e.printStackTrace();
+        } catch (ParseXMLException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    private boolean isJsonFile(File parameterFile) {
+        if (parameterFile == null) {
+            return false;
+        }
+        try {
+            String jsonStr = FileUtils.readFileToString(parameterFile);
+            JsonElement jsonElement = (new JsonParser()).parse(jsonStr);
+            return true;
+        } catch (JsonSyntaxException e) {
+            return false;
+        } catch (IOException e1) {
+            return false;
+        }
     }
 
 
