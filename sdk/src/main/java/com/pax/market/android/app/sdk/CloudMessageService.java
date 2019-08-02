@@ -2,6 +2,7 @@ package com.pax.market.android.app.sdk;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 
 import com.pax.market.api.sdk.java.base.util.StringUtils;
 
@@ -29,6 +30,12 @@ public class CloudMessageService extends IntentService {
 
     public CloudMessageService() {
         super(TAG);
+    }
+
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        NotificationUtils.showForeGround(this, "Cloud message");
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override

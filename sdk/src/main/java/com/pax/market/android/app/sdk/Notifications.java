@@ -13,11 +13,13 @@
 package com.pax.market.android.app.sdk;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -42,12 +44,19 @@ public final class Notifications {
     private Bitmap largeIcon;
     private int defaults;
     private RemoteViews customContentView;
+    public static final String CHANNEL_CLOUD_MSG = "channel_cloud_msg";
 
     public Notifications init(Context context) {
         this.context = context;
         this.nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         this.smallIcon = R.drawable.ic_notificaiton;
         this.defaults = Notification.DEFAULT_ALL | Notification.FLAG_AUTO_CANCEL;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String channelName = "Cloud message";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_CLOUD_MSG, channelName, importance);
+            nm.createNotificationChannel(channel);
+        }
         return this;
     }
 
@@ -104,7 +113,7 @@ public final class Notifications {
         Intent cancelIT = new Intent(ACTION_NOTIFICATION_CANCEL);
         cancelIT.putExtra(EXTRA_MESSAGE_NID, nid);
         PendingIntent cancelPI = PendingIntent.getBroadcast(context, 0, cancelIT, 0);//处理滑动取消
-        nm.notify(nid, build(clickPI, cancelPI,
+        nm.notify(nid, build(clickPI, cancelPI, CHANNEL_CLOUD_MSG,
                 message.getTitle(),
                 message.getTitle(),
                 message.getContent(),
@@ -127,12 +136,12 @@ public final class Notifications {
         nm.cancelAll();
     }
 
-    private Notification build(PendingIntent clickIntent, PendingIntent cancelIntent,
+    private Notification build(PendingIntent clickIntent, PendingIntent cancelIntent, String channelId,
                                String ticker, String title, String content, int number) {
 
         long when = System.currentTimeMillis();
 
-        return new Notification.Builder(context)
+        return new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(smallIcon)
                 .setContent(customContentView == null ? getDefaultContentView(title, content, when) : customContentView)
                 .setTicker(ticker)
