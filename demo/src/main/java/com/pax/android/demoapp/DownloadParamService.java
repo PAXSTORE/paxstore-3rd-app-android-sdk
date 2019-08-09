@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -160,11 +161,11 @@ public class DownloadParamService extends IntentService {
             //parse the download parameter xml file for display.
             List<Map<String, Object>> datalist = new ArrayList<>();
             //todo call API to parse xml
-            HashMap<String, String> resultMap = null;
+            LinkedHashMap<String, String> resultMap = null;
             if (isJsonFile(parameterFile)) {
-                resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJson(parameterFile);
+                resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJsonWithOrder(parameterFile);
             } else {
-                resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXml(parameterFile);
+                resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXmlWithOrder(parameterFile);
             }
             if (resultMap != null && resultMap.size() > 0) {
                 //convert result map to list for ListView display.
