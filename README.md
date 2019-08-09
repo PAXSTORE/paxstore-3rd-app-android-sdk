@@ -310,7 +310,7 @@ Parse json file. Only support when the json is the type of HashMap.
       LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXmlWithOrder(parameterFile);
 
 ## Migrating to Android 8.0
-Since Android 8.0 has lots of changes that will affect your app's behavior, we recommand you to follow the guide to Migrate
+Since Android 8.0 has lots of changes that will affect your app's behavior, we recommand you to follow the guide to migrate
 to Android 8.0. For further information, you can refer to https://developer.android.google.cn/about/versions/oreo/android-8.0-migration
 
 ## Template
