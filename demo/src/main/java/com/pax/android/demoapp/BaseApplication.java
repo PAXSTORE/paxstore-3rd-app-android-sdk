@@ -60,7 +60,7 @@ public class BaseApplication extends Application {
         //if you want the sdk to show notifications for you, initialize the Notifications
         Notifications.I.init(getApplicationContext())
                 .setSmallIcon(R.drawable.logo_demo_white)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.launcher_param));
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo_demo));
 
         //if you want to customize the notification, disable the Notifications we provided through below code.
         // Notifications.I.setEnabled(false);
