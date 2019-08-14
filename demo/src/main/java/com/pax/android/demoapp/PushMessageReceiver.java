@@ -3,6 +3,7 @@ package com.pax.android.demoapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,12 @@ public class PushMessageReceiver extends BroadcastReceiver {
             logger.info("### notification title={}, content={} ###", title, content);
             String dataJson = intent.getStringExtra(EXTRA_MESSAGE_DATA);
             logger.info("### data json={} ###", dataJson);
+            Toast.makeText(context, "  data=" + dataJson, Toast.LENGTH_SHORT).show();
         } else if (ACTION_DATA_MESSAGE_RECEIVED.equals(intent.getAction())) {
             logger.info("### NOTIFY_DATA_MESSAGE_RECEIVED ###");
             String dataJson = intent.getStringExtra(EXTRA_MESSAGE_DATA);
             logger.info("### data json={} ###", dataJson);
+            Toast.makeText(context, "  data=" + dataJson, Toast.LENGTH_SHORT).show();
         } else if (ACTION_NOTIFICATION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             logger.info("### NOTIFICATION_MESSAGE_RECEIVED ###");
             String title = intent.getStringExtra(EXTRA_MESSAGE_TITLE);
