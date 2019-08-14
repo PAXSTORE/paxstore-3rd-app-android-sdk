@@ -45,6 +45,14 @@ public final class Notifications {
     private int defaults;
     private RemoteViews customContentView;
     public static final String CHANNEL_CLOUD_MSG = "channel_cloud_msg";
+    private boolean enabled = true;
+
+    public void setEnabled(boolean enable) {
+        this.enabled = enable;
+    }
+    public boolean getEnabled() {
+        return this.enabled;
+    }
 
     public Notifications init(Context context) {
         this.context = context;
@@ -53,7 +61,7 @@ public final class Notifications {
         this.defaults = Notification.DEFAULT_ALL | Notification.FLAG_AUTO_CANCEL;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelName = "Cloud message";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_CLOUD_MSG, channelName, importance);
             nm.createNotificationChannel(channel);
         }

@@ -57,9 +57,13 @@ public class BaseApplication extends Application {
                 Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
             }
         });
+        //if you want the sdk to show notifications for you, initialize the Notifications
         Notifications.I.init(getApplicationContext())
                 .setSmallIcon(R.drawable.logo_demo_white)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.launcher_param));
+
+        //if you want to customize the notification, disable the Notifications we provided through below code.
+        // Notifications.I.setEnabled(false);
     }
 
 

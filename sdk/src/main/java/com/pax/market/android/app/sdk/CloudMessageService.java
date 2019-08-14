@@ -66,10 +66,12 @@ public class CloudMessageService extends IntentService {
                     messageIntent.putExtra(EXTRA_MESSAGE_NID, cloudMessage.getNotification().getNid());
                     messageIntent.putExtra(EXTRA_MESSAGE_TITLE, cloudMessage.getNotification().getTitle());
                     messageIntent.putExtra(EXTRA_MESSAGE_CONTENT, cloudMessage.getNotification().getContent());
-                    if (!Notifications.I.hasInit()){
-                        Notifications.I.init(getApplicationContext());
+                    if (Notifications.I.getEnabled()) { // default is true
+                        if (!Notifications.I.hasInit()) {
+                            Notifications.I.init(getApplicationContext());
+                        }
+                        Notifications.I.notify(cloudMessage.getNotification(), cloudMessage.getDataJson());
                     }
-                    Notifications.I.notify(cloudMessage.getNotification(), cloudMessage.getDataJson());
                 }
                 if (!cloudMessage.isDataEmpty()) {
                     messageIntent.putExtra(EXTRA_MESSAGE_DATA, cloudMessage.getDataJson());
