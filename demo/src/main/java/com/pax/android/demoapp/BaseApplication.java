@@ -59,7 +59,7 @@ public class BaseApplication extends Application {
         });
         Notifications.I.init(getApplicationContext())
                 .setSmallIcon(R.drawable.logo_demo_white)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.launcher_param));
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo_demo));
     }
 
 
