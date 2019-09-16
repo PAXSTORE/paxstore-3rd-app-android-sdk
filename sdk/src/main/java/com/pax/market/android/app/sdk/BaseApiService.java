@@ -10,6 +10,7 @@ import android.os.RemoteException;
 
 import com.pax.market.android.app.aidl.IApiUrlService;
 import com.pax.market.android.app.aidl.IRemoteSdkService;
+import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
@@ -158,7 +159,11 @@ public class BaseApiService implements ProxyDelegate {
                 try {
                     TerminalInfo terminalInfo = IRemoteSdkService.Stub.asInterface(service).getBaseTerminalInfo();
                     if(terminalInfo == null || terminalInfo.getTid()==null || terminalInfo.getTid().isEmpty()){
-                        iCallBack.onError(new RemoteException(ERR_MSG_NULL_RETURNED));
+                        if (terminalInfo.getBussinessCode() == QueryResult.GET_INFO_NOT_ALLOWED.getCode()) {
+                            iCallBack.onError(new RemoteException(QueryResult.GET_INFO_NOT_ALLOWED.getMsg()));
+                        } else {
+                            iCallBack.onError(new RemoteException(ERR_MSG_NULL_RETURNED));
+                        }
                     }else {
                         iCallBack.onSuccess(terminalInfo);
                     }
