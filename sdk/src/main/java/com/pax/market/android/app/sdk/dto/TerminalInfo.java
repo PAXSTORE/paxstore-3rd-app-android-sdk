@@ -100,6 +100,8 @@ public class TerminalInfo implements Parcelable{
         factoryName = in.readString();
         merchantName = in.readString();
         statusCode = in.readInt();
+        bussinessCode = in.readInt();
+        message = in.readString();
     }
 
     public static final Creator<TerminalInfo> CREATOR = new Creator<TerminalInfo>() {
