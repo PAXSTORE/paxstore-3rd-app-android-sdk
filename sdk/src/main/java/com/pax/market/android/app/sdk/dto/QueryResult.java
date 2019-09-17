@@ -9,7 +9,7 @@ public enum QueryResult {
     SUCCESS(0, "success"),
     GET_LOCATION_FAILED(-1, "Get location failed"),
     INIT_LOCATIONMANAGER_FAILED(-2, "Init LocationManager failed"),
-    GET_INFO_NOT_ALLOWED(-3, "Not allowed"),
+    GET_INFO_NOT_ALLOWED(-3, "Not allowed to get terminal information from PAXSTORE"),
     GET_LOCATION_TOO_FAST(-4, "Get location too fast"),
     PUSH_NOT_ENABLED(-5, "Push not enabled"),
     QUERY_FROM_CONTENT_PROVIDER_FAILED(-6, "Query failed"),
