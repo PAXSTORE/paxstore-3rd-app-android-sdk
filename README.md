@@ -464,7 +464,7 @@ The terminal info, the structure shows below
 
 ### [ResultCode](docs/ResultCode.md)
 
-### [CloudMsg APIs](docs/CloudMsg+APIs.md)
+### [CloudMsg APIs](docs/CloudMsgAPIs.md)
 
 ## Template
 The **parameter template file** used in **demo** is under folder assets/param_template.xml.
