@@ -8,6 +8,8 @@ public class TerminalInfo implements Parcelable{
 
     public TerminalInfo(){}
 
+    private int bussinessCode;
+    private String message;
     private String tid;
     private String terminalName;
     private String serialNo;
@@ -15,6 +17,23 @@ public class TerminalInfo implements Parcelable{
     private String factoryName; //manufactory
     private String merchantName;
     private int statusCode; //0:online; -1:offline
+
+
+    public int getBussinessCode() {
+        return bussinessCode;
+    }
+
+    public void setBussinessCode(int bussinessCode) {
+        this.bussinessCode = bussinessCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public String getTid() {
         return tid;
@@ -81,6 +100,8 @@ public class TerminalInfo implements Parcelable{
         factoryName = in.readString();
         merchantName = in.readString();
         statusCode = in.readInt();
+        bussinessCode = in.readInt();
+        message = in.readString();
     }
 
     public static final Creator<TerminalInfo> CREATOR = new Creator<TerminalInfo>() {
@@ -100,6 +121,11 @@ public class TerminalInfo implements Parcelable{
         return 0;
     }
 
+    /**
+     * 注意： 新的字段只能加在最后，不然会影响已有SDK的读取
+     * @param dest
+     * @param flags
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(tid);
@@ -109,6 +135,8 @@ public class TerminalInfo implements Parcelable{
         dest.writeString(factoryName);
         dest.writeString(merchantName);
         dest.writeInt(statusCode);
+        dest.writeInt(bussinessCode);
+        dest.writeString(message);
     }
 
     /**
@@ -124,18 +152,22 @@ public class TerminalInfo implements Parcelable{
         factoryName = dest.readString();
         merchantName = dest.readString();
         statusCode = dest.readInt();
+        bussinessCode = dest.readInt();
+        message = dest.readString();
     }
 
     @Override
     public String toString() {
         return "TerminalInfo{" +
-                "tid='" + tid + '\'' +
+                "bussinessCode=" + bussinessCode +
+                ", message='" + message + '\'' +
+                ", tid='" + tid + '\'' +
                 ", terminalName='" + terminalName + '\'' +
                 ", serialNo='" + serialNo + '\'' +
                 ", modelName='" + modelName + '\'' +
                 ", factoryName='" + factoryName + '\'' +
                 ", merchantName='" + merchantName + '\'' +
-                ", statusCode='" + statusCode + '\'' +
+                ", statusCode=" + statusCode +
                 '}';
     }
 }

@@ -32,7 +32,20 @@
 
         <service android:name=".DownloadParamService"/>
 
+        <receiver android:name=".PushMessageReceiver"
+                  android:enabled="true"
+                  android:exported="false">
+            <intent-filter>
+                <action android:name="com.paxstore.mpush.NOTIFY_DATA_MESSAGE_RECEIVED" />
+                <action android:name="com.paxstore.mpush.DATA_MESSAGE_RECEIVED" />
+                <action android:name="com.paxstore.mpush.NOTIFICATION_MESSAGE_RECEIVED" />
+                <action android:name="com.paxstore.mpush.NOTIFICATION_CLICK" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
 
+        <!-- Add below meta-data to support Cloud Message -->
+        <meta-data android:name="PAXSTORE_CloudMessage" />
 
     </application>
 

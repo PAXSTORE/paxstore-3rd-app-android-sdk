@@ -16,6 +16,7 @@ import com.pax.market.api.sdk.java.api.sync.SyncApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
+import com.pax.market.api.sdk.java.base.util.CryptoUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -293,7 +294,13 @@ public class StoreSdk {
         } else {
             logger.warn("UpdateApi is not initialized, please init StoreSdk first...");
         }
+    }
 
+    public String aesDecrypt(String encryptedData) {
+        if (appSecret == null) {
+            logger.error("Store sdk not initialized");
+        }
+        return  CryptoUtils.aesDecrypt(encryptedData, appSecret);
     }
 
 
@@ -344,7 +351,7 @@ public class StoreSdk {
         // 通过ContentResolver 向ContentProvider中查询数据
         Cursor cursor = resolver.query(uri_location, null, null, null, null);
         if (cursor == null) {
-            onlineStatusInfo.setOnline(false);
+            onlineStatusInfo.setOnline(null);
             onlineStatusInfo.setBusinessCode(QueryResult.QUERY_FROM_CONTENT_PROVIDER_FAILED.getCode());
             onlineStatusInfo.setMessage(QueryResult.QUERY_FROM_CONTENT_PROVIDER_FAILED.getMsg());
             return onlineStatusInfo;
@@ -354,8 +361,8 @@ public class StoreSdk {
                     + " " + cursor.getString(2));
             onlineStatusInfo.setBusinessCode(cursor.getInt(0));
             onlineStatusInfo.setMessage(cursor.getString(1));
-            boolean onlineStatus = (cursor.getString(2) != null ?
-                    Boolean.valueOf(cursor.getString(2)) : false);
+            Boolean onlineStatus = (cursor.getString(2) != null ?
+                    Boolean.valueOf(cursor.getString(2)) : null);
             onlineStatusInfo.setOnline(onlineStatus);
             // 将表中数据全部输出
         }

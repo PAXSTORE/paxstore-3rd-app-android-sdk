@@ -7,13 +7,13 @@ import com.pax.market.api.sdk.java.base.dto.SdkObject;
  */
 
 public class OnlineStatusInfo extends SdkObject {
-    private boolean online;
+    private Boolean online;
 
-    public boolean isOnline() {
+    public Boolean isOnline() {
         return online;
     }
 
-    public void setOnline(boolean online) {
+    public void setOnline(Boolean online) {
         this.online = online;
     }
 
