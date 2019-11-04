@@ -1,4 +1,6 @@
+
 # PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/images/download.svg?version=7.0.0) ](https://bintray.com/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/7.0.0/link)
+
 PAXSTORE 3rd App Android SDK provides simple and easy-to-use service interfaces for third party developers to develop android apps on PAXSTORE. The services currently include the following points:
 
 1. Download parameter
@@ -19,6 +21,7 @@ By using this SDK, developers can easily integrate with PAXSTORE. Please take ca
 Gradle:
 
     implementation 'com.pax.market:paxstore-3rd-app-android-sdk:7.0.0'
+
 
 ## Permissions
 PAXSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.
@@ -417,6 +420,7 @@ The terminal online status info, the structure shows below
                         }
                     });
 
+
 ### QueryResult
 
 | code | message                     | Description                        |
@@ -465,6 +469,19 @@ The terminal info, the structure shows below
 ### [ResultCode](docs/ResultCode.md)
 
 ### [CloudMsg APIs](docs/CloudMsgAPIs.md)
+
+Parse xml file. Only support when the xml is the type of HashMap.
+
+      LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJsonWithOrder(parameterFile);
+
+Parse json file. Only support when the json is the type of HashMap.
+
+      LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXmlWithOrder(parameterFile);
+
+## Migrating to Android 8.0
+Since Android 8.0 has lots of changes that will affect your app's behavior, we recommand you to follow the guide to migrate
+to Android 8.0. For further information, you can refer to https://developer.android.google.cn/about/versions/oreo/android-8.0-migration
+
 
 ## Template
 The **parameter template file** used in **demo** is under folder assets/param_template.xml.
