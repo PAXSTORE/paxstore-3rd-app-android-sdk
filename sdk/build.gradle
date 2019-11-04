@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.android.support:support-compat:27.0.2'
     implementation 'org.slf4j:slf4j-android:1.7.25'
     implementation 'io.jsonwebtoken:jjwt:0.9.0'
-    api 'com.pax.market:paxstore-3rd-app-java-sdk:6.3.1'
+    api 'com.pax.market:paxstore-3rd-app-java-sdk:7.0.0'
 }
 
 publish {

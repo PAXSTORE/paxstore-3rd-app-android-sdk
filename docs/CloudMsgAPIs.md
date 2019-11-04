@@ -2,7 +2,11 @@
 
 By integrating with this function, developers can dilivery message to their application at a specail target device or all devices that installed their application.
 
-### 1.Register the receiver to recieve message from PAXSTORE
+### 1.Add meta-data to AndroidManifest
+         <!-- Add below meta-data to support Cloud Message -->
+         <meta-data android:name="PAXSTORE_CloudMessage" />
+
+### 2.Register the receiver to recieve message from PAXSTORE
 Since from Android Oreo, we need to send explicit broadcast to third party application.
 
 You are expected to create the same "PushMessageReceiver" as we defined in our sample, and put it under root package. So we can find the receiver by "your packageName + .PushMessageReceiver".
@@ -19,18 +23,17 @@ You are expected to create the same "PushMessageReceiver" as we defined in our s
             </intent-filter>
         </receiver>
 
-### 2.Understand the four actions that the receiver will receive.
-##### 1.1.  ACTION_NOTIFY_DATA_MESSAGE_RECEIVED:  
+### 3.Understand the four actions that the receiver will receive.
+##### 3.1.  ACTION_NOTIFY_DATA_MESSAGE_RECEIVED:  
 For this action you can get three types of data, title of the notification, content of the notification, jsonString sent to terminal that you can do logic with.
-##### 1.2. ACTION_DATA_MESSAGE_RECEIVED：
+##### 3.2. ACTION_DATA_MESSAGE_RECEIVED：
 Only jsonString you will receive.
-##### 1.3. ACTION_NOTIFICATION_MESSAGE_RECEIVED: 
+##### 3.3. ACTION_NOTIFICATION_MESSAGE_RECEIVED: 
 Only title of the notification, content of the notification you will receive.
-##### 1.4. ACTION_NOTIFICATION_CLICK:
+##### 3.4. ACTION_NOTIFICATION_CLICK:
 You will also get notified while the notification clicked by user, and you can retreive data that you have sent to your application.
 
 
-### 3.Prequirement
+### 4.Requirement
 1. PAXSTORE should be the lastest one.
-2. Your market should subscribe the cloudMsg service.
-3. Your application should enable the cloudMsg service.
+2. Your market should subscribe the Cloud Message service.
