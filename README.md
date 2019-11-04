@@ -420,6 +420,14 @@ The terminal online status info, the structure shows below
                         }
                     });
 
+Parse xml file. Only support when the xml is the type of HashMap.
+
+      LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJsonWithOrder(parameterFile);
+
+Parse json file. Only support when the json is the type of HashMap.
+
+      LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXmlWithOrder(parameterFile);
+
 
 ### QueryResult
 
@@ -469,14 +477,6 @@ The terminal info, the structure shows below
 ### [ResultCode](docs/ResultCode.md)
 
 ### [CloudMsg APIs](docs/CloudMsgAPIs.md)
-
-Parse xml file. Only support when the xml is the type of HashMap.
-
-      LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJsonWithOrder(parameterFile);
-
-Parse json file. Only support when the json is the type of HashMap.
-
-      LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXmlWithOrder(parameterFile);
 
 ## Migrating to Android 8.0
 Since Android 8.0 has lots of changes that will affect your app's behavior, we recommand you to follow the guide to migrate
