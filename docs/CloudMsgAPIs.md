@@ -4,7 +4,8 @@ By integrating with this function, developers can dilivery message to their appl
 
 ### 1.Add meta-data to AndroidManifest
          <!-- Add below meta-data to support Cloud Message -->
-         <meta-data android:name="PAXSTORE_CloudMessage" />
+         <meta-data android:name="PAXVAS_CloudMessage"
+                    android:value="true"/>
 
 ### 2.Register the receiver to recieve message from PAXSTORE
 Since from Android Oreo, we need to send explicit broadcast to third party application.
