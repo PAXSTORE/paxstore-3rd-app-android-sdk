@@ -118,8 +118,8 @@ public DownloadResultObject downloadParamToPath(String packageName, int versionC
 
 | Parameter    | Type   | Description                             |
 | ------------ | ------ | --------------------------------------- |
-| packageName  | String | The package name                        |
-| versionCode  | String | The version code                        |
+| packageName  | String | Your app package name                        |
+| versionCode  | String | Your app version code                        |
 | savaFilePath | String | The path that param files will be saved |
 
 ### Parse the downloaded parameter xml file to HashMap
