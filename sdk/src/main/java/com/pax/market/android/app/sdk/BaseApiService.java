@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.RemoteException;
 
@@ -78,9 +79,8 @@ public class BaseApiService implements ProxyDelegate {
                         logger.warn(">>> Init proxy from PASXTORE : [NULL]");
                     }
                     setStoreProxyInfo(proxyInfo);
-                    String apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
-                    apiCallBack.initSuccess(apiUrl);
-                    callback1.initSuccess();
+                    final String apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
+                    new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, apiUrl));
                 } catch (RemoteException e) {
                     logger.error(">>> Get Api URL error", e);
                     callback1.initFailed(e);
@@ -102,6 +102,32 @@ public class BaseApiService implements ProxyDelegate {
             callback1.initFailed(new RemoteException(ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED));
             apiCallBack.initFailed();
             context.unbindService(serviceConnection);
+        }
+    }
+
+    private class InitApiParams {
+        Callback callback1;
+        ApiCallBack apiCallBack;
+        String apiUrl;
+
+        InitApiParams(ApiCallBack apiCallBack, Callback callback1, String apiUrl) {
+            this.callback1 = callback1;
+            this.apiCallBack = apiCallBack;
+            this.apiUrl = apiUrl;
+        }
+    }
+
+    private class InitApiAsyncTask extends AsyncTask<InitApiParams, Void, Void> {
+
+        @Override
+        protected Void doInBackground(InitApiParams... initApiParams) {
+            InitApiParams initApiParams1 = initApiParams[0];
+            if (initApiParams1 == null) {
+                return null;
+            }
+            initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl);
+            initApiParams1.callback1.initSuccess();
+            return null;
         }
     }
 

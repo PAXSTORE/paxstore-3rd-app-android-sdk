@@ -35,7 +35,6 @@ public class StoreSdk {
     private static final String PAXSTORE_DETAIL_PAGE = "com.pax.market.android.app.presentation.search.view.activity.SearchAppDetailActivity";
     private static final String PAXSTORE_DOWNLOADLIST_PAGE = "com.pax.market.android.app.presentation.downloadlist.view.activity.DownloadListActivity";
 
-    private static final String TAG = "StoreSdk";
     private static final String URI_PREFIX = "market://detail?id=%s";
     private static volatile StoreSdk instance;
     private ParamApi paramApi;
@@ -76,10 +75,10 @@ public class StoreSdk {
             this.appKey = appKey;
             this.appSecret = appSecret;
             try {
-                logger.debug(TAG, "init acquire 1");
+                logger.debug("init acquire 1");
                 semaphore.acquire(1);
             } catch (InterruptedException e) {
-                logger.error(TAG, "e:" + e);
+                logger.error("e:" + e);
             }
             BaseApiService.getInstance(context).init(appKey, appSecret, terminalSerialNo, callback,
                     new BaseApiService.ApiCallBack() {
@@ -88,17 +87,17 @@ public class StoreSdk {
                         public void initSuccess(String baseUrl) {
                             initApi(baseUrl, appKey, appSecret, terminalSerialNo, BaseApiService.getInstance(context));
                             semaphore.release(1);
-                            logger.debug(TAG, "initSuccess >> release acquire 1");
+                            logger.debug("initSuccess >> release acquire 1");
                         }
 
                         @Override
                         public void initFailed() {
                             semaphore.release(1);
-                            logger.debug(TAG, "initFailed >> release acquire 1");
+                            logger.error("initFailed >> release acquire 1");
                         }
                     });
         } else {
-            logger.debug(TAG, "Initialization is on process or has been done");
+            logger.debug("Initialization is on process or has been done");
         }
     }
 
@@ -174,16 +173,16 @@ public class StoreSdk {
      */
     private void acquireSemaphore() {
         try {
-            logger.debug(TAG, "acquireSemaphore api try acquire 2");
+            logger.debug("acquireSemaphore api try acquire 2");
             Long startTime = System.currentTimeMillis();
             semaphore.tryAcquire(2, 5, TimeUnit.SECONDS);
-            logger.debug(TAG, "tryAcquire cost Time:" + (System.currentTimeMillis() - startTime));
+            logger.debug("tryAcquire cost Time:" + (System.currentTimeMillis() - startTime));
         } catch (InterruptedException e) {
-            logger.error(TAG, "e:" + e);
+            logger.error("e:" + e);
         }
         if (semaphore.availablePermits() == 0) {
             semaphore.release(2);
-            logger.debug(TAG, "acquireSemaphore api release acquire 2");
+            logger.debug("acquireSemaphore api release acquire 2");
         }
     }
 

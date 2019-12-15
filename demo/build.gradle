@@ -6,8 +6,8 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 110
-        versionName "7.0.0"
+        versionCode 115
+        versionName "7.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -34,7 +34,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'net.grandcentrix.tray:tray:0.12.0'
     implementation 'com.android.support:appcompat-v7:27.0.+'
-    implementation 'com.pax.market:paxstore-3rd-app-android-sdk:7.0.0'
 
-//    implementation project(':sdk')
+    implementation project(':sdk')
 }
