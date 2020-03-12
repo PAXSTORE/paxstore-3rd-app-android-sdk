@@ -36,5 +36,5 @@ You will also get notified while the notification clicked by user, and you can r
 
 
 ### 4.Requirement
-1. PAXSTORE should be the lastest one.
-2. Your market should subscribe the Cloud Message service.
+1. PAXSTORE client version 7.0+
+2. Market subscribes the Cloud Message service.
