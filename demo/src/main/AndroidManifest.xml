@@ -48,6 +48,10 @@
         <meta-data android:name="PAXVAS_CloudMessage"
             android:value="true"/>
 
+        <!-- Add below meta-data to support GoInsight -->
+        <meta-data android:name="PAXVAS_Insight"
+            android:value="true"/>
+
     </application>
 
 </manifest>
