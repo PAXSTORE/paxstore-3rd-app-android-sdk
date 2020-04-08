@@ -12,6 +12,7 @@ import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.api.sdk.java.api.param.ParamApi;
+import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
@@ -39,6 +40,7 @@ public class StoreSdk {
     private static volatile StoreSdk instance;
     private ParamApi paramApi;
     private SyncApi syncApi;
+    private GoInsightApi goInsightApi;
     private UpdateApi updateApi;
     private Semaphore semaphore;
     private String appKey;
@@ -133,6 +135,16 @@ public class StoreSdk {
         return syncApi;
     }
 
+    public GoInsightApi goInsightApi() throws NotInitException {
+        if (goInsightApi == null) {
+            acquireSemaphore();
+            if (goInsightApi == null) {
+                throw new NotInitException("Not initialized");
+            }
+        }
+        return goInsightApi;
+    }
+
     /**
      * Get UpdateApi instance
      *
@@ -166,6 +178,7 @@ public class StoreSdk {
      * Make sure StoreSdk is not initailizing now.
      * <p>
      * Since developer will call {@link #paramApi() } or {@link  #syncApi()}
+     * of {@link #updateApi() } or {@link  #goInsightApi()}
      * when doing {@link #init}(which will take 1 to 2 seconds to finish),
      * at these period, any StoreSdk api call will fail.
      * So we add these method to hold the api call, until {@link #init} get
@@ -243,6 +256,7 @@ public class StoreSdk {
         paramApi = new ParamApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 
     /**
