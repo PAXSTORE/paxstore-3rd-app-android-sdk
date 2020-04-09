@@ -27,6 +27,7 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.DataQueryResultObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
@@ -353,6 +354,16 @@ public class MainActivity extends Activity {
         try {
             SdkObject sdkObject = StoreSdk.getInstance().goInsightApi().syncTerminalBizData(list);
             Log.e("GoInsightSample", "message: " + sdkObject.getMessage() + "  code: " + sdkObject.getBusinessCode());
+        } catch (NotInitException e) {
+            Log.e("MainActivity", "e:" + e);
+        }
+    }
+
+
+    public void getBizData() {
+        try {
+            DataQueryResultObject result = StoreSdk.getInstance().goInsightApi().findMerchantData("b8i2pmpf");
+            Log.d("MainActivity", result.toString());
         } catch (NotInitException e) {
             Log.e("MainActivity", "e:" + e);
         }

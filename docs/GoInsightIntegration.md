@@ -4,14 +4,14 @@ By integrating with this function, developers can upload bizdata to our GoInsigh
 
 
 ### 1：Initialization of Sdk
-Refer to the [SetUp](README.md)
+Refer to the [SetUp](../README.md)
 
 ### 2.Add meta-data to AndroidManifest
        <!-- Add below meta-data to support GoInsight -->
        <meta-data android:name="PAXVAS_Insight"
                   android:value="true"/>
 
-### 3.Upload bizdata sample
+### 3.Upload BizData Sample
 
         // You have to create dataSet in GoInsight, and each key you uploaded should exists in dataSet.
         // You will find how to create dataSet in our GoInsight document.
@@ -38,3 +38,207 @@ Refer to the [SetUp](README.md)
             }
         }
 
+
+### 4. Search APP BizData
+
+
+The search app bizData API allow the third party system search data.<br/>
+Note: This result of this API depends on the API query settings in GoInsight. Paging needs to be set when the query result set type is a details data.
+
+**API**
+
+```
+public Result<DataQueryResultDTO> findTemrinalData(String queryCode)
+public Result<DataQueryResultDTO> findTemrinalData(String queryCode, TimestampRangeType rangeType)
+public Result<DataQueryResultDTO> findTemrinalData(String queryCode, Integer pageNo, Integer pageSize)
+public Result<DataQueryResultDTO> findMerchantData(String queryCode)
+public Result<DataQueryResultDTO> findMerchantData(String queryCode, TimestampRangeType rangeType)
+public Result<DataQueryResultDTO> findMerchantData(String queryCode, Integer pageNo, Integer pageSize)
+public Result<DataQueryResultDTO> findDataFromInsight(String queryCode, TimestampRangeType rangeType, Integer pageNo, Integer pageSize)
+```
+
+**Input parameter(s) description**
+
+| Name| Type | Nullable|Description |
+|:---- | :----|:----|:----|
+|queryCode|String|false|search by GoInsight api query code|
+|rangeType|TimestampRangeType|true|you can choose the range of data results for search|
+|pageNo|int|true|page number, value must >= 1|
+|pageSize|int|false|the record number per page, range is 1 to 100 for details data query, range is 1 to 1000 for statistics data query|
+
+Note: The pageNo param will be ignore when your query result set type is statistics chart.
+
+Value of enum TimestampRangeType
+
+| Value | Description |
+|:---- |:----|
+|P1D|Yesterday|
+|P1W|Last Week|
+|P1M|Last Month|
+|P1Y|Last Year|
+|R1D|Recent Day|
+|R1W|Recent Week|
+|R1M|Recent Month|
+|R1Y|Recent Year|
+|T1D|Today|
+|T1W|This Week|
+|T1M|This Month|
+|T1Y|This Year|
+
+
+**Sample codes**
+
+```
+  try {
+            SdkObject sdkObject = StoreSdk.getInstance().goInsightApi().syncTerminalBizData(list);
+        } catch (NotInitException e) {
+            Log.e("MainActivity", "e:" + e);
+        }
+```
+
+**Client side validation failed sample result(JSON formatted)**
+
+```
+{
+	"businessCode": 36000,
+	"message": ["The query code is not found"]
+}
+```
+
+**Succssful sample result(JSON formatted)**
+
+```
+{
+	"businessCode": 0,
+	"data": {
+        "worksheetName": "Merchant transaction amount trend (This Year)",
+		"columns": [{
+			"colName": "acquirer_type",
+			"displayName": "Acquirer Type"
+		}, {
+			"colName": "currency",
+			"displayName": "Currency"
+		}, {
+			"colName": "purchase_id",
+			"displayName": "Purchase ID"
+		}, {
+			"colName": "amount",
+			"displayName": "Amount"
+		}, {
+			"colName": "tax",
+			"displayName": "Tax"
+		}, {
+			"colName": "_sys_marketid",
+			"displayName": "Marketplace"
+		}, {
+			"colName": "_sys_merchantid",
+			"displayName": "Merchant"
+		}, {
+			"colName": "_sys_terminalid",
+			"displayName": "Terminal"
+		}],
+		"rows": [
+			[{
+				"colName": "acquirer_type",
+				"value": "ZTO"
+			}, {
+				"colName": "currency",
+				"value": "USD"
+			}, {
+                "colName": "purchase_id",
+				"value": "15851195134847"
+			}, {
+                "colName": "amount",
+				"value": "169.15"
+			}, {
+                "colName": "tax",
+				"value": "64.38"
+			}, {
+				"colName": "_sys_marketid",
+				"value": "demo"
+			}, {
+				"colName": "_sys_merchantid",
+				"value": "Macy’s"
+			}, {
+				"colName": "_sys_terminalid",
+				"value": "0820087295"
+			}],
+            [{
+				"colName": "acquirer_type",
+				"value": "ZTO"
+			}, {
+				"colName": "currency",
+				"value": "USD"
+			}, {
+                "colName": "purchase_id",
+				"value": "15851135975100"
+			}, {
+                "colName": "amount",
+				"value": "2990.09"
+			}, {
+                "colName": "tax",
+				"value": "64.12"
+			}, {
+				"colName": "_sys_marketid",
+				"value": "demo"
+			}, {
+				"colName": "_sys_merchantid",
+				"value": "Macy’s"
+			}, {
+				"colName": "_sys_terminalid",
+				"value": "0820087295"
+			}]
+		],
+        "offset": 10,
+		"limit": 10,
+		"hasNext": true,
+	},
+	"rateLimitRemain": ""
+}
+```
+
+The type in dataSet of result is DataQueryResultObject. The structure shows below.
+
+Structure of class TerminalDTO
+
+|Property Name|Type|Description|
+|:---|:---|:---|
+|worksheetName|String|The result set worksheet name.|
+|columns|List<Column>|The result set column.|
+|rows|List<List<Row>>|The result set.|
+|hasNext|Boolean|Is there any data.|
+|offset|int|Rows offset if exit page info.|
+|limit|int|Rows page size if exit page info.|
+
+Structure of class Column
+
+|Property Name|Type|Description|
+|:---|:---|:---|
+|colName|String|The dataset filed name in GoInsight|
+|displayName|String|The dataset filed's display name|
+
+Structure of class Row
+
+|Property Name|Type|Description|
+|:---|:---|:---|
+|colName|String|The dataset filed name in GoInsight|
+|value|Object|The dataset filed's value|
+
+**Possible client validation errors**
+
+> <font color=red>Parameter queryCode cannot be null</font>  
+> <font color=red>Parameter queryCode length must is 8</font>  
+> <font color=red>Parameter pageSize must be range is 1 to 1000</font>
+
+**Possible business codes**
+
+|Business Code|Message|Description|
+|:---|:---|:---|
+|36000|The query code is not found|&nbsp;|
+|36001|The query code is not active|&nbsp;|
+|36002|Query failed, please try again|&nbsp;|
+|36003|The query is timeout, please try again|&nbsp;|
+|36004|Insufficient permissions|&nbsp;|
+|36005|Invalid pageNo|&nbsp;|
+|36006|Invalid pageSize|&nbsp;|
+|36008|Query failed, please contact administrator|&nbsp;

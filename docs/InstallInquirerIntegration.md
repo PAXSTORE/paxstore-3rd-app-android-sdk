@@ -6,7 +6,7 @@ When your application returns false to isReadyUpdate(), PAXSTORE client will try
 
 
 ### 1：Initialization of Sdk
-Refer to the [SetUp](README.md)
+Refer to the [SetUp](../README.md)
 
 ### 2: Update Inquirer
 Update inquirer: Your app will be asked whether it can be updated when there is a new version afther you
