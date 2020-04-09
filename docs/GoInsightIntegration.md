@@ -47,6 +47,7 @@ Note: This result of this API depends on the API query settings in GoInsight. Pa
 
 **API**
 
+"findTemrinalData" can search only this terminal's BizData, "findMerchantData" can search all BizData belongs to this merchant.
 ```
 public Result<DataQueryResultDTO> findTemrinalData(String queryCode)
 public Result<DataQueryResultDTO> findTemrinalData(String queryCode, TimestampRangeType rangeType)
@@ -54,7 +55,7 @@ public Result<DataQueryResultDTO> findTemrinalData(String queryCode, Integer pag
 public Result<DataQueryResultDTO> findMerchantData(String queryCode)
 public Result<DataQueryResultDTO> findMerchantData(String queryCode, TimestampRangeType rangeType)
 public Result<DataQueryResultDTO> findMerchantData(String queryCode, Integer pageNo, Integer pageSize)
-public Result<DataQueryResultDTO> findDataFromInsight(String queryCode, TimestampRangeType rangeType, Integer pageNo, Integer pageSize)
+public Result<DataQueryResultDTO> findDataFromInsight(String queryCode, TimestampRangeType rangeType, Integer pageNo, Integer pageSize, boolean isMerchantAll)
 ```
 
 **Input parameter(s) description**
@@ -64,7 +65,10 @@ public Result<DataQueryResultDTO> findDataFromInsight(String queryCode, Timestam
 |queryCode|String|false|search by GoInsight api query code|
 |rangeType|TimestampRangeType|true|you can choose the range of data results for search|
 |pageNo|int|true|page number, value must >= 1|
-|pageSize|int|false|the record number per page, range is 1 to 100 for details data query, range is 1 to 1000 for statistics data query|
+|pageSize|int|true|the record number per page, range is 1 to 100 for details data query, range is 1 to 1000 for statistics data query|
+|isMerchantAll|boolean|true|search single terminal bizdata or all bizdata belongs to this merchant|
+
+
 
 Note: The pageNo param will be ignore when your query result set type is statistics chart.
 
