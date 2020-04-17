@@ -245,4 +245,11 @@ Structure of class Row
 |36004|Insufficient permissions|&nbsp;|
 |36005|Invalid pageNo|&nbsp;|
 |36006|Invalid pageSize|&nbsp;|
-|36008|Query failed, please contact administrator|&nbsp;
+|36008|Query failed, please contact administrator|&nbsp;|
+|36009|Too many request, please try again later|&nbsp;
+
+**Possible abnormal http codes**
+
+|Http Code|Message|Description|
+|:---|:---|:---|
+|429|Too many request, please try again in one minute, two minutes or whatever|&nbsp;
