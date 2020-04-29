@@ -49,13 +49,13 @@ Note: This result of this API depends on the API query settings in GoInsight. Pa
 
 "findTemrinalData" can search only this terminal's BizData, "findMerchantData" can search all BizData belongs to this merchant.
 ```
-public Result<DataQueryResultDTO> findTemrinalData(String queryCode)
-public Result<DataQueryResultDTO> findTemrinalData(String queryCode, TimestampRangeType rangeType)
-public Result<DataQueryResultDTO> findTemrinalData(String queryCode, Integer pageNo, Integer pageSize)
-public Result<DataQueryResultDTO> findMerchantData(String queryCode)
-public Result<DataQueryResultDTO> findMerchantData(String queryCode, TimestampRangeType rangeType)
-public Result<DataQueryResultDTO> findMerchantData(String queryCode, Integer pageNo, Integer pageSize)
-public Result<DataQueryResultDTO> findDataFromInsight(String queryCode, TimestampRangeType rangeType, Integer pageNo, Integer pageSize, boolean isMerchantAll)
+public DataQueryResultObject findTemrinalData(String queryCode)
+public DataQueryResultObject findTemrinalData(String queryCode, TimestampRangeType rangeType)
+public DataQueryResultObject findTemrinalData(String queryCode, Integer pageNo, Integer pageSize)
+public DataQueryResultObject findMerchantData(String queryCode)
+public DataQueryResultObject findMerchantData(String queryCode, TimestampRangeType rangeType)
+public DataQueryResultObject findMerchantData(String queryCode, Integer pageNo, Integer pageSize)
+public DataQueryResultObject findDataFromInsight(String queryCode, TimestampRangeType rangeType, Integer pageNo, Integer pageSize, boolean isMerchantAll)
 ```
 
 **Input parameter(s) description**
