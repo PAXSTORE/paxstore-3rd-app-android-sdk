@@ -23,15 +23,16 @@ import android.widget.Toast;
 import com.pax.market.android.app.sdk.BaseApiService;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
-
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends Activity {
 
+public class MainActivity extends Activity {
+    private final String TAG = MainActivity.class.getSimpleName();
     private TextView bannerTitleTV;
     private TextView bannerTextTV;
     private TextView bannerSubTextTV;
+    private TextView mTestGoInsight;
     private TextView versionTV;
     private LinearLayout openClientlayout;
     private MsgReceiver msgReceiver;
@@ -51,22 +52,23 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
-        spUtil=new SPUtil();
+        spUtil = new SPUtil();
 
         bannerTitleTV = (TextView) findViewById(R.id.banner_title);
         bannerTextTV = (TextView) findViewById(R.id.banner_text);
         bannerSubTextTV = (TextView) findViewById(R.id.banner_sub_text);
         tradingStateSwitch = (Switch) findViewById(R.id.tradingStateSwitch);
         openClientlayout = (LinearLayout) findViewById(R.id.openAppDetail);
-        versionTV = (TextView)findViewById(R.id.versionText);
-
-        versionTV.setText(getResources().getString(R.string.label_version_text)+" "+BuildConfig.VERSION_NAME);
+        versionTV = (TextView) findViewById(R.id.versionText);
+        mTestGoInsight = (TextView) findViewById(R.id.testGoinsight);
+        versionTV.setText(getResources().getString(R.string.label_version_text) + " " + BuildConfig.VERSION_NAME);
 
         //receiver to get UI update.
         msgReceiver = new MsgReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DemoConstants.UPDATE_VIEW_ACTION);
         registerReceiver(msgReceiver, intentFilter);
+
 
         //switch to set trading status.
         tradingStateSwitch.setChecked(((BaseApplication) getApplicationContext()).isReadyToUpdate());
@@ -95,28 +97,28 @@ public class MainActivity extends Activity {
         nodataLayout = findViewById(R.id.nodata);
 
         String pushResultBannerTitle = spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE);
-        if(DemoConstants.DOWNLOAD_SUCCESS.equals(pushResultBannerTitle)){
+        if (DemoConstants.DOWNLOAD_SUCCESS.equals(pushResultBannerTitle)) {
             bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
             bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
             bannerSubTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
 
             datalist = spUtil.getDataList(DemoConstants.PUSH_RESULT_DETAIL);
             //if have push history, display it. the demo will only store the latest push record.
-            if(datalist!=null && datalist.size() >0) {
+            if (datalist != null && datalist.size() > 0) {
                 //display push history detail
                 detailListView.setVisibility(View.VISIBLE);
                 nodataLayout.setVisibility(View.GONE);
                 demoListViewAdapter = new DemoListViewAdapter(this, datalist, R.layout.param_detail_list_item);
                 detailListView.setAdapter(demoListViewAdapter);
-            }else{
+            } else {
                 //no data. check log for is a correct xml downloaded.
                 detailListView.setVisibility(View.GONE);
                 nodataLayout.setVisibility(View.VISIBLE);
                 Toast.makeText(this, "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
 
             }
-        }else {
-            if(DemoConstants.DOWNLOAD_FAILED.equals(pushResultBannerTitle)) {
+        } else {
+            if (DemoConstants.DOWNLOAD_FAILED.equals(pushResultBannerTitle)) {
                 bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
                 bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
             }
@@ -130,18 +132,18 @@ public class MainActivity extends Activity {
         getTerminalInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StoreSdk.getInstance().getBaseTerminalInfo(getApplicationContext(),new BaseApiService.ICallBack() {
+                StoreSdk.getInstance().getBaseTerminalInfo(getApplicationContext(), new BaseApiService.ICallBack() {
                     @Override
                     public void onSuccess(Object obj) {
                         TerminalInfo terminalInfo = (TerminalInfo) obj;
-                        Log.i("onSuccess: ",terminalInfo.toString());
+                        Log.i("onSuccess: ", terminalInfo.toString());
                         Toast.makeText(getApplicationContext(), terminalInfo.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Exception e) {
-                        Log.i("onError: ",e.toString());
-                        Toast.makeText(getApplicationContext(), "getTerminalInfo Error:"+e.toString(), Toast.LENGTH_SHORT).show();
+                        Log.i("onError: ", e.toString());
+                        Toast.makeText(getApplicationContext(), "getTerminalInfo Error:" + e.toString(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -154,9 +156,9 @@ public class MainActivity extends Activity {
     }
 
     private void openAppDetail(String packageName) {
-        String url = String.format("market://detail?id=%s",packageName);
-        Uri uri= Uri.parse(url);
-        Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+        String url = String.format("market://detail?id=%s", packageName);
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.setClassName("com.pax.market.android.app", "com.pax.market.android.app.presentation.search.view.activity.SearchAppDetailActivity");
         intent.putExtra("app_packagename", packageName);
         try {
@@ -169,11 +171,11 @@ public class MainActivity extends Activity {
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.WRITE_EXTERNAL_STORAGE" };
-
+            "android.permission.WRITE_EXTERNAL_STORAGE"};
 
     /**
      * this method request sd card rw permission, you don't need this when you use internal storage
+     *
      * @param activity
      */
     public static void verifyStoragePermissions(Activity activity) {
@@ -184,7 +186,7 @@ public class MainActivity extends Activity {
                     "android.permission.WRITE_EXTERNAL_STORAGE");
             if (permission != PackageManager.PERMISSION_GRANTED) {
                 // request permissions if don't have
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,19 +207,19 @@ public class MainActivity extends Activity {
 
             //update main page UI for push status
             int resultCode = intent.getIntExtra(DemoConstants.DOWNLOAD_RESULT_CODE, 0);
-            switch (resultCode){
+            switch (resultCode) {
                 case DemoConstants.DOWNLOAD_STATUS_SUCCESS:
                     bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
                     bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
                     bannerSubTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
                     datalist = spUtil.getDataList(DemoConstants.PUSH_RESULT_DETAIL);
-                    if(datalist!=null && datalist.size() >0) {
+                    if (datalist != null && datalist.size() > 0) {
                         //display push history detail
                         detailListView.setVisibility(View.VISIBLE);
                         nodataLayout.setVisibility(View.GONE);
                         demoListViewAdapter = new DemoListViewAdapter(MainActivity.this, datalist, R.layout.param_detail_list_item);
                         detailListView.setAdapter(demoListViewAdapter);
-                    }else{
+                    } else {
                         detailListView.setVisibility(View.GONE);
                         nodataLayout.setVisibility(View.VISIBLE);
                         Toast.makeText(context, "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
@@ -238,5 +240,8 @@ public class MainActivity extends Activity {
 
         }
     }
+
+
+
 
 }

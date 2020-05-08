@@ -1,0 +1,229 @@
+package com.pax.android.demoapp;
+
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.pax.market.android.app.sdk.BaseApiService;
+import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.android.app.sdk.dto.TerminalInfo;
+
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link APIFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link APIFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class APIFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+
+    private TextView bannerTitleTV;
+    private TextView bannerTextTV;
+    private TextView bannerSubTextTV;
+    private TextView mTestGoInsight;
+    private TextView versionTV;
+    private LinearLayout openClientlayout;
+    private MainActivity.MsgReceiver msgReceiver;
+    private Switch tradingStateSwitch;
+    private Button getTerminalInfoBtn;
+
+    private ScrollView scrollView;
+
+
+
+    private OnFragmentInteractionListener mListener;
+
+    public APIFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment APIFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static APIFragment newInstance(String param1, String param2) {
+        APIFragment fragment = new APIFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.api, container, false);
+
+        bannerTitleTV = (TextView) view.findViewById(R.id.banner_title);
+        bannerTextTV = (TextView) view.findViewById(R.id.banner_text);
+        bannerSubTextTV = (TextView) view.findViewById(R.id.banner_sub_text);
+        tradingStateSwitch = (Switch) view.findViewById(R.id.tradingStateSwitch);
+        openClientlayout = (LinearLayout) view.findViewById(R.id.openAppDetail);
+        versionTV = (TextView) view.findViewById(R.id.versionText);
+        mTestGoInsight = (TextView) view.findViewById(R.id.testGoinsight);
+        versionTV.setText(getResources().getString(R.string.label_version_text) + " " + BuildConfig.VERSION_NAME);
+
+
+
+
+        //switch to set trading status.
+        tradingStateSwitch.setChecked(((BaseApplication) getContext().getApplicationContext()).isReadyToUpdate());
+        tradingStateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    ((BaseApplication) getContext().getApplicationContext()).setReadyToUpdate(true);
+                } else {
+                    ((BaseApplication) getContext().getApplicationContext()).setReadyToUpdate(false);
+                }
+            }
+        });
+
+        //open paxtore client
+        openClientlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //put app 'NeptuneService' package name here for demo.
+                //if the market don't have this app, it will show app not found, else will go to detail page in PAXSTORE market
+                openAppDetail(getActivity().getPackageName());
+            }
+        });
+
+
+
+
+
+        getTerminalInfoBtn = view.findViewById(R.id.GetTerminalInfo);
+
+        getTerminalInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoreSdk.getInstance().getBaseTerminalInfo(getContext().getApplicationContext(), new BaseApiService.ICallBack() {
+                    @Override
+                    public void onSuccess(Object obj) {
+                        TerminalInfo terminalInfo = (TerminalInfo) obj;
+                        Log.i("onSuccess: ", terminalInfo.toString());
+                        Toast.makeText(getContext().getApplicationContext(), terminalInfo.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.i("onError: ", e.toString());
+                        Toast.makeText(getContext().getApplicationContext(), "getTerminalInfo Error:" + e.toString(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+
+        scrollView = view.findViewById(R.id.root);
+        scrollView.smoothScrollTo(0, 0);
+
+        return view;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+
+
+
+
+
+
+    private void openAppDetail(String packageName) {
+        String url = String.format("market://detail?id=%s", packageName);
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setClassName("com.pax.market.android.app", "com.pax.market.android.app.presentation.search.view.activity.SearchAppDetailActivity");
+        intent.putExtra("app_packagename", packageName);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -14,4 +14,7 @@
     <string name="label_not_ready_to_update">App is busy, can not be updated by PAXSTORE app now.</string>
     <string name="label_retrieveTerminalInfo">Retrieve Terminal Info</string>
     <string name="label_button_retrieve">Retrieve</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
