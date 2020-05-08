@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 
 import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
@@ -407,10 +408,13 @@ public class StoreSdk {
         LocationService.setCallback(locationCallback);
         Intent intent = new Intent(context, LocationService.class);
         intent.setPackage(BuildConfig.APPLICATION_ID);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
         //如果启动service失败，有可能没有结果返回，测试需要让它自动返回一个timeout的结果。
     }
-
 
 
 }
