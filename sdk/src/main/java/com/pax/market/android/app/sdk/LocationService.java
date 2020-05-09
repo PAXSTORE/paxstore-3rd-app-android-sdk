@@ -45,6 +45,7 @@ public class LocationService extends Service {
                 default:
                     break;
             }
+            LocationService.this.stopSelf();
             super.handleMessage(msg);
         }
     });
@@ -60,6 +61,7 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        NotificationUtils.showForeGround(this, "LocationService");
         //绑定服务
         conn = new MyConn();
         Intent intent2 = new Intent();
@@ -71,6 +73,7 @@ public class LocationService extends Service {
             locationInfo.setMessage(BIND_SERVICE_FAILED);
             locationInfo.setBusinessCode(GET_LOCATION_FAILED);
             locationCallback.locationResponse(locationInfo);
+            this.stopSelf();
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -80,6 +83,7 @@ public class LocationService extends Service {
         if (mBond) {
             unbindService(conn);
         }
+        locationCallback = null;
         super.onDestroy();
     }
 
@@ -104,6 +108,7 @@ public class LocationService extends Service {
                 serverMessenger.send(clientMessage);
             } catch (RemoteException e) {
                 e.printStackTrace();
+                LocationService.this.stopSelf();
             }
         }
 
@@ -111,6 +116,7 @@ public class LocationService extends Service {
         public void onServiceDisconnected(ComponentName name) {
             serverMessenger = null;
             mBond = false;
+            LocationService.this.stopSelf();
         }
     }
 }
