@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.pax.market.android.app.sdk.dto.LocationInfo;
+import com.pax.market.android.app.sdk.util.NotificationUtils;
 
 /**
  * Created by zcy on 2019/5/5 0005.

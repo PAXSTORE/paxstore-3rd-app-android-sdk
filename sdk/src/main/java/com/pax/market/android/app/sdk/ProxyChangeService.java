@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
+import com.pax.market.android.app.sdk.util.NotificationUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
