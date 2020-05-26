@@ -13,7 +13,7 @@ import com.pax.market.android.app.sdk.util.NotificationUtils;
 public class ParamService extends IntentService {
     private static final String TAG = ParamService.class.getSimpleName();
     private static final String ACTION_TO_DOWNLOAD_PARAMS = "com.sdk.ACTION_TO_DOWNLOAD_PARAMS";
-    private static final String TERMINAL_SERIALNUM = "SN";
+    public static final String TERMINAL_SERIALNUM = "SN";
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -36,7 +36,6 @@ public class ParamService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.e(TAG, "ttt onHandleIntent: start");
         if (intent == null) {
             return;
         }
@@ -45,7 +44,6 @@ public class ParamService extends IntentService {
         if (sn == null) {
             return;
         }
-        Log.e(TAG, "ttt getPackageName: " + getPackageName());
         sendBroadcast(new Intent(ACTION_TO_DOWNLOAD_PARAMS)
                 .addCategory(getPackageName())
                 .setPackage(getPackageName())
