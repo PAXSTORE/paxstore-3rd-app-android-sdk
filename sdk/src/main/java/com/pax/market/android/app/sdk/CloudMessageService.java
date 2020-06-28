@@ -3,7 +3,13 @@ package com.pax.market.android.app.sdk;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
+import com.pax.market.android.app.sdk.util.NotificationUtils;
+import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.base.util.StringUtils;
 
 import org.slf4j.Logger;
@@ -55,6 +61,9 @@ public class CloudMessageService extends IntentService {
                     case 3:
                         messageIntent.setAction(ACTION_NOTIFY_DATA_MESSAGE_RECEIVED);
                         break;
+                    case 4:
+                        messageIntent.setAction(ACTION_NOTIFY_MEDIA_MESSAGE_RECEIVED);
+                        break;
                     default:
                         messageIntent.setAction(ACTION_DATA_MESSAGE_RECEIVED);
                         break;
@@ -76,11 +85,22 @@ public class CloudMessageService extends IntentService {
                 if (!cloudMessage.isDataEmpty()) {
                     messageIntent.putExtra(EXTRA_MESSAGE_DATA, cloudMessage.getDataJson());
                 }
+                if (msgType == 4) {
+                    messageIntent.putExtra(EXTRA_MEIDA, cloudMessage.getMediaJson());
+                    saveMediaMessage(cloudMessage);
+                }
                 messageIntent.setPackage(getPackageName());
                 messageIntent.addCategory(getPackageName());
                 sendBroadcast(messageIntent);
             }
         }
+    }
+
+    private void saveMediaMessage(CloudMessage cloudMessage) {
+        Log.e(TAG, "Add new media message: " + cloudMessage.toString());
+        Gson gson = new GsonBuilder().create();
+        MediaMesageInfo mediaMesageInfo = gson.fromJson(cloudMessage.getMediaJson(), MediaMesageInfo.class);
+        PreferencesUtils.putObject(getApplicationContext(), MEDIA_MESSAGE, mediaMesageInfo);
     }
 
     private String decrypt(String encryptedData) {

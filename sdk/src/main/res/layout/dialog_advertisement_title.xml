@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/rl_center_dialog"
+        android:layout_width="368dp"
+        android:layout_height="450dp"
+        android:background="@drawable/popup_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:gravity="center"
+            tools:text="This is title  This is titleThis is titleThis is titleThis is title"
+            android:textSize="20sp"
+            android:singleLine="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="48dp"
+            android:ellipsize="end"
+            android:id="@+id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <ImageButton
+            android:layout_alignParentRight="true"
+            android:id="@+id/btn_cancel"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:src="@drawable/top_icon_close" />
+
+        <ImageView
+            android:id="@+id/img_adver"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_above="@+id/lv_more"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:id="@+id/lv_more"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginRight="16dp"
+            android:background="#000"
+            android:layout_marginLeft="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="#ffffff"
+                android:id="@+id/tv_show_more"
+                android:textSize="20sp"
+                android:layout_marginLeft="8dp"
+                tools:text="know more detailsssssssssss"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@null"
+                 />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

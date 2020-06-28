@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 
 import com.pax.market.android.app.sdk.dto.LocationInfo;
+import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
+import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
@@ -407,10 +410,16 @@ public class StoreSdk {
         LocationService.setCallback(locationCallback);
         Intent intent = new Intent(context, LocationService.class);
         intent.setPackage(BuildConfig.APPLICATION_ID);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
         //如果启动service失败，有可能没有结果返回，测试需要让它自动返回一个timeout的结果。
     }
 
-
+    public MediaMesageInfo getMediaMesage(Context context) {
+        return PreferencesUtils.getObject(context, PushConstants.MEDIA_MESSAGE, MediaMesageInfo.class);
+    }
 
 }

@@ -11,4 +11,11 @@ public class CommonConstants {
     public static final String ERR_MSG_NULL_RETURNED = "Null value returned, PAXSTORE may not activated or running. Please check";
     public static final String ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED = "Bind service failed, PAXSTORE may not installed";
 
+    public static final String MEDIA_PATH = "/adCache/img_full.jpeg";
+
+    public static final String MEDIA_PATH_FULL = "/adCache/img_full.jpeg";
+    public static final String MEDIA_PATH_MID = "/adCache/img_mid.jpeg";
+    public static final String MEDIA_PATH_TITLE = "/adCache/img_title.jpeg";
+
+
 }

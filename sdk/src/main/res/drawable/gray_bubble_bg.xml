@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ *******************************************************************************
+  ~ COPYRIGHT
+  ~               PAX TECHNOLOGY, Inc. PROPRIETARY INFORMATION
+  ~   This software is supplied under the terms of a license agreement or
+  ~   nondisclosure agreement with PAX  Technology, Inc. and may not be copied
+  ~   or disclosed except in accordance with the terms in that agreement.
+  ~
+  ~      Copyright (C) 2017 PAX Technology, Inc. All rights reserved.
+  ~ *******************************************************************************
+  -->
+
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    android:useLevel="false" >
+    <solid android:color="#aaaaaa" />
+    <padding
+        android:left="7dp"
+        android:top="1dp"
+        android:right="7dp"
+        android:bottom="1dp" />
+    <corners
+        android:bottomLeftRadius="12dp"
+        android:bottomRightRadius="12dp"
+        android:topRightRadius="12dp"
+        android:topLeftRadius="12dp"
+        />
+    <solid
+        android:color="#aaaaaa" />
+    <size
+        android:height="20sp"/>
+</shape>
+
+

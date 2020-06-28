@@ -26,6 +26,13 @@
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </service>
+        <service android:name=".ParamService"  android:exported="true">
+            <intent-filter>
+                <action android:name="com.market.service.ACTION_TO_DOWNLOAD_PARAMS"/>
+                <category android:name="${applicationId}"/>
+            </intent-filter>
+        </service>
+
         <activity android:name=".MessagerActivity" />
     </application>
 

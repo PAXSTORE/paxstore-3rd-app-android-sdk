@@ -25,8 +25,8 @@
         <receiver android:name=".DownloadParamReceiver">
             <intent-filter>
                 <action android:name="com.paxmarket.ACTION_TO_DOWNLOAD_PARAMS" />
-                <!--change below to your packagename-->
-                <category android:name="com.pax.android.demoapp" />
+                <action android:name="com.sdk.ACTION_TO_DOWNLOAD_PARAMS" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
 
@@ -39,6 +39,7 @@
                 <action android:name="com.paxstore.mpush.NOTIFY_DATA_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.DATA_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.NOTIFICATION_MESSAGE_RECEIVED" />
+                <action android:name="com.paxstore.mpush.NOTIFY_MEDIA_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.NOTIFICATION_CLICK" />
                 <category android:name="${applicationId}" />
             </intent-filter>
