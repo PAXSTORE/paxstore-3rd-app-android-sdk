@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pax.android.demoapp">
-    <!-- To access Google+ APIs: -->
+
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,7 +13,6 @@
         android:icon="@mipmap/logo_demo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:testOnly="false"
         android:theme="@style/AppTheme">
         <activity android:name=".GenerateDataActivity" />
         <activity android:name=".MainActivity">
@@ -43,12 +43,33 @@
         <receiver android:name=".DownloadParamReceiver">
             <intent-filter>
                 <action android:name="com.paxmarket.ACTION_TO_DOWNLOAD_PARAMS" />
-                <!-- change below to your packagename -->
+                <!--change below to your packagename-->
                 <category android:name="com.pax.android.demoapp" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".DownloadParamService" />
+        <service android:name=".DownloadParamService"/>
+
+        <receiver android:name=".PushMessageReceiver"
+                  android:enabled="true"
+                  android:exported="false">
+            <intent-filter>
+                <action android:name="com.paxstore.mpush.NOTIFY_DATA_MESSAGE_RECEIVED" />
+                <action android:name="com.paxstore.mpush.DATA_MESSAGE_RECEIVED" />
+                <action android:name="com.paxstore.mpush.NOTIFICATION_MESSAGE_RECEIVED" />
+                <action android:name="com.paxstore.mpush.NOTIFICATION_CLICK" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Add below meta-data to support Cloud Message -->
+        <meta-data android:name="PAXVAS_CloudMessage"
+            android:value="true"/>
+
+        <!-- Add below meta-data to support GoInsight -->
+        <meta-data android:name="PAXVAS_Insight"
+            android:value="true"/>
+
     </application>
 
 </manifest>

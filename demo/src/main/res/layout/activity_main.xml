@@ -58,8 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.2"
@@ -73,8 +73,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.2"
@@ -93,10 +93,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif"
                 android:text="@string/label_param_detail"
                 android:textColor="#a9aabd"
@@ -132,10 +132,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif"
                 android:text="@string/label_function"
                 android:textColor="#a9aabd"
@@ -167,6 +167,43 @@
                     android:textOff="No"
                     android:textOn="Yes"
                     android:theme="@style/MySwitchStyle" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#DDDDDD" />
+
+
+            <LinearLayout
+                android:id="@+id/check_update"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/label_check_update" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="#ffffff"
+                        android:padding="16dp"
+                        android:src="@mipmap/list_btn_arrow" />
+                </LinearLayout>
             </LinearLayout>
 
             <ImageView
@@ -212,7 +249,46 @@
                 android:layout_height="0.5dp"
                 android:background="#DDDDDD" />
 
+
             <LinearLayout
+                android:id="@+id/open_downloadlist_page"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/open_download_page_from_paxstore_client" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="#ffffff"
+                        android:padding="16dp"
+                        android:src="@mipmap/list_btn_arrow" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#DDDDDD" />
+
+            <LinearLayout
+                android:id="@+id/lv_retrieve_data"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:background="#ffffff"
@@ -224,44 +300,124 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:layout_weight="1"
-                    android:text="@string/label_retrieveTerminalInfo" />
+                    android:text="Retrieve Data" />
 
-                <Button
-                    android:id="@+id/GetTerminalInfo"
+                <ImageView
+                    android:id="@+id/img_retrieve_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
-                    android:layout_margin="10dp"
-                    android:background="#63af57"
-                    android:gravity="center|center_vertical"
-                    android:text="@string/label_button_retrieve"
-                    android:textColor="#ffffff"
-                    android:textSize="12sp" />
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:src="@mipmap/list_btn_arrow" />
+
             </LinearLayout>
 
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#DDDDDD" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="vertical"
-            android:background="#ffffff">
-
-            <TextView
-                android:id="@+id/testGoinsight"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/lv_childs_retrieve"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:fontFamily="sans-serif"
-                android:text="testGoinsight"
-                android:textSize="12sp"
-                android:textStyle="normal" />
-        </RelativeLayout>
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#ffffff"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/label_retrieveTerminalInfo" />
+
+                    <Button
+                        android:id="@+id/GetTerminalInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_margin="10dp"
+                        android:background="#63af57"
+                        android:gravity="center|center_vertical"
+                        android:text="@string/label_button_retrieve"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#DDDDDD" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#ffffff"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/get_terminal_location" />
+
+                    <Button
+                        android:id="@+id/get_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_margin="10dp"
+                        android:background="#63af57"
+                        android:gravity="center|center_vertical"
+                        android:text="@string/label_button_retrieve"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#DDDDDD" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#ffffff"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:text="Get PAXSTORE Online Status" />
+
+                    <Button
+                        android:id="@+id/get_online_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_margin="10dp"
+                        android:background="#63af57"
+                        android:gravity="center|center_vertical"
+                        android:text="@string/label_button_retrieve"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

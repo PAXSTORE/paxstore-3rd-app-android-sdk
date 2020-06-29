@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.pax.market.android.app.aidl.IApiUrlService;
 import com.pax.market.android.app.aidl.IRemoteSdkService;
+import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
@@ -19,6 +21,10 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_FAILED;
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_NULL_RETURNED;
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED;
 
 /**
  * Created by fojut on 2017/11/30.
@@ -31,6 +37,10 @@ public class BaseApiService implements ProxyDelegate {
     private static final String SP_STORE_PROXY_HOST = "proxyHost";
     private static final String SP_STORE_PROXY_PORT = "proxyPort";
     private static final String SP_STORE_PROXY_AUTH = "proxyAuthorization";
+    private static final String GET_TERMINAL_INFO_ACTION = "com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE";
+    private static final String INIT_ACTION = "com.pax.market.android.app.aidl.API_URL_SERVICE";
+    private static final String PAXSTORE_PACKAGE_NAME = "com.pax.market.android.app";
+
 
     private static volatile BaseApiService instance;
     private Context context;
@@ -69,9 +79,8 @@ public class BaseApiService implements ProxyDelegate {
                         logger.warn(">>> Init proxy from PASXTORE : [NULL]");
                     }
                     setStoreProxyInfo(proxyInfo);
-                    String apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
-                    apiCallBack.initSuccess(apiUrl);
-                    callback1.initSuccess();
+                    final String apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
+                    new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, apiUrl));
                 } catch (RemoteException e) {
                     logger.error(">>> Get Api URL error", e);
                     callback1.initFailed(e);
@@ -86,13 +95,39 @@ public class BaseApiService implements ProxyDelegate {
             }
         };
 
-        Intent intent = new Intent("com.pax.market.android.app.aidl.API_URL_SERVICE");
-        intent.setPackage("com.pax.market.android.app");
+        Intent intent = new Intent(INIT_ACTION);
+        intent.setPackage(PAXSTORE_PACKAGE_NAME);
         boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         if (!bindResult) {
-            callback1.initFailed(new RemoteException("Bind service failed, PAXSTORE may not installed"));
+            callback1.initFailed(new RemoteException(ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED));
             apiCallBack.initFailed();
             context.unbindService(serviceConnection);
+        }
+    }
+
+    private class InitApiParams {
+        Callback callback1;
+        ApiCallBack apiCallBack;
+        String apiUrl;
+
+        InitApiParams(ApiCallBack apiCallBack, Callback callback1, String apiUrl) {
+            this.callback1 = callback1;
+            this.apiCallBack = apiCallBack;
+            this.apiUrl = apiUrl;
+        }
+    }
+
+    private class InitApiAsyncTask extends AsyncTask<InitApiParams, Void, Void> {
+
+        @Override
+        protected Void doInBackground(InitApiParams... initApiParams) {
+            InitApiParams initApiParams1 = initApiParams[0];
+            if (initApiParams1 == null) {
+                return null;
+            }
+            initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl);
+            initApiParams1.callback1.initSuccess();
+            return null;
         }
     }
 
@@ -150,13 +185,17 @@ public class BaseApiService implements ProxyDelegate {
                 try {
                     TerminalInfo terminalInfo = IRemoteSdkService.Stub.asInterface(service).getBaseTerminalInfo();
                     if(terminalInfo == null || terminalInfo.getTid()==null || terminalInfo.getTid().isEmpty()){
-                        iCallBack.onError(new RemoteException("Null value returned, PAXSTORE may not activated or running. Please check"));
+                        if (terminalInfo.getBussinessCode() == QueryResult.GET_INFO_NOT_ALLOWED.getCode()) {
+                            iCallBack.onError(new RemoteException(QueryResult.GET_INFO_NOT_ALLOWED.getMsg()));
+                        } else {
+                            iCallBack.onError(new RemoteException(ERR_MSG_NULL_RETURNED));
+                        }
                     }else {
                         iCallBack.onSuccess(terminalInfo);
                     }
                 } catch (RemoteException e) {
                     logger.error(">>> getBaseTerminalInfo error", e);
-                    iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not running or PAXSTORE client version is below 6.1. Please check"));
+                    iCallBack.onError(new RemoteException(ERR_MSG_BIND_PAXSTORE_SERVICE_FAILED));
                 }
                 context.unbindService(this);
             }
@@ -167,11 +206,11 @@ public class BaseApiService implements ProxyDelegate {
             }
         };
 
-        Intent intent = new Intent("com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE");
-        intent.setPackage("com.pax.market.android.app");
+        Intent intent = new Intent(GET_TERMINAL_INFO_ACTION);
+        intent.setPackage(PAXSTORE_PACKAGE_NAME);
         boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         if (!bindResult) {
-            iCallBack.onError(new RemoteException("Bind service failed, PAXSTORE may not running or PAXSTORE client version is below 6.1. Please check"));
+            iCallBack.onError(new RemoteException(ERR_MSG_BIND_PAXSTORE_SERVICE_FAILED));
             context.unbindService(serviceConnection);
         }
     }

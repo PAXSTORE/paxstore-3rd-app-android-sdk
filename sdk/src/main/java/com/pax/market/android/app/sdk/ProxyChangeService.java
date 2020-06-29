@@ -19,7 +19,7 @@ import java.nio.charset.Charset;
 public class ProxyChangeService extends IntentService {
 
     private static final String TAG = ProxyChangeService.class.getSimpleName();
-    private static final Logger logger = LoggerFactory.getLogger(ProxyChangeReceiver.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProxyChangeService.class);
 
     private Gson gson;
 
@@ -45,6 +45,7 @@ public class ProxyChangeService extends IntentService {
     public void onCreate() {
         super.onCreate();
         this.gson = new GsonBuilder().create();
+        NotificationUtils.showForeGround(this, "Initializing proxy");
     }
 
     @Override
