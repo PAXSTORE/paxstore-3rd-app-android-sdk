@@ -28,6 +28,8 @@ import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import java.io.IOException;
 
 public class AdvertisementDialog extends Dialog {
+    
+    private static final String TAG = AdvertisementDialog.class.getSimpleName();
     /**
      * The dialog is showing
      */
@@ -44,18 +46,16 @@ public class AdvertisementDialog extends Dialog {
     private static AdvertisementDialog instance;
 
     View layout;
-    WindowManager mWindowManager;
-    WindowManager.LayoutParams params;
     /**
      * CountDownTimer 实现倒计时
      */
     private CountDownTimer countDownTimer;
     private Context context;
-    private int template = PushConstants.MEDIA_TYPE_FULL;
+    private int template;
     private String linkText;
     private String linkUrl;
     private boolean showSkipButton;
-    private int countDownTime = DEFAULT_COUNT_DOWN;
+    private int countDownTime;
     private String imgUrl;
     private String linkTextColor;
     private String linkTextBgColor;
@@ -64,7 +64,7 @@ public class AdvertisementDialog extends Dialog {
     private String title;
     private String titleColor;
     private OnLinkClick listener;
-    private boolean openLink = true;
+    private boolean openLink;
 
 
     private ImageView mImg;
@@ -109,6 +109,10 @@ public class AdvertisementDialog extends Dialog {
 
     public static int show(Context context, boolean openLink, OnLinkClick listener) {
         return new Builder().context(context).openLink(openLink).showDialog(listener);
+
+    }
+    public static MediaMesageInfo getMediaMesage(Context context) {
+        return PreferencesUtils.getObject(context, PushConstants.MEDIA_MESSAGE, MediaMesageInfo.class);
     }
 
     public void init() {
@@ -183,7 +187,7 @@ public class AdvertisementDialog extends Dialog {
                 try {
                     parseColor = Color.parseColor(linkTextColor);
                 } catch (IllegalArgumentException e) {
-                    Log.e("AdvertisementDialog", "e:" + e);
+                    Log.e(TAG, "e:" + e);
                 }
                 ((TextView) layout.findViewById(R.id.tv_show_more)).setTextColor(parseColor);
             }
@@ -223,7 +227,7 @@ public class AdvertisementDialog extends Dialog {
             ((Activity) context).startActivityForResult(it, 11);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, "Error: there is no browser found to open this link.", Toast.LENGTH_LONG).show();
-            Log.e("AdvertisementDialog", "e:" + e);
+            Log.e(TAG, "e:" + e);
         }
     }
 
@@ -234,7 +238,7 @@ public class AdvertisementDialog extends Dialog {
             try {
                 parseColor = Color.parseColor(colorStr);
             } catch (IllegalArgumentException e) {
-                Log.e("AdvertisementDialog", "e:" + e);
+                Log.e(TAG, "e:" + e);
             }
         }
         return parseColor;
@@ -383,7 +387,7 @@ public class AdvertisementDialog extends Dialog {
 
         public int showDialog(OnLinkClick listener) {
             if (instance != null && instance.isShowing()) {
-                Log.w("AdvertisementDialog", "Dialog is showing!");
+                Log.w(TAG, "Dialog is showing!");
                 return ERR_DIALOG_SHOWING; // 有正在显示的dialog
             }
             if (this.context == null) {
@@ -434,10 +438,6 @@ public class AdvertisementDialog extends Dialog {
             titleColor(mediaMesageInfo.getTitleColor());
         }
 
-        private void setDialogValue(Context context) {
-
-        }
-
         private MediaMesageInfo getMediaMesageInfo() {
             return PreferencesUtils.getObject(context, PushConstants.MEDIA_MESSAGE, MediaMesageInfo.class);
         }
@@ -446,9 +446,6 @@ public class AdvertisementDialog extends Dialog {
 
     private class ImageLoadTask extends AsyncTask<String, Integer, Bitmap> {
         //执行后台任务前做一些UI操作
-        @Override
-        protected void onPreExecute() {
-        }
 
         //执行后台任务（耗时操作）,不可在此方法内修改UI
         @Override
@@ -485,11 +482,6 @@ public class AdvertisementDialog extends Dialog {
                 startTimeout(skipButtonText);
             }
         }
-
-        //取消执行中的任务时更改UI
-        @Override
-        protected void onCancelled() {
-
-        }
     }
+
 }

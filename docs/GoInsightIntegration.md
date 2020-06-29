@@ -72,23 +72,22 @@ public DataQueryResultObject findDataFromInsight(String queryCode, TimestampRang
 
 Note: The pageNo param will be ignore when your query result set type is statistics chart.
 
-Value of enum TimestampRangeType
+**Value of enum TimestampRangeType**
 
 | Value | Description |
 |:---- |:----|
-|P1D|Yesterday|
-|P1W|Last Week|
-|P1M|Last Month|
-|P1Y|Last Year|
-|R1D|Recent Day|
-|R1W|Recent Week|
-|R1M|Recent Month|
-|R1Y|Recent Year|
-|T1D|Today|
-|T1W|This Week|
-|T1M|This Month|
-|T1Y|This Year|
-
+|YESTERDAY|Yesterday|
+|LAST_WEEK|Last Week|
+|LAST_MONTH|Last Month|
+|LAST_YEAR|Last Year|
+|RECENT_DAY|Recent Day|
+|RECENT_WEEK|Recent Week|
+|RECENT_MONTH|Recent Month|
+|RECENT_YEAR|Recent Year|
+|TODAY|Today|
+|THIS_WEEK|This Week|
+|THIS_MONTH|This Month|
+|THIS_YEAR|This Year|
 
 **Sample codes**
 
@@ -203,7 +202,7 @@ Value of enum TimestampRangeType
 
 The type in dataSet of result is DataQueryResultObject. The structure shows below.
 
-Structure of class TerminalDTO
+**Structure of class TerminalDTO**
 
 |Property Name|Type|Description|
 |:---|:---|:---|
@@ -214,14 +213,14 @@ Structure of class TerminalDTO
 |offset|int|Rows offset if exit page info.|
 |limit|int|Rows page size if exit page info.|
 
-Structure of class Column
+**Structure of class Column**
 
 |Property Name|Type|Description|
 |:---|:---|:---|
 |colName|String|The dataset filed name in GoInsight|
 |displayName|String|The dataset filed's display name|
 
-Structure of class Row
+**Structure of class Row**
 
 |Property Name|Type|Description|
 |:---|:---|:---|
@@ -246,10 +245,10 @@ Structure of class Row
 |36005|Invalid pageNo|&nbsp;|
 |36006|Invalid pageSize|&nbsp;|
 |36008|Query failed, please contact administrator|&nbsp;|
-|36009|Too many request, please try again later|&nbsp;
+|36009|Too many request, please try again later|&nbsp;|
 
 **Possible abnormal http codes**
 
 |Http Code|Message|Description|
 |:---|:---|:---|
-|429|Too many request, please try again in one minute, two minutes or whatever|&nbsp;
+|429|Too many request, please try again in one minute, two minutes or whatever|&nbsp;|

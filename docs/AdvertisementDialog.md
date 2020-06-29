@@ -12,11 +12,14 @@ com.pax.market.android.app.sdk.AdvertisementDialog, extends Dialog
             }
         });
 
+**Notice: If openLin=true, but no browser is installed  in the terminal, an error message will be shown.**
+
 | Parameter | Type                   | Description                    |
 | --------- | ---------------------- | ------------------------------ |
 | context   | Context                | Context                        |
 | openLink  | boolean                | true: open link by browser in the terminal when clicking link button. false: do nothing |
 | listener  | OnLinkClick            | return the linkUrl when clicking link button |
+
 
 | Result Code | Description                                                  |
 | ----------- | ------------------------------------------------------------ |
