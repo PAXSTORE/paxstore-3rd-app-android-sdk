@@ -14,6 +14,7 @@ public class ParamService extends IntentService {
     private static final String TAG = ParamService.class.getSimpleName();
     private static final String ACTION_TO_DOWNLOAD_PARAMS = "com.sdk.ACTION_TO_DOWNLOAD_PARAMS";
     public static final String TERMINAL_SERIALNUM = "SN";
+    public static final String TERMINAL_SEND_TIME = "SEND_TIME";
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -40,10 +41,12 @@ public class ParamService extends IntentService {
             return;
         }
         String sn = (String) intent.getSerializableExtra(TERMINAL_SERIALNUM);
-        sn = "EMULATOR30X0X0X0";
-        if (sn == null) {
+        Long timeStamp = (Long) intent.getLongExtra(TERMINAL_SEND_TIME, -1L);
+
+        if (sn == null || timeStamp < 0) {
             return;
         }
+
         sendBroadcast(new Intent(ACTION_TO_DOWNLOAD_PARAMS)
                 .addCategory(getPackageName())
                 .setPackage(getPackageName())
