@@ -5,20 +5,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChartData implements Serializable {
+    private ChartType type;
     private String title;
-    private List<String> legend;
-    private List<String> datas;
+    private List<String> colums;
+    private List<Object[]> datas;
 
-    public ChartData(String title, List<String> legend, List<String> datas) {
+    public ChartType getType() {
+        return type;
+    }
+
+    public void setType(ChartType type) {
+        this.type = type;
+    }
+
+    public ChartData(String title, List<String> colums, List<Object[]> datas) {
         this.title = title;
-        this.legend = legend;
+        this.colums = colums;
         this.datas = datas;
     }
 
     public ChartData() {
-        title="";
-        legend=new ArrayList<>();
-        datas=new ArrayList<>();
+        title = "";
+        colums = new ArrayList<>();
+        datas = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -29,29 +38,29 @@ public class ChartData implements Serializable {
         this.title = title;
     }
 
-    public List<String> getLegend() {
-        return legend;
+    public List<String> getColumus() {
+        return colums;
     }
 
-    public void setLegend(List<String> legend) {
-        this.legend = legend;
+    public void setColumus(List<String> legend) {
+        this.colums = legend;
     }
 
-    public List<String> getDatas() {
+    public List<Object[]> getDatas() {
         return datas;
     }
 
-    public void setDatas(List<String> datas) {
+    public void setDatas(List<Object[]> datas) {
         this.datas = datas;
     }
 
-    public boolean isEmpty(){
-        return (datas==null||datas.isEmpty());
+    public boolean  isEmpty() {
+        return (datas == null || datas.isEmpty());
     }
 
-    public void clear(){
-        title="";
-        legend.clear();
+    public void clear() {
+        title = "";
+        colums.clear();
         datas.clear();
     }
 }

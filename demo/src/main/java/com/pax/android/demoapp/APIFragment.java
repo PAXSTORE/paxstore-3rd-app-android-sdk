@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -20,8 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pax.market.android.app.sdk.BaseApiService;
+import com.pax.market.android.app.sdk.LocationService;
 import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.android.app.sdk.dto.LocationInfo;
+import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
+import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.UpdateObject;
+import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +43,7 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class APIFragment extends Fragment {
+    private static final String TAG = APIFragment.class.getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,19 +57,18 @@ public class APIFragment extends Fragment {
     private TextView bannerTitleTV;
     private TextView bannerTextTV;
     private TextView bannerSubTextTV;
-    private TextView mTestGoInsight;
     private TextView versionTV;
     private LinearLayout openClientlayout;
-    private MainActivity.MsgReceiver msgReceiver;
     private Switch tradingStateSwitch;
     private Button getTerminalInfoBtn;
 
     private ScrollView scrollView;
-
-
-
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList;
+    private ImageView mImgArrow;
+    private LinearLayout lvChildRetrieve;
+    private Button getTerminalLocation, getOnlineStatus; // todo remove
     private OnFragmentInteractionListener mListener;
-
+    private boolean isExpanded;
     public APIFragment() {
         // Required empty public constructor
     }
@@ -108,12 +115,14 @@ public class APIFragment extends Fragment {
         tradingStateSwitch = (Switch) view.findViewById(R.id.tradingStateSwitch);
         openClientlayout = (LinearLayout) view.findViewById(R.id.openAppDetail);
         versionTV = (TextView) view.findViewById(R.id.versionText);
-        mTestGoInsight = (TextView) view.findViewById(R.id.testGoinsight);
         versionTV.setText(getResources().getString(R.string.label_version_text) + " " + BuildConfig.VERSION_NAME);
+        openDownloadList = (LinearLayout) view.findViewById(R.id.open_downloadlist_page);
 
-
-
-
+        checkUpdate = (LinearLayout) view.findViewById(R.id.check_update);
+        lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
+        lvChildRetrieve = (LinearLayout) view.findViewById(R.id.lv_childs_retrieve);
+        mImgArrow = (ImageView) view.findViewById(R.id.img_retrieve_data);
+        getTerminalLocation = (Button) view.findViewById(R.id.get_location);
         //switch to set trading status.
         tradingStateSwitch.setChecked(((BaseApplication) getContext().getApplicationContext()).isReadyToUpdate());
         tradingStateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -139,10 +148,92 @@ public class APIFragment extends Fragment {
 
 
 
+        openDownloadList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoreSdk.getInstance().openDownloadListPage(getActivity().getPackageName(), getActivity().getApplicationContext());
+            }
+        });
 
+        checkUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // check if update available from PAXSTORE.
+
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final UpdateObject updateObject = StoreSdk.getInstance().updateApi().checkUpdate(BuildConfig.VERSION_CODE, getContext().getPackageName());
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (updateObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        if (updateObject.isUpdateAvailable()) {
+                                            Toast.makeText(getContext(), "Update is available", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            Toast.makeText(getContext(), "No Update available", Toast.LENGTH_LONG).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(getContext(), "errmsg:>>" + updateObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Log.w("MessagerActivity", "updateObject.getBusinessCode():"
+                                                + updateObject.getBusinessCode() + "\n msg:" + updateObject.getMessage());
+                                    }
+                                }
+                            });
+
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                        }
+                    }
+                }) ;
+
+                thread.start();
+
+            }
+        });
+
+
+        lvRetrieveData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    isExpanded = false;
+                    mImgArrow.setImageResource(R.mipmap.list_btn_arrow);
+                    lvChildRetrieve.setVisibility(View.GONE);
+                } else {
+                    isExpanded = true;
+                    mImgArrow.setImageResource(R.mipmap.list_btn_arrow_down);
+                    lvChildRetrieve.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        getTerminalLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoreSdk.getInstance().startLocate(getActivity().getApplicationContext(), new LocationService.LocationCallback() {
+                    @Override
+                    public void locationResponse(LocationInfo locationInfo) {
+                        Log.d(TAG, "Get Location Result：" + locationInfo.toString());
+                        Toast.makeText(getContext(),
+                                "Get Location Result：" + locationInfo.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
+        getOnlineStatus = (Button) view.findViewById(R.id.get_online_status);
+        getOnlineStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnlineStatusInfo onlineStatusFromPAXSTORE = StoreSdk.getInstance().getOnlineStatusFromPAXSTORE(getActivity().getApplicationContext());
+                Toast.makeText(getContext(), onlineStatusFromPAXSTORE.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         getTerminalInfoBtn = view.findViewById(R.id.GetTerminalInfo);
-
         getTerminalInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

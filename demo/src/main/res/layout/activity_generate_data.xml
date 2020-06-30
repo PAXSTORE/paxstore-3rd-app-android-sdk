@@ -29,30 +29,47 @@
     </RelativeLayout>
 
 
-
     <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="46dp"
         android:layout_marginBottom="50dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:paddingRight="10dp">
+
 
         <ListView
             android:id="@+id/data_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             />
+            android:layout_height="wrap_content" />
+
     </HorizontalScrollView>
 
     <Button
         android:id="@+id/generate"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
         android:background="#63AF57"
-        android:textColor="@android:color/white"
-        android:text="Upload Data" />
+        android:text="Upload Data"
+        android:textColor="@android:color/white" />
+
+
+    <RelativeLayout
+        android:id="@+id/pro_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="#403d3d3d"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
 
 </RelativeLayout>
 

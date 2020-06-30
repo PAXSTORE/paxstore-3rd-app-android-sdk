@@ -1,19 +1,41 @@
 package com.pax.android.demoapp;
 
-import android.content.ActivityNotFoundException;
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.pax.market.android.app.sdk.AdvertisementDialog;
+import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.api.sdk.java.base.dto.DataQueryResultObject;
+import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
+import static com.pax.android.demoapp.GenerateDataActivity.trans_bar;
+import static com.pax.android.demoapp.GenerateDataActivity.trans_line;
+import static com.pax.android.demoapp.GenerateDataActivity.trans_pi;
 
 
 public class LauncherActivity extends FragmentActivity implements com.pax.android.demoapp.APIFragment.OnFragmentInteractionListener, com.pax.android.demoapp.GoFragment.OnFragmentInteractionListener, com.pax.android.demoapp.PushFragment.OnFragmentInteractionListener {
@@ -22,21 +44,56 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     private RadioGroup mGroup;
     private RadioButton mPush, mGo, mApi;
     private Fragment PushFragment, APIFragment, GoFragment;
-    private ChartData chartData;
+    private ChartData chartData_line, chartData_bar, chartData_pi;
+    private int initQuery[] = new int[3];
+    private SPUtil spUtil;
+    private MsgReceiver msgReceiver;
+    private List<F_Revicer> recivers = new ArrayList<>();
+    private static Handler handler = new Handler();
 
-
-    public ChartData getChartData() {
-        return chartData;
+    public static Handler getHandler() {
+        return handler;
     }
 
-    public void setChartData(ChartData chartData) {
-        this.chartData = chartData;
+    public ChartData getChartData_line() {
+        return chartData_line;
+    }
+
+
+    public ChartData getChartData_bar() {
+        return chartData_bar;
+    }
+
+
+    public ChartData getChartData_pi() {
+        return chartData_pi;
+    }
+
+    public int[] getInitQuery() {
+        return initQuery;
+    }
+
+    public void setInitQuery(int[] initQuery) {
+        this.initQuery = initQuery;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.laucnher);
+
+        showAd(this);
+
+        verifyStoragePermissions(this);
+        spUtil = new SPUtil();
+
+        //receiver to get UI update.
+        msgReceiver = new MsgReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(DemoConstants.UPDATE_VIEW_ACTION);
+        registerReceiver(msgReceiver, intentFilter);
+
+
         viewPager = findViewById(R.id.viewpager);
         mGroup = findViewById(R.id.r_group);
         mPush = findViewById(R.id.push);
@@ -98,7 +155,7 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
             }
         });
 
-
+        queryWrap();
     }
 
 
@@ -112,10 +169,139 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult");
-        if(data!=null){
-            chartData = (ChartData) data.getSerializableExtra("chart");
+        //解析返回数据更新UI
+        if (data != null) {
+            Bundle bundle = data.getBundleExtra("back");
+            ChartData graph_line = (ChartData) bundle.getSerializable("data_line");
+            ChartData graph_bar = (ChartData) bundle.getSerializable("data_bar");
+            ChartData graph_pi = (ChartData) bundle.getSerializable("data_pi");
+            chartData_line = graph_line;
+            chartData_bar = graph_bar;
+            chartData_pi = graph_pi;
         }
     }
+
+    private void queryWrap() {
+        for (int i = 0; i < initQuery.length; i++) {
+            initQuery[i] = 0;
+        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                queryBizData("3hi0fs8i", ChartType.LINE);
+                queryBizData("v664nkfc", ChartType.BAR);
+                queryBizData("7a5ck60a", ChartType.PI);
+            }
+        });
+        thread.start();
+    }
+
+    private void queryBizData(final String queryCode, final ChartType type) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    DataQueryResultObject temrinalData = StoreSdk.getInstance().goInsightApi().findMerchantData(queryCode);
+                    Log.d(TAG, "msg::" + temrinalData.getMessage());
+                    List<DataQueryResultObject.Column> columns = temrinalData.getColumns();
+                    //transform to chartData
+                    ChartData chart;
+                    switch (type) {
+                        case BAR:
+                            chart = trans_bar(temrinalData);
+                            chartData_bar = chart;
+                            if (chartData_bar == null) {
+                                initQuery[1] = -1;
+                            } else {
+                                initQuery[1] = 1;
+                            }
+
+                            break;
+                        case LINE:
+                            chart = trans_line(temrinalData);
+                            chartData_line = chart;
+                            if (chartData_line == null) {
+                                initQuery[0] = -1;
+                            } else {
+                                initQuery[0] = 1;
+                            }
+                            break;
+                        case PI:
+                            chart = trans_pi(temrinalData);
+                            chartData_pi = chart;
+                            if (chartData_pi == null) {
+                                initQuery[2] = -1;
+                            } else {
+                                initQuery[2] = 1;
+                            }
+                            break;
+                    }
+
+                } catch (NotInitException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+    }
+
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE"};
+
+
+    /**
+     * this method request sd card rw permission, you don't need this when you use internal storage
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+
+        try {
+            //check permissions
+            int permission = ActivityCompat.checkSelfPermission(activity,
+                    "android.permission.WRITE_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // request permissions if don't have
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public class MsgReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            for (F_Revicer listener : recivers) {
+                listener.onRecive(context, intent);
+            }
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(msgReceiver);
+        super.onDestroy();
+    }
+
+
+
+    private void showAd(Context context) {
+        int showResult = AdvertisementDialog.show(context, new AdvertisementDialog.OnLinkClick() {
+            @Override
+            public void onLinkClick(String linkUrl) {
+
+            }
+        });
+        Log.d(TAG, "showResult:" + showResult);
+    }
+
 
 
 

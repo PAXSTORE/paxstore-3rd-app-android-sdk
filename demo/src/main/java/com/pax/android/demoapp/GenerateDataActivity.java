@@ -1,15 +1,16 @@
 package com.pax.android.demoapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.FontsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.api.sdk.java.base.dto.DataQueryResultObject;
@@ -25,6 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static com.pax.android.demoapp.ChartType.BAR;
+import static com.pax.android.demoapp.ChartType.LINE;
+import static com.pax.android.demoapp.ChartType.PI;
+
 public class GenerateDataActivity extends Activity {
     private static final String TAG = GenerateDataActivity.class.getSimpleName();
     private List<DataBean> datas = new ArrayList<>();
@@ -32,6 +37,9 @@ public class GenerateDataActivity extends Activity {
     private ListView mDataListView;
     private GenerateAdapter mAapter;
     private View headerView;
+    private View mLoading;
+    private int mQueryCount = 0;
+    private List<ChartData> ret = new ArrayList<>();
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -40,17 +48,56 @@ public class GenerateDataActivity extends Activity {
                 case 0://upload
                     Bundle bundle = msg.getData();
                     if (bundle.getInt("code") == 0) {
-                        queryBizData("k420he8f");
+                        Toast.makeText(GenerateDataActivity.this, "Upload business data Successed!", Toast.LENGTH_SHORT).show();
+                        ret.clear();
+                        queryBizData("v664nkfc", BAR);
+                    } else {
+                        Toast.makeText(GenerateDataActivity.this, "" + bundle.getInt("code") + ":" + bundle.getString("msg"), Toast.LENGTH_SHORT).show();
+                        mLoading.setVisibility(View.GONE);
+                        finish();
                     }
                     break;
                 case 1://query
                     Bundle data = msg.getData();
                     ChartData chartData = (ChartData) data.getSerializable("data");
-                    Bundle ret = new Bundle();
-                    ret.putSerializable("data", chartData);
-//                    getIntent().
-//                    setIntent(ret);
-//                    finish();
+                    if (chartData == null) {
+                        Toast.makeText(GenerateDataActivity.this, "Query Data Error", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        switch (mQueryCount) {
+                            case 0:
+                                ret.add(chartData);
+                                queryBizData("3hi0fs8i", LINE);
+                                break;
+                            case 1:
+                                ret.add(chartData);
+                                queryBizData("7a5ck60a", PI);
+                                break;
+                            case 2:
+                                ret.add(chartData);
+                                Bundle bun = new Bundle();
+                                for (ChartData item : ret) {
+                                    switch (item.getType()) {
+                                        case LINE:
+                                            bun.putSerializable("data_line", item);
+                                            break;
+                                        case BAR:
+                                            bun.putSerializable("data_bar", item);
+                                            break;
+                                        case PI:
+                                            bun.putSerializable("data_pi", item);
+                                            break;
+                                    }
+                                }
+                                mLoading.setVisibility(View.GONE);
+                                Intent intent = new Intent(GenerateDataActivity.this, LauncherActivity.class);
+                                intent.putExtra("back", bun);
+                                setResult(1, intent);
+                                finish();
+                                break;
+                        }
+                        mQueryCount++;
+                    }
                     break;
             }
         }
@@ -72,6 +119,7 @@ public class GenerateDataActivity extends Activity {
         mAapter = new GenerateAdapter(generateFakeData(), this);
         mDataListView.setAdapter(mAapter);
         mDataListView.addHeaderView(headerView);
+        mLoading = findViewById(R.id.pro_wrap);
     }
 
 
@@ -224,6 +272,9 @@ public class GenerateDataActivity extends Activity {
 
 
     private void uploadBizData() {
+
+        mLoading.setVisibility(View.VISIBLE);
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -260,23 +311,26 @@ public class GenerateDataActivity extends Activity {
     }
 
 
-    private void queryBizData(final String queryCode) {
+    private void queryBizData(final String queryCode, final ChartType type) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    DataQueryResultObject temrinalData = StoreSdk.getInstance().goInsightApi().findTemrinalData(queryCode);
+                    DataQueryResultObject temrinalData = StoreSdk.getInstance().goInsightApi().findMerchantData(queryCode);
                     Log.d(TAG, "msg::" + temrinalData.getMessage());
                     List<DataQueryResultObject.Column> columns = temrinalData.getColumns();
-                    if (columns == null) {
-                        return;
-                    }
-                    List<List<RowObject>> rows = temrinalData.getRows();
-                    for (int i = 0; i < columns.size(); i++) {
-                        Log.d(TAG, columns.get(i).getColName());
-                    }
                     //transform to chartData
-                    ChartData chartData = trans(temrinalData);
+                    ChartData chartData = null;
+                    if (type == LINE) {
+                        chartData = trans_line(temrinalData);
+                    } else if (type == BAR) {
+                        chartData = trans_bar(temrinalData);
+                    } else if (type == PI) {
+                        chartData = trans_pi(temrinalData);
+                    }
+
+
+                    //transform to chartData
                     Message msg = Message.obtain();
                     msg.what = 1;
                     Bundle bundle = new Bundle();
@@ -294,20 +348,132 @@ public class GenerateDataActivity extends Activity {
     }
 
 
+    public static ChartData trans_bar(DataQueryResultObject in) {
+        if (in == null) {
+            return null;
+        }
 
-    public static ChartData trans(DataQueryResultObject in) {
         ChartData ret = new ChartData();
         List<DataQueryResultObject.Column> columns = in.getColumns();
         List<List<RowObject>> rows = in.getRows();
+
         if (columns == null || rows == null) {
             return null;
         }
-        for (int i = 0; i < columns.size(); i++) {
-            ret.getLegend().set(i, columns.get(i).getColName());
-        }
-        for (int i = 0; i < rows.size(); i++) {
 
+
+        ret.setTitle(in.getWorksheetName());
+
+        for (int i = 0; i < columns.size(); i++) {
+            ret.getColumus().add(columns.get(i).getColName());
         }
+
+
+        for (int i = 0; i < rows.size(); i++) {
+            List<RowObject> oneData = rows.get(i);
+            Object nnn[] = new Object[3];
+            for (int j = 0; j < oneData.size(); j++) {
+                if (oneData.get(j).getColName().equals("acquirertype")) {
+                    nnn[0] = oneData.get(j).getValue();
+                } else if (oneData.get(j).getColName().equals("amount")) {
+                    nnn[1] = oneData.get(j).getValue();
+                } else if (oneData.get(j).getColName().equals("XXX")) {
+                    nnn[2] = oneData.get(j).getValue();
+                }
+            }
+            ret.getDatas().add(nnn);
+        }
+
+        ret.setType(ChartType.BAR);
+
+        return ret;
+    }
+
+
+    public static ChartData trans_pi(DataQueryResultObject in) {
+        if (in == null) {
+            return null;
+        }
+
+        ChartData ret = new ChartData();
+        List<DataQueryResultObject.Column> columns = in.getColumns();
+        List<List<RowObject>> rows = in.getRows();
+
+        if (columns == null || rows == null) {
+            return null;
+        }
+
+
+        ret.setTitle(in.getWorksheetName());
+
+        for (int i = 0; i < columns.size(); i++) {
+            ret.getColumus().add(columns.get(i).getColName());
+        }
+
+
+        for (int i = 0; i < rows.size(); i++) {
+            List<RowObject> oneData = rows.get(i);
+            Object nnn[] = new Object[3];
+            for (int j = 0; j < oneData.size(); j++) {
+                if (oneData.get(j).getColName().equals("acquirertype")) {
+                    nnn[0] = oneData.get(j).getValue();
+                } else if (oneData.get(j).getColName().equals("amount")) {
+                    nnn[1] = oneData.get(j).getValue();
+                } else if (oneData.get(j).getColName().equals("XXX")) {
+                    nnn[2] = oneData.get(j).getValue();
+                }
+            }
+            ret.getDatas().add(nnn);
+        }
+
+        ret.setType(ChartType.PI);
+
+        return ret;
+    }
+
+
+    public static ChartData trans_line(DataQueryResultObject in) {
+        if (in == null) {
+            return null;
+        }
+
+        ChartData ret = new ChartData();
+        List<DataQueryResultObject.Column> columns = in.getColumns();
+        List<List<RowObject>> rows = in.getRows();
+
+        if (columns == null || rows == null) {
+            return null;
+        }
+
+        ret.setTitle(in.getWorksheetName());
+
+        for (int i = 0; i < columns.size(); i++) {
+            ret.getColumus().add(columns.get(i).getColName());
+        }
+
+        for (int i = 0; i < rows.size(); i++) {
+            List<RowObject> oneData = rows.get(i);
+            Object nnn[] = new Object[4];
+            for (int j = 0; j < oneData.size(); j++) {
+                if (oneData.get(j).getColName().equals("year__eventtime")) {
+                    nnn[0] = oneData.get(j).getValue();
+                } else if (oneData.get(j).getColName().equals("month__eventtime")) {
+                    nnn[1] = oneData.get(j).getValue();
+                } else if (oneData.get(j).getColName().equals("day__eventtime")) {
+                    nnn[2] = oneData.get(j).getValue();
+                } else if (oneData.get(j).getColName().equals("amount")) {
+                    nnn[3] = oneData.get(j).getValue();
+                }
+            }
+            Object bb[] = new Object[2];
+            String xcord = (String) nnn[0] + (String) nnn[1] + (String) nnn[2];
+            bb[0] = xcord;
+            bb[1] = nnn[3];
+            ret.getDatas().add(bb);
+        }
+
+        ret.setType(LINE);
+
         return ret;
     }
 }
