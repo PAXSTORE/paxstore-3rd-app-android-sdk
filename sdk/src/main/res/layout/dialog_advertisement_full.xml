@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/img_adver"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        tools:background="@drawable/ic_notificaiton" />
+
+    <TextView
+        android:id="@+id/tv_count_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/gray_bubble_bg"
+        android:textSize="16sp"
+        tools:text="Skip 5s" />
+
+    <LinearLayout
+        android:id="@+id/lv_more"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:id="@+id/tv_show_more"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:background="@null"
+            android:textSize="22sp"
+            tools:text="Show more details " />
+
+    </LinearLayout>
+
+</RelativeLayout>

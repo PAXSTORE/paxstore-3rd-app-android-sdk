@@ -1,4 +1,4 @@
-package com.pax.market.android.app.sdk;
+package com.pax.market.android.app.sdk.util;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -6,6 +6,9 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
+
+import com.pax.market.android.app.sdk.BuildConfig;
+import com.pax.market.android.app.sdk.R;
 
 public class NotificationUtils {
     private static final int NOTIFICATION_ID = 1002;

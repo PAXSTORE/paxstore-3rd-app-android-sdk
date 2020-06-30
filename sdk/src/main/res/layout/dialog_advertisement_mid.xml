@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#00000000"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_center_dialog"
+        android:layout_width="368dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="-30dp"
+        android:layout_height="400dp"
+        android:background="@drawable/popup_bg">
+
+        <ImageView
+            android:id="@+id/img_adver"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            tools:background="@drawable/ic_notificaiton" />
+
+        <LinearLayout
+            android:id="@+id/lv_more"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_show_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:background="@null"
+            android:textSize="18sp"
+            tools:text="Show more details" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:padding="5dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/rl_center_dialog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/ic_img_close" />
+
+</RelativeLayout>

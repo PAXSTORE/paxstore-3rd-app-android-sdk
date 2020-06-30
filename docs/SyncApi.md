@@ -2,6 +2,8 @@
 
 com.pax.market.api.sdk.java.api.sync.SyncApi, extends BaseApi
 
+For how to use this api, please refer to [this](SyncAccessoryInfoIntegration.md)
+
 ### The Constructor of SyncApi
 
 ```
@@ -22,29 +24,20 @@ public SdkObject syncTerminalInfo(List<TerminalSyncInfo> infoList) {...}
 
 **com.pax.market.api.sdk.java.api.sync.dto.TerminalSyncInfo**
 
-The terminal sync info, information about ancillary equipment 
+The terminal sync info, information about ancillary equipment
 
 | Property    | Type   | Description        |
 | ----------- | ------ | ------------------ |
-| type        | int    | The sync type      |
-| name        | String | Name               |
-| version     | String | Version            |
-| status      | String | Status             |
-| remarks     | String | remarks            |
-| syncTime    | Long   | The sync time      |
-| installTime | Long   | The install time   |
-| fileSize    | Long   | File size          |
-| fileType    | String | File type          |
-| source      | String | Source             |
-| hostModel   | String | The terminal model |
-| hostSN      | String | The terminal SN    |
+| type        | int    | The sync type: 1: Application2: Device3: Hardware4: Application install history      |
+| name        | String | Name of application/device/hardware               |
+| version     | String | Version of application/device/hardware            |
+| status      | String | Hardware Status             |
+| remarks     | String | Remarks            |
+| syncTime    | Long   | The synchronize time milliseconds   |
+| installTime | Long   | Application install time milliseconds |
+| fileSize    | Long   | File size of installed application        |
+| fileType    | String | File type of installed application      |
+| source      | String | The application installation mode(E.g. Remote or Local)             |
+| hostModel   | String | The terminal host model(E.g. E500) |
+| hostSN      | String | The terminal host SN    |
 
-### Synchronize terminal business data
-
-```
-public SdkObject syncTerminalBizData(List bizDataList) {...}
-```
-
-| Parameter   | Type | Description                       |
-| ----------- | ---- | --------------------------------- |
-| bizDataList | List | The list of business data to sync |
