@@ -52,7 +52,6 @@ public class DownloadParamReceiver extends BroadcastReceiver {
         // From PAXSTORE client version 7.2.1, you need below function to escape duplicate receiving of parmas.
         long receiveTime = (Long) intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L);
         if (receiveTime > 0 && Long.compare(receiveTime, timeStamp) == 0) {
-            Log.w("DownloadParamReceiver", "Duplicated! ");
             return true;
         } else {
             timeStamp = receiveTime;
