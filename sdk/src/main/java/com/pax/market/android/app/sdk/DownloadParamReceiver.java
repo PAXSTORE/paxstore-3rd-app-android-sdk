@@ -14,6 +14,9 @@ public class DownloadParamReceiver extends BroadcastReceiver {
     private static long timeStamp = -1L;
 
     private static String ACTION_START_CUSTOMER_SERVICE = "com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS";
+    /**
+     * Ignore tasks within 5 seconds
+     */
     private static long TIME_FILTER = 5_000L;
 
     @Override
