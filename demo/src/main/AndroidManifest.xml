@@ -23,15 +23,14 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".DownloadParamReceiver">
-            <intent-filter>
-                <action android:name="com.paxmarket.ACTION_TO_DOWNLOAD_PARAMS" />
-                <action android:name="com.sdk.ACTION_TO_DOWNLOAD_PARAMS" />
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </receiver>
 
-        <service android:name=".DownloadParamService"/>
+
+        <service android:name=".DownloadParamService">
+            <intent-filter>
+                <action android:name="com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS"/>
+                <category android:name="${applicationId}"/>
+            </intent-filter>
+        </service>
 
         <receiver android:name=".PushMessageReceiver"
                   android:enabled="true"

@@ -20,6 +20,14 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".DownloadParamReceiver">
+            <intent-filter>
+                <action android:name="com.paxmarket.ACTION_TO_DOWNLOAD_PARAMS" />
+                <action android:name="com.sdk.ACTION_TO_DOWNLOAD_PARAMS" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
         <service android:name=".CloudMessageService" android:exported="true">
             <intent-filter>
                 <action android:name="com.paxstore.mpush.CLOUD_MESSAGE_RECEIVED"/>

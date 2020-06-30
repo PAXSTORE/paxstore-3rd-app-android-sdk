@@ -41,16 +41,17 @@ public class ParamService extends IntentService {
             return;
         }
         String sn = (String) intent.getSerializableExtra(TERMINAL_SERIALNUM);
-        Long timeStamp = (Long) intent.getLongExtra(TERMINAL_SEND_TIME, -1L);
+        Long taskTimeStamp = (Long) intent.getLongExtra(TERMINAL_SEND_TIME, -1L);
 
-        if (sn == null || timeStamp < 0) {
-            Log.d(TAG, "sn == null or timeStamp < 0:" + (sn == null || timeStamp < 0));
+        if (sn == null) {
+            Log.w(TAG, "sn == null");
             return;
         }
 
         sendBroadcast(new Intent(ACTION_TO_DOWNLOAD_PARAMS)
                 .addCategory(getPackageName())
                 .setPackage(getPackageName())
+                .putExtra(TERMINAL_SEND_TIME, taskTimeStamp)
                 .putExtra(TERMINAL_SERIALNUM, sn));
 
     }
