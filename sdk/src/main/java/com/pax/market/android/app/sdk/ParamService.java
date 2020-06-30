@@ -44,6 +44,7 @@ public class ParamService extends IntentService {
         Long timeStamp = (Long) intent.getLongExtra(TERMINAL_SEND_TIME, -1L);
 
         if (sn == null || timeStamp < 0) {
+            Log.d(TAG, "sn == null or timeStamp < 0:" + (sn == null || timeStamp < 0));
             return;
         }
 
