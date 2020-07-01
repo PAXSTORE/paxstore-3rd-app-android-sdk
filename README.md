@@ -1,5 +1,5 @@
 
-# PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/images/download.svg?version=7.1.2-RC) ](https://bintray.com/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/7.1.2-RC/link)
+# PAXSTORE 3rd App Android SDK [ ![Download](https://api.bintray.com/packages/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/images/download.svg?version=7.2.0) ](https://bintray.com/paxstore-support/paxstore/paxstore-3rd-app-android-sdk/7.2.0/link)
 
 PAXSTORE 3rd App Android SDK provides simple and easy-to-use service interfaces for third party developers to develop android apps on PAXSTORE. The services currently include the following features:
 
@@ -22,7 +22,7 @@ By using this SDK, developers can easily integrate with PAXSTORE. Please take ca
 ## Download
 Gradle:
 
-    implementation 'com.pax.market:paxstore-3rd-app-android-sdk:7.1.2-RC'
+    implementation 'com.pax.market:paxstore-3rd-app-android-sdk:7.2.0'
 
 
 ## Permissions
@@ -73,6 +73,12 @@ If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/man
     #dto
     -dontwarn com.pax.market.api.sdk.java.base.dto.**
     -keep class com.pax.market.api.sdk.java.base.dto.**{*;}
+    
+    #这里是google默认不混淆 Activity 、Service ... 类的子类
+    -keep public class * extends android.app.Activity
+    -keep public class * extends android.app.Service
+    -keep public class * extends android.content.BroadcastReceiver
+    -keep public class * extends android.preference.Preference
 
 ## API Usage
 

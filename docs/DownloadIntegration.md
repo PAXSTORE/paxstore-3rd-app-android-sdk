@@ -5,6 +5,8 @@ By integrating with this function, admin can dilivery parameters to the applicat
 Refer to the [SetUp](../README.md)
 
 ### 2：Download Parameters API
+`Notice: If you have integrated with our sdk before, you need to do some changes to migrate to our newest one.
+Registing receiver is no more needed, just registering the IntentService will be enough.`
 
 Register your IntentService
 
@@ -39,6 +41,13 @@ Download params in your IntentService. see [DownloadParamService.java](../demo/s
         }
     }   
 
+Below codes are needed when your application target devices include Android8+.
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        NotificationUtils.showForeGround(this, "Downloading params");
+        return super.onStartCommand(intent, flags, startId);
+    }
 
 ## Template
-The **parameter template file** used in **demo** is under folder assets/param_template.xml.
+See [Template](../demo/src/main/assets/param_template.xml)
