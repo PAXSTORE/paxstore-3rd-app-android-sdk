@@ -23,7 +23,10 @@ import com.pax.market.api.sdk.java.base.dto.DataQueryResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.pax.android.demoapp.GenerateDataActivity.trans_bar;
 import static com.pax.android.demoapp.GenerateDataActivity.trans_line;
@@ -37,7 +40,7 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     private RadioButton mPush, mGo, mApi;
     private Fragment PushFragment, APIFragment, GoFragment;
     private ChartData chartData_line, chartData_bar, chartData_pi;
-    private int initQuery[] = new int[3];
+    private Map<String,Boolean> flags = new ConcurrentHashMap<>();
     private SPUtil spUtil;
     private MsgReceiver msgReceiver;
     private List<F_Revicer> recivers = new ArrayList<>();
@@ -61,13 +64,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
         return chartData_pi;
     }
 
-    public int[] getInitQuery() {
-        return initQuery;
-    }
-
-    public void setInitQuery(int[] initQuery) {
-        this.initQuery = initQuery;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +115,7 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
         fragments.add(APIFragment);
 
         recivers.add((PushFragment)PushFragment);
+        recivers.add((GoFragment)GoFragment);
         FragAdapter adapter = new FragAdapter(getSupportFragmentManager(), fragments);
         //设定适配器
         viewPager.setAdapter(adapter);
@@ -176,18 +173,9 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     }
 
     private void queryWrap() {
-        for (int i = 0; i < initQuery.length; i++) {
-            initQuery[i] = 0;
-        }
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                queryBizData("3hi0fs8i", ChartType.LINE);
-                queryBizData("v664nkfc", ChartType.BAR);
-                queryBizData("7a5ck60a", ChartType.PI);
-            }
-        });
-        thread.start();
+        queryBizData("k420he8f", ChartType.LINE);
+        queryBizData("3pyv3ce3", ChartType.BAR);
+        queryBizData("mutmmmpi", ChartType.PI);
     }
 
     private void queryBizData(final String queryCode, final ChartType type) {
@@ -204,38 +192,32 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
                         case BAR:
                             chart = trans_bar(temrinalData);
                             chartData_bar = chart;
-                            if (chartData_bar == null) {
-                                initQuery[1] = -1;
-                            } else {
-                                initQuery[1] = 1;
-                            }
-
+                            flags.put("BAR",true);
                             break;
                         case LINE:
                             chart = trans_line(temrinalData);
                             chartData_line = chart;
-                            if (chartData_line == null) {
-                                initQuery[0] = -1;
-                            } else {
-                                initQuery[0] = 1;
-                            }
+                            flags.put("LINE",true);
                             break;
                         case PI:
                             chart = trans_pi(temrinalData);
                             chartData_pi = chart;
-                            if (chartData_pi == null) {
-                                initQuery[2] = -1;
-                            } else {
-                                initQuery[2] = 1;
-                            }
+                            flags.put("PI",true);
                             break;
                     }
 
                 } catch (NotInitException e) {
                     e.printStackTrace();
-                    initQuery[0] = -1;
-                    initQuery[1] = -1;
-                    initQuery[2] = -1;
+                    flags.put("LINE",false);
+                    flags.put("BAR",false);
+                    flags.put("PI",false);
+                }
+
+
+                if (flags.size()==3){
+                    for (F_Revicer listener : recivers) {
+                        listener.notify_fragment(LauncherActivity.this, null);
+                    }
                 }
             }
         });

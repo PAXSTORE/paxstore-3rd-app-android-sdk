@@ -152,12 +152,14 @@
 
             </RelativeLayout>
 
+
+
             <RelativeLayout
                 android:id="@+id/pro_wrap_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="400dp"
                 android:visibility="gone"
-                android:background="#403d3d3d"
+                android:background="@android:color/transparent"
                 android:layout_centerInParent="true">
 
                 <ProgressBar

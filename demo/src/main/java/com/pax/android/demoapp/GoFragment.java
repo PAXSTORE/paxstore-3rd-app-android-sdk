@@ -54,7 +54,7 @@ import java.util.List;
  * Use the {@link GoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GoFragment extends Fragment {
+public class GoFragment extends Fragment implements F_Revicer{
     private static final String TAG = GoFragment.class.getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -120,77 +120,6 @@ public class GoFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-
-        int status[];
-        while (true) {
-            Log.d(TAG, "Waiting for query from GoFragment init");
-            status = ((LauncherActivity) getActivity()).getInitQuery();
-            if (status[0] != 0 && status[1] != 0 && status[2] != 0) break;
-        }
-
-        mProGress.setVisibility(View.GONE);
-
-        if (status[0] == 1 && status[1] == 1 && status[2] == 1) {//have data
-
-        } else {//no data
-
-        }
-
-
-        View view = getView();
-        //判断chartData
-        ChartData chartData_line = ((LauncherActivity) getActivity()).getChartData_line();
-        ChartData chartData_bar = ((LauncherActivity) getActivity()).getChartData_bar();
-        ChartData chartData_pi = ((LauncherActivity) getActivity()).getChartData_pi();
-        if (chartData_line != null && !chartData_line.isEmpty() && chartData_bar != null && !chartData_bar.isEmpty() && chartData_pi != null && !chartData_pi.isEmpty()) {
-            view.findViewById(R.id.nodata_view).setVisibility(View.GONE);
-
-            //******
-            List<String> colums_line = chartData_line.getColumus();
-            List<Object[]> datas_line = chartData_line.getDatas();
-
-            List<String> colums_bar = chartData_bar.getColumus();
-            List<Object[]> datas_bar = chartData_bar.getDatas();
-
-            List<String> colums_pi = chartData_pi.getColumus();
-            List<Object[]> datas_pi = chartData_pi.getDatas();
-            //******
-
-
-            //load chart
-            mBarChart = view.findViewById(R.id.chart_bar);
-            ((TextView) view.findViewById(R.id.bar_title)).setText(chartData_bar.getTitle());
-            view.findViewById(R.id.chart_bar_wrap).setVisibility(View.VISIBLE);
-            creareBarChart(mBarChart, colums_bar, datas_bar);
-
-            //load linechart
-            mLineChart = view.findViewById(R.id.chart_line);
-            ((TextView) view.findViewById(R.id.line_title)).setText(chartData_line.getTitle());
-            view.findViewById(R.id.chart_line_wrap).setVisibility(View.VISIBLE);
-            createLineChart(mLineChart, colums_line, datas_line);
-
-
-//            if(colums.size()<=2){
-//                //load piechart
-//                mPieChart = view.findViewById(R.id.chart_pie);
-//                ((TextView)view.findViewById(R.id.pie_title)).setText(chartData_pi.getTitle());
-//                view.findViewById(R.id.chart_pie_wrap).setVisibility(View.VISIBLE);
-//                createPieChart(mPieChart,colums_pi,datas_pi);
-//            }
-
-            //load piechart
-            mPieChart = view.findViewById(R.id.chart_pie);
-            ((TextView) view.findViewById(R.id.pie_title)).setText(chartData_pi.getTitle());
-            view.findViewById(R.id.chart_pie_wrap).setVisibility(View.VISIBLE);
-            createPieChart(mPieChart, colums_pi, datas_pi);
-
-
-        } else {
-            view.findViewById(R.id.chart_bar_wrap).setVisibility(View.GONE);
-            view.findViewById(R.id.chart_line_wrap).setVisibility(View.GONE);
-            view.findViewById(R.id.chart_pie_wrap).setVisibility(View.GONE);
-            view.findViewById(R.id.nodata_view).setVisibility(View.VISIBLE);
-        }
     }
 
     public void creareBarChart(BarChart barChart, List<String> colums, List<Object[]> rows) {
@@ -514,6 +443,81 @@ public class GoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onRecive(Context context, Intent intent) {
+
+    }
+
+
+    public void update_chart(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mProGress.setVisibility(View.GONE);
+                View view = getView();
+                //判断chartData
+                ChartData chartData_line = ((LauncherActivity) getActivity()).getChartData_line();
+                ChartData chartData_bar = ((LauncherActivity) getActivity()).getChartData_bar();
+                ChartData chartData_pi = ((LauncherActivity) getActivity()).getChartData_pi();
+                if (chartData_line != null && !chartData_line.isEmpty() && chartData_bar != null && !chartData_bar.isEmpty() && chartData_pi != null && !chartData_pi.isEmpty()) {
+                    view.findViewById(R.id.nodata_view).setVisibility(View.GONE);
+
+                    //******
+                    List<String> colums_line = chartData_line.getColumus();
+                    List<Object[]> datas_line = chartData_line.getDatas();
+
+                    List<String> colums_bar = chartData_bar.getColumus();
+                    List<Object[]> datas_bar = chartData_bar.getDatas();
+
+                    List<String> colums_pi = chartData_pi.getColumus();
+                    List<Object[]> datas_pi = chartData_pi.getDatas();
+                    //******
+
+
+                    //load chart
+                    mBarChart = view.findViewById(R.id.chart_bar);
+                    ((TextView) view.findViewById(R.id.bar_title)).setText(chartData_bar.getTitle());
+                    view.findViewById(R.id.chart_bar_wrap).setVisibility(View.VISIBLE);
+                    creareBarChart(mBarChart, colums_bar, datas_bar);
+
+                    //load linechart
+                    mLineChart = view.findViewById(R.id.chart_line);
+                    ((TextView) view.findViewById(R.id.line_title)).setText(chartData_line.getTitle());
+                    view.findViewById(R.id.chart_line_wrap).setVisibility(View.VISIBLE);
+                    createLineChart(mLineChart, colums_line, datas_line);
+
+
+//            if(colums.size()<=2){
+//                //load piechart
+//                mPieChart = view.findViewById(R.id.chart_pie);
+//                ((TextView)view.findViewById(R.id.pie_title)).setText(chartData_pi.getTitle());
+//                view.findViewById(R.id.chart_pie_wrap).setVisibility(View.VISIBLE);
+//                createPieChart(mPieChart,colums_pi,datas_pi);
+//            }
+
+                    //load piechart
+                    mPieChart = view.findViewById(R.id.chart_pie);
+                    ((TextView) view.findViewById(R.id.pie_title)).setText(chartData_pi.getTitle());
+                    view.findViewById(R.id.chart_pie_wrap).setVisibility(View.VISIBLE);
+                    createPieChart(mPieChart, colums_pi, datas_pi);
+
+
+                } else {
+                    view.findViewById(R.id.chart_bar_wrap).setVisibility(View.GONE);
+                    view.findViewById(R.id.chart_line_wrap).setVisibility(View.GONE);
+                    view.findViewById(R.id.chart_pie_wrap).setVisibility(View.GONE);
+                    view.findViewById(R.id.nodata_view).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void notify_fragment(Context context, Object object) {
+        Log.d(TAG,"getDAta");
+        update_chart();
     }
 
     /**

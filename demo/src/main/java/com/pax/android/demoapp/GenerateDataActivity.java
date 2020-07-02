@@ -50,7 +50,7 @@ public class GenerateDataActivity extends Activity {
                     if (bundle.getInt("code") == 0) {
                         Toast.makeText(GenerateDataActivity.this, "Upload business data Successed!", Toast.LENGTH_SHORT).show();
                         ret.clear();
-                        queryBizData("v664nkfc", BAR);
+                        queryBizData("3pyv3ce3", BAR);
                     } else {
                         Toast.makeText(GenerateDataActivity.this, "" + bundle.getInt("code") + ":" + bundle.getString("msg"), Toast.LENGTH_SHORT).show();
                         mLoading.setVisibility(View.GONE);
@@ -67,11 +67,11 @@ public class GenerateDataActivity extends Activity {
                         switch (mQueryCount) {
                             case 0:
                                 ret.add(chartData);
-                                queryBizData("3hi0fs8i", LINE);
+                                queryBizData("k420he8f", LINE);
                                 break;
                             case 1:
                                 ret.add(chartData);
-                                queryBizData("7a5ck60a", PI);
+                                queryBizData("mutmmmpi", PI);
                                 break;
                             case 2:
                                 ret.add(chartData);
