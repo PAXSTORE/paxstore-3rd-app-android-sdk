@@ -173,8 +173,8 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     }
 
     private void queryWrap() {
-        queryBizData("k420he8f", ChartType.LINE);
-        queryBizData("3pyv3ce3", ChartType.BAR);
+        queryBizData("3pyv3ce3", ChartType.LINE);
+        queryBizData("k420he8f", ChartType.BAR);
         queryBizData("mutmmmpi", ChartType.PI);
     }
 
