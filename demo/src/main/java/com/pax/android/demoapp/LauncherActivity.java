@@ -125,6 +125,8 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
         fragments.add(PushFragment);
         fragments.add(GoFragment);
         fragments.add(APIFragment);
+
+        recivers.add((PushFragment)PushFragment);
         FragAdapter adapter = new FragAdapter(getSupportFragmentManager(), fragments);
         //设定适配器
         viewPager.setAdapter(adapter);
@@ -286,6 +288,7 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
 
     @Override
     protected void onDestroy() {
+        recivers.clear();
         unregisterReceiver(msgReceiver);
         super.onDestroy();
     }
