@@ -14,15 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.pax.market.android.app.sdk.AdvertisementDialog;
 import com.pax.market.android.app.sdk.StoreSdk;
@@ -32,7 +25,6 @@ import com.pax.market.api.sdk.java.base.exception.NotInitException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
 import static com.pax.android.demoapp.GenerateDataActivity.trans_bar;
 import static com.pax.android.demoapp.GenerateDataActivity.trans_line;
 import static com.pax.android.demoapp.GenerateDataActivity.trans_pi;
@@ -241,6 +233,9 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
 
                 } catch (NotInitException e) {
                     e.printStackTrace();
+                    initQuery[0] = -1;
+                    initQuery[1] = -1;
+                    initQuery[2] = -1;
                 }
             }
         });
