@@ -219,6 +219,8 @@ public class GoFragment extends Fragment implements F_Revicer{
         // if disabled, scaling can be done on x- and y-axis separately
         lineChart.setPinchZoom(false);
 
+        final ArrayList<Entry> values = new ArrayList<>();
+
 
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -228,7 +230,14 @@ public class GoFragment extends Fragment implements F_Revicer{
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float position) {
-                return (String) rows.get((int) position)[0];
+
+                for(int i = 0;i<values.size();i++){
+                    if(values.get(i).getX() == position){
+                        return (String)((rows.get((int)position))[0]);
+                    }
+                }
+
+                return "";
             }
         });
 
@@ -268,7 +277,7 @@ public class GoFragment extends Fragment implements F_Revicer{
         colors.add(ColorTemplate.getHoloBlue());
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        ArrayList<Entry> values = new ArrayList<>();
+
 
         for (int i = 0; i < rows.size(); i++) {
             values.add(new Entry(i, Float.parseFloat((String) rows.get(i)[1])));

@@ -466,7 +466,19 @@ public class GenerateDataActivity extends Activity {
                 }
             }
             Object bb[] = new Object[2];
-            String xcord = (String) nnn[0] + (String) nnn[1] + (String) nnn[2];
+            String xcord = (String) nnn[0];
+            if(Integer.parseInt((String) nnn[1])<10){
+                xcord = xcord+"0"+(String) nnn[1];
+            }else{
+                xcord = xcord+(String) nnn[1];
+            }
+
+            if(Integer.parseInt((String) nnn[2])<10){
+                xcord = xcord+"0"+(String) nnn[2];
+            }else{
+                xcord = xcord+(String) nnn[2];
+            }
+
             bb[0] = xcord;
             bb[1] = nnn[3];
             ret.getDatas().add(bb);
