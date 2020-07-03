@@ -418,7 +418,10 @@ public class GoFragment extends Fragment implements F_Revicer{
     @Override
     public void onPause() {
         super.onPause();
-        mPopWindow.dismiss();
+        if(mPopWindow!=null){
+            mPopWindow.dismiss();
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
