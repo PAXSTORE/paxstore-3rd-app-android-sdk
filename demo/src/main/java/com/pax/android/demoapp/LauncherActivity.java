@@ -23,7 +23,6 @@ import com.pax.market.api.sdk.java.base.dto.DataQueryResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,7 +42,7 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     private Map<String,Boolean> flags = new ConcurrentHashMap<>();
     private SPUtil spUtil;
     private MsgReceiver msgReceiver;
-    private List<F_Revicer> recivers = new ArrayList<>();
+    private List<FragmentReceiver> recivers = new ArrayList<>();
     private static Handler handler = new Handler();
 
     public static Handler getHandler() {
@@ -215,8 +214,8 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
 
 
                 if (flags.size()==3){
-                    for (F_Revicer listener : recivers) {
-                        listener.notify_fragment(LauncherActivity.this, null);
+                    for (FragmentReceiver listener : recivers) {
+                        listener.notifyFragment(LauncherActivity.this, null);
                     }
                 }
             }
@@ -256,7 +255,7 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     public class MsgReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            for (F_Revicer listener : recivers) {
+            for (FragmentReceiver listener : recivers) {
                 listener.onRecive(context, intent);
             }
         }

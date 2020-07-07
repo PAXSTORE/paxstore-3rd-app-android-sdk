@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pax.market.android.app.sdk.AdvertisementDialog;
-
 import java.util.List;
 import java.util.Map;
-
-import static android.content.ContentValues.TAG;
 
 
 /**
@@ -29,7 +24,7 @@ import static android.content.ContentValues.TAG;
  * Use the {@link PushFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PushFragment extends Fragment implements F_Revicer {
+public class PushFragment extends Fragment implements FragmentReceiver {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -194,7 +189,7 @@ public class PushFragment extends Fragment implements F_Revicer {
     }
 
     @Override
-    public void notify_fragment(Context context, Object object) {
+    public void notifyFragment(Context context, Object object) {
 
     }
 
