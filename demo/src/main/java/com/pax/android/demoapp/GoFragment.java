@@ -464,6 +464,10 @@ public class GoFragment extends Fragment implements F_Revicer{
 
 
     public void update_chart(){
+        if (getActivity() == null) {
+            Log.w(TAG, "getActivity() == null");
+            return;
+        }
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

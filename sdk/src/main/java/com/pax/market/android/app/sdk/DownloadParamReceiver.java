@@ -27,8 +27,8 @@ public class DownloadParamReceiver extends BroadcastReceiver {
 
         Log.i("DownloadParamReceiver", "broadcast received");
         Intent startIntent = new Intent(ACTION_START_CUSTOMER_SERVICE);
-        intent.setPackage(context.getPackageName());
-        intent.addCategory(context.getPackageName());
+        startIntent.setPackage(context.getPackageName());
+        startIntent.addCategory(context.getPackageName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(startIntent);
         } else {
