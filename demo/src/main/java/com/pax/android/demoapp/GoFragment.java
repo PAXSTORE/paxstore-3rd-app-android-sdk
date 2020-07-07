@@ -54,7 +54,7 @@ import java.util.List;
  * Use the {@link GoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GoFragment extends Fragment implements F_Revicer{
+public class GoFragment extends Fragment implements FragmentReceiver {
     private static final String TAG = GoFragment.class.getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -531,7 +531,7 @@ public class GoFragment extends Fragment implements F_Revicer{
     }
 
     @Override
-    public void notify_fragment(Context context, Object object) {
+    public void notifyFragment(Context context, Object object) {
         Log.d(TAG,"getDAta");
         update_chart();
     }
