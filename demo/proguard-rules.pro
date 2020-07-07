@@ -53,3 +53,10 @@
 #dto
 -dontwarn com.pax.market.api.sdk.java.base.dto.**
 -keep class com.pax.market.api.sdk.java.base.dto.**{*;}
+
+
+#这里是google默认不混淆 Activity 、Service ... 类的子类
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.preference.Preference

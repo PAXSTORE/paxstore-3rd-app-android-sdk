@@ -32,6 +32,7 @@ public class CloudMessage {
 
     private String notificationJson;
     private String dataJson;
+    private String mediaJson;
 
     private static Gson gson;
     public static Gson getGson() {
@@ -45,9 +46,10 @@ public class CloudMessage {
         return gson;
     }
 
-    private CloudMessage(String notificationJson, String dataJson) {
+    private CloudMessage(String notificationJson, String dataJson, String mediaJson) {
         this.notificationJson = notificationJson;
         this.dataJson = dataJson;
+        this.mediaJson = mediaJson;
     }
 
     public static CloudMessage fromJson(String json){
@@ -61,6 +63,7 @@ public class CloudMessage {
         }
         String notificationJson = null;
         String dataJson = null;
+        String mediaJson = null;
         if (rootElement.isJsonObject()){
             try {
                 JsonElement notificationJsonEle = ((JsonObject) rootElement).get(MessageFiled.NOTIFICATION.getName());
@@ -78,13 +81,23 @@ public class CloudMessage {
             } catch (Exception e) {
                 logger.error("Parse data json exception, rootElement=%s", rootElement, e);
             }
+
+            try {
+                JsonElement mediaJsonEle = ((JsonObject) rootElement).get(MessageFiled.MEDIA.getName());
+                if (mediaJsonEle != null && mediaJsonEle.isJsonObject()) {
+                    mediaJson = mediaJsonEle.getAsJsonObject().toString();
+                }
+            } catch (Exception e) {
+                logger.error("Parse data json exception, rootElement=%s", rootElement, e);
+            }
+
         }
 
-        if(StringUtils.isEmpty(notificationJson) && StringUtils.isEmpty(dataJson)){
+        if(StringUtils.isEmpty(notificationJson) && StringUtils.isEmpty(dataJson) && StringUtils.isEmpty(mediaJson)){
             return null;
         }
 
-        return new CloudMessage(notificationJson, dataJson);
+        return new CloudMessage(notificationJson, dataJson, mediaJson);
     }
 
     public NotificationMessage getNotification() {
@@ -102,6 +115,14 @@ public class CloudMessage {
 
     public boolean isDataEmpty(){
         return StringUtils.isEmpty(dataJson);
+    }
+
+    public String getMediaJson() {
+        return mediaJson;
+    }
+
+    public boolean isMediaEmpty() {
+        return StringUtils.isEmpty(mediaJson);
     }
 
     public static <T> T getDataFromJson(String dataJson, Class<T> classOfT) {
@@ -124,7 +145,8 @@ public class CloudMessage {
 
     public enum MessageFiled {
         NOTIFICATION("notification"),
-        DATA("data");
+        DATA("data"),
+        MEDIA("media");
 
         MessageFiled(String name){
             this.name = name;
@@ -133,5 +155,14 @@ public class CloudMessage {
         public String getName() {
             return name;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "CloudMessage{" +
+                "notificationJson='" + notificationJson + '\'' +
+                ", dataJson='" + dataJson + '\'' +
+                ", mediaJson='" + mediaJson + '\'' +
+                '}';
     }
 }

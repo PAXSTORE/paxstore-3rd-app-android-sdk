@@ -17,4 +17,7 @@
     <string name="label_check_update">Check update</string>
     <string name="open_download_page_from_paxstore_client">Open download page from PAXSTORE client</string>
     <string name="get_terminal_location">Retrieve Terminal Location</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

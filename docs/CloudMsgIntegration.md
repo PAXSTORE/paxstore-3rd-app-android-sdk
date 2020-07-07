@@ -9,10 +9,8 @@ Refer to the [SetUp](../README.md)
          <meta-data android:name="PAXVAS_CloudMessage"
                     android:value="true"/>
 
-### 3.Register the receiver to recieve message from PAXSTORE
-Since from Android Oreo, we need to send explicit broadcast to third party application.
-
-You are expected to create the same "PushMessageReceiver" as we defined in our sample, and put it under root package. So we can find the receiver by "your packageName + .PushMessageReceiver".
+### 3.Register a receiver to recieve message from PAXSTORE.
+See the sample [PushMessageReceiver](../demo/src/main/java/com/pax/android/demoapp/PushMessageReceiver.java)
 
  	    <receiver android:name=".PushMessageReceiver"
                   android:enabled="true"
@@ -21,22 +19,52 @@ You are expected to create the same "PushMessageReceiver" as we defined in our s
                 <action android:name="com.paxstore.mpush.NOTIFY_DATA_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.DATA_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.NOTIFICATION_MESSAGE_RECEIVED" />
+                <action android:name="com.paxstore.mpush.NOTIFY_MEDIA_MESSAGE_RECEIVED" />            
                 <action android:name="com.paxstore.mpush.NOTIFICATION_CLICK" />
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
 
-### 4.Understand the four actions that the receiver will receive.
+
+### 4.Understand the five actions that the receiver will receive.
 ##### 4.1.  ACTION_NOTIFY_DATA_MESSAGE_RECEIVED:  
 For this action you can get three types of data, title of the notification, content of the notification, jsonString sent to terminal that you can do logic with.
 ##### 4.2. ACTION_DATA_MESSAGE_RECEIVED：
-Only jsonString you will receive.
+Only content jsonString you will receive.
 ##### 4.3. ACTION_NOTIFICATION_MESSAGE_RECEIVED: 
 Only title of the notification, content of the notification you will receive.
 ##### 4.4. ACTION_NOTIFICATION_CLICK:
 You will also get notified while the notification clicked by user, and you can retreive data that you have sent to your application.
+##### 4.5. ACTION_NOTIFY_MEDIA_MESSAGE_RECEIVED:
+Only media jsonString you will receive. You can choose when to show the media message.
+
+### 5.Media Message
+For media message, we only store the last one pushed from server. Your application will immediately notice the message if your receiver registered
+ACTION_NOTIFY_MEDIA_MESSAGE_RECEIVED. You can choose to show the media message immediately or later. Media Message can be
+shown as you previewed in the web through below api. Or you can get media message details to show your own customized dialog.
+
+##### 5.1. Call below api to show the media message as advertisement.
+
+        int showResult = AdvertisementDialog.show(context, false, new AdvertisementDialog.OnLinkClick() {
+            @Override
+            public void onLinkClick(String linkUrl) {
+                clickedLink = true;
+                Toast.makeText(MainActivity.this, linkUrl, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+##### 5.2. Get media message that stored in local.
+
+        StoreSdk.getInstance().getMediaMesage(context);
+
+##### 5.3. Know more about AdvertisementDialog
+See [AdvertisementDialog](AdvertisementDialog.md)
 
 
-### 5.Additional Requirement
+### 6.Additional Requirement
+1. PAXSTORE client version 7.0+
+2. Market subscribes the Cloud Message service.
+
+### 7.Additional Requirement
 1. PAXSTORE client version 7.0+
 2. Market subscribes the Cloud Message service.

@@ -12,6 +12,8 @@ import static com.pax.market.android.app.sdk.PushConstants.ACTION_DATA_MESSAGE_R
 import static com.pax.market.android.app.sdk.PushConstants.ACTION_NOTIFICATION_CLICK;
 import static com.pax.market.android.app.sdk.PushConstants.ACTION_NOTIFICATION_MESSAGE_RECEIVED;
 import static com.pax.market.android.app.sdk.PushConstants.ACTION_NOTIFY_DATA_MESSAGE_RECEIVED;
+import static com.pax.market.android.app.sdk.PushConstants.ACTION_NOTIFY_MEDIA_MESSAGE_RECEIVED;
+import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MEIDA;
 import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MESSAGE_CONTENT;
 import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MESSAGE_DATA;
 import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MESSAGE_NID;
@@ -51,6 +53,12 @@ public class PushMessageReceiver extends BroadcastReceiver {
             String content = intent.getStringExtra(EXTRA_MESSAGE_CONTENT);
             String dataJson = intent.getStringExtra(EXTRA_MESSAGE_DATA);
             logger.info("### notification nid={}, title={}, content={}, dataJson={} ###", nid, title, content, dataJson);
+        } else if (ACTION_NOTIFY_MEDIA_MESSAGE_RECEIVED.equals(intent.getAction())) {
+            //You can decide when to show this media notification, immediately or later.
+            logger.info("### ACTION_NOTIFY_MEDIA_MESSAGE_RECEIVED ###");
+            String mediaJson = intent.getStringExtra(EXTRA_MEIDA);
+            logger.info("### media json={} ###", mediaJson);
+            Toast.makeText(context, "  mediaJson=" + mediaJson, Toast.LENGTH_SHORT).show();
         }
     }
 }

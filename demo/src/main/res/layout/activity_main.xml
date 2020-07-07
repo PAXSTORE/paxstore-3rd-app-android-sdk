@@ -287,6 +287,11 @@
                 android:layout_height="0.5dp"
                 android:background="#DDDDDD" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#DDDDDD" />
+
             <LinearLayout
                 android:id="@+id/lv_retrieve_data"
                 android:layout_width="match_parent"

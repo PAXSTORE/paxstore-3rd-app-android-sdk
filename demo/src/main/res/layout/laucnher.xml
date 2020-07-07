@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"/>
+
+    <RadioGroup
+        android:id="@+id/r_group"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:padding="10dp"
+            android:id="@+id/push"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/push"
+            android:gravity="center"
+            android:text="PUSH"
+            android:textColor="@drawable/radio_txt"
+            android:button="@null"/>
+
+        <RadioButton
+            android:padding="10dp"
+            android:id="@+id/go"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/goinsight"
+            android:gravity="center"
+            android:text="Go Insight"
+            android:textColor="@drawable/radio_txt"
+            android:button="@null" />
+
+        <RadioButton
+            android:padding="10dp"
+            android:id="@+id/api"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/api"
+            android:gravity="center"
+            android:text="API"
+            android:textColor="@drawable/radio_txt"
+            android:button="@null" />
+    </RadioGroup>
+
+
+</LinearLayout>
