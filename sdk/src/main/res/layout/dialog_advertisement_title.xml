@@ -65,7 +65,6 @@
                 android:ellipsize="end"
                 android:textColor="#ffffff"
                 android:id="@+id/tv_show_more"
-                android:textAllCaps="true"
                 android:textSize="20sp"
                 android:layout_marginLeft="8dp"
                 tools:text="know more detailsssssssssss"
