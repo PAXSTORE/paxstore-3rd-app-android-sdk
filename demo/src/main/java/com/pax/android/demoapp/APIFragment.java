@@ -3,7 +3,6 @@ package com.pax.android.demoapp;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -27,11 +28,9 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -63,12 +62,13 @@ public class APIFragment extends Fragment {
     private Button getTerminalInfoBtn;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList;
-    private ImageView mImgArrow;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide;
+    private EditText etTid;
+    private ImageView mImgRetrieve, mImgActivate;
     private LinearLayout lvChildRetrieve;
-    private Button getTerminalLocation, getOnlineStatus; // todo remove
+    private Button getTerminalLocation, getOnlineStatus, activateTerminal; // todo remove
     private OnFragmentInteractionListener mListener;
-    private boolean isExpanded;
+    private boolean isDataExpanded, isActivateExpanded;
     public APIFragment() {
         // Required empty public constructor
     }
@@ -118,10 +118,17 @@ public class APIFragment extends Fragment {
         versionTV.setText(getResources().getString(R.string.label_version_text) + " " + BuildConfig.VERSION_NAME);
         openDownloadList = (LinearLayout) view.findViewById(R.id.open_downloadlist_page);
 
+        lvActivate = view.findViewById(R.id.lv_activate);
+        lvActivateHide = view.findViewById(R.id.lv_activate_hide);
+        etTid = view.findViewById(R.id.et_tid);
+        activateTerminal = view.findViewById(R.id.btn_activate);
+        mImgActivate = view.findViewById(R.id.img_activate);
+
+
         checkUpdate = (LinearLayout) view.findViewById(R.id.check_update);
         lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
         lvChildRetrieve = (LinearLayout) view.findViewById(R.id.lv_childs_retrieve);
-        mImgArrow = (ImageView) view.findViewById(R.id.img_retrieve_data);
+        mImgRetrieve = (ImageView) view.findViewById(R.id.img_retrieve_data);
         getTerminalLocation = (Button) view.findViewById(R.id.get_location);
         //switch to set trading status.
         tradingStateSwitch.setChecked(((BaseApplication) getContext().getApplicationContext()).isReadyToUpdate());
@@ -193,17 +200,70 @@ public class APIFragment extends Fragment {
             }
         });
 
+        lvActivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isActivateExpanded) {
+                    isActivateExpanded = false;
+                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                            hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    mImgActivate.setImageResource(R.mipmap.list_btn_arrow);
+                    lvActivateHide.setVisibility(View.GONE);
+                } else {
+                    etTid.requestFocus();
+                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                            toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
+                    isActivateExpanded = true;
+                    mImgActivate.setImageResource(R.mipmap.list_btn_arrow_down);
+                    lvActivateHide.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        activateTerminal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (etTid.getText() == null || etTid.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please input TID", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final SdkObject sdkObject = StoreSdk.getInstance().activateApi().initByTID(etTid.getText().toString());
+                            Log.d(TAG, "sdkObject:" + sdkObject.toString());
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String msg = "";
+                                    if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        msg = "Activation succeed!";
+                                    } else {
+                                        msg = "Activation failed: " + sdkObject.toString();
+                                    }
+                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                        }
+                    }
+                }) ;
+
+                thread.start();
+            }
+        });
 
         lvRetrieveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isExpanded) {
-                    isExpanded = false;
-                    mImgArrow.setImageResource(R.mipmap.list_btn_arrow);
+                if (isDataExpanded) {
+                    isDataExpanded = false;
+                    mImgRetrieve.setImageResource(R.mipmap.list_btn_arrow);
                     lvChildRetrieve.setVisibility(View.GONE);
                 } else {
-                    isExpanded = true;
-                    mImgArrow.setImageResource(R.mipmap.list_btn_arrow_down);
+                    isDataExpanded = true;
+                    mImgRetrieve.setImageResource(R.mipmap.list_btn_arrow_down);
                     lvChildRetrieve.setVisibility(View.VISIBLE);
                 }
             }

@@ -14,6 +14,7 @@ import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
+import com.pax.market.api.sdk.java.api.activate.ActivateApi;
 import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
@@ -42,10 +43,13 @@ public class StoreSdk {
 
     private static final String URI_PREFIX = "market://detail?id=%s";
     private static volatile StoreSdk instance;
-    private ParamApi paramApi;
+    private ParamApiStrategy paramApi;
     private SyncApi syncApi;
     private GoInsightApi goInsightApi;
     private UpdateApi updateApi;
+    private ActivateApi activateApi;
+
+
     private Semaphore semaphore;
     private String appKey;
     private String appSecret;
@@ -76,7 +80,8 @@ public class StoreSdk {
      */
     public void init(final Context context, final String appKey, final String appSecret,
                      final String terminalSerialNo, final BaseApiService.Callback callback) throws NullPointerException {
-        if (paramApi == null && syncApi == null && updateApi == null && semaphore.availablePermits() != 1) {
+        if (paramApi == null && syncApi == null && updateApi == null
+                && activateApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret, terminalSerialNo);
             this.appKey = appKey;
             this.appSecret = appSecret;
@@ -91,7 +96,7 @@ public class StoreSdk {
 
                         @Override
                         public void initSuccess(String baseUrl) {
-                            initApi(baseUrl, appKey, appSecret, terminalSerialNo, BaseApiService.getInstance(context));
+                            initApi(context, baseUrl, appKey, appSecret, terminalSerialNo, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -113,7 +118,7 @@ public class StoreSdk {
      * @return
      * @throws NotInitException
      */
-    public ParamApi paramApi() throws NotInitException {
+    public ParamApiStrategy paramApi() throws NotInitException {
         if (paramApi == null) {
             acquireSemaphore();
             if (paramApi == null) {
@@ -121,6 +126,22 @@ public class StoreSdk {
             }
         }
         return paramApi;
+    }
+
+    /**
+     * Get activateApi instance
+     *
+     * @return
+     * @throws NotInitException
+     */
+    public ActivateApi activateApi() throws NotInitException {
+        if (activateApi == null) {
+            acquireSemaphore();
+            if (activateApi == null) {
+                throw new NotInitException("Not initialized");
+            }
+        }
+        return activateApi;
     }
 
     /**
@@ -172,7 +193,7 @@ public class StoreSdk {
      * @return
      */
     public boolean checkInitialization() {
-        if (paramApi != null && syncApi != null && updateApi != null) {
+        if (paramApi != null && syncApi != null && updateApi != null && activateApi != null) {
             return true;
         }
         return false;
@@ -256,11 +277,12 @@ public class StoreSdk {
      * @param appSecret
      * @param terminalSerialNo
      */
-    public void initApi(String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
-        paramApi = new ParamApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
+        paramApi = new ParamApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
+        activateApi = new ActivateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 
     /**
@@ -310,6 +332,11 @@ public class StoreSdk {
             updateApi.setProxyDelegate(BaseApiService.getInstance(context));
         } else {
             logger.warn("UpdateApi is not initialized, please init StoreSdk first...");
+        }
+        if (activateApi != null) {
+            activateApi.setProxyDelegate(BaseApiService.getInstance(context));
+        } else {
+            logger.warn("activateApi is not initialized, please init StoreSdk first...");
         }
     }
 

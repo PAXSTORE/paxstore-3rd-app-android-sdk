@@ -240,12 +240,93 @@
                         android:src="@mipmap/list_btn_arrow" />
                 </LinearLayout>
             </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#DDDDDD" />
 
+            <LinearLayout
+                android:id="@+id/lv_activate"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/activate_terminal" />
+
+                    <ImageButton
+                        android:id="@+id/img_activate"
+                        android:clickable="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="#ffffff"
+                        android:padding="16dp"
+                        android:src="@mipmap/list_btn_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lv_activate_hide"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp">
+
+                    <EditText
+                        android:id="@+id/et_tid"
+                        android:layout_weight="1"
+                        android:enabled="true"
+                        android:lines="1"
+                        android:hint="Please input TID"
+                        android:focusableInTouchMode="true"
+                        android:defaultFocusHighlightEnabled="true"
+                        android:layout_marginLeft="16dp"
+                        android:focusable="true"
+                        android:inputType="textCapCharacters"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:focusedByDefault="true"
+                        android:background="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <Button
+                        android:id="@+id/btn_activate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_margin="10dp"
+                        android:background="#63af57"
+                        android:gravity="center|center_vertical"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp"
+                        android:text="Activate"/>
+                </LinearLayout>
+
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="#DDDDDD" />
+
+
 
             <LinearLayout
                 android:id="@+id/lv_retrieve_data"

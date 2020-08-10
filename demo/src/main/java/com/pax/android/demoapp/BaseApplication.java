@@ -27,7 +27,7 @@ public class BaseApplication extends Application {
     private static final String appkey = "DQOSMMGSBDCNIXOFZR1U";
     private static final String appSecret = "PMKNAMTBLBGZ2ARS110YQ7LCGT7UCU0NPO74ESS4";
     //todo please make sure get the correct SN here, for pax device you can integrate NeptuneLite SDK to get the correct SN
-    private static final String SN = Build.SERIAL;
+    private String SN = Build.SERIAL;
     public static AppPreferences appPreferences;
 
 
