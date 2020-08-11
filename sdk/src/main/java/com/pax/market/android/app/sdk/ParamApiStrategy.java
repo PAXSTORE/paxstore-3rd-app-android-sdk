@@ -2,6 +2,7 @@ package com.pax.market.android.app.sdk;
 
 import android.content.Context;
 
+import com.pax.market.android.app.sdk.util.NetWorkUtils;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
@@ -20,8 +21,12 @@ public class ParamApiStrategy extends ParamApi{
 
 
     public DownloadResultObject downloadParamToPath(String packageName, int versionCode, String saveFilePath) {
+
+        boolean mobileNetAvailable = NetWorkUtils.isMobileNetAvailable(context);
         LastFailObject failTask = PreferencesUtils.getObject(context, LAST_DOWNLOAD, LastFailObject.class);
-        InnerDownloadResultObject downloadResultObject = super.downloadParamToPath(packageName, versionCode, saveFilePath, failTask);
+
+        InnerDownloadResultObject downloadResultObject = super.downloadParamToPath(packageName,
+                versionCode, saveFilePath, failTask, mobileNetAvailable);
         if (downloadResultObject.getBusinessCode() == ResultCode.SDK_DOWNLOAD_IOEXCEPTION.getCode()) {
             // save one download IOException record
             PreferencesUtils.putObject(context, LAST_DOWNLOAD, downloadResultObject.getLastFailObject());
