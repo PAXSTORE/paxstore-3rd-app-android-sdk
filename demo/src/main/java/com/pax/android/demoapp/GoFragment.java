@@ -154,10 +154,18 @@ public class GoFragment extends Fragment implements FragmentReceiver {
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         for (int i = 0; i < rows.size(); i++) {
+            if (rows.get(i) == null) {
+                continue;
+            }
             ArrayList<BarEntry> barEntries = new ArrayList<>();
-            barEntries.add(new BarEntry(i, Float.parseFloat((String) rows.get(i)[1]), rows.get(i)[0]));
+            if (rows.get(i)[1] == null) {
+                barEntries.add(new BarEntry(i, 0, rows.get(i)[0]));
+            } else {
+                barEntries.add(new BarEntry(i, Float.parseFloat((String) rows.get(i)[1]), rows.get(i)[0]));
+            }
             BarDataSet barDataSet = new BarDataSet(barEntries, (String) rows.get(i)[0]);
             barDataSet.setColor(colors.get(i));
+
             dataSets.add(barDataSet);
         }
 
