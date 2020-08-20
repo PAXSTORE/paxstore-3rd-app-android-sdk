@@ -6,4 +6,5 @@ import android.content.Intent;
 public interface FragmentReceiver {
     void onRecive(Context context, Intent intent);
     void notifyFragment(Context context, Object object);
+    void loadDataError(String message);
 }

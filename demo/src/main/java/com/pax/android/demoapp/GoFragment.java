@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -535,6 +536,16 @@ public class GoFragment extends Fragment implements FragmentReceiver {
     public void notifyFragment(Context context, Object object) {
         Log.d(TAG,"getDAta");
         update_chart();
+    }
+
+    @Override
+    public void loadDataError(final String message) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
