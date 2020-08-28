@@ -388,12 +388,12 @@ public class StoreSdk {
         OnlineStatusInfo onlineStatusInfo = new OnlineStatusInfo();
         //对location表进行操作
         // 和上述类似,只是URI需要更改,从而匹配不同的URI CODE,从而找到不同的数据资源
-        Uri uri_location = Uri.parse("content://com.pax.market.android.app/online_status");
+        Uri uri_online_status = Uri.parse("content://com.pax.market.android.app/online_status");
         // 获取ContentResolver
         ContentResolver resolver = context.getContentResolver();
         // 通过ContentResolver 根据URI 向ContentProvider中插入数据
         // 通过ContentResolver 向ContentProvider中查询数据
-        Cursor cursor = resolver.query(uri_location, null, null, null, null);
+        Cursor cursor = resolver.query(uri_online_status, null, null, null, null);
         if (cursor == null) {
             onlineStatusInfo.setOnline(null);
             onlineStatusInfo.setBusinessCode(QueryResult.QUERY_FROM_CONTENT_PROVIDER_FAILED.getCode());
@@ -434,15 +434,45 @@ public class StoreSdk {
      * @param locationCallback
      */
     public void startLocate(Context context, LocationService.LocationCallback locationCallback) {
-        LocationService.setCallback(locationCallback);
-        Intent intent = new Intent(context, LocationService.class);
-        intent.setPackage(BuildConfig.APPLICATION_ID);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
+        LocationInfo locationInfo = new LocationInfo();
+        //对location表进行操作
+        // 和上述类似,只是URI需要更改,从而匹配不同的URI CODE,从而找到不同的数据资源
+        Uri uri_location = Uri.parse("content://com.pax.market.android.app/location");
+        // 获取ContentResolver
+        ContentResolver resolver = context.getContentResolver();
+        // 通过ContentResolver 根据URI 向ContentProvider中插入数据
+        // 通过ContentResolver 向ContentProvider中查询数据
+        Cursor cursor = resolver.query(uri_location, null, null, null, null);
+        if (cursor == null) { // 如果读不到结果，使用旧的接口去读
+            LocationService.setCallback(locationCallback);
+            Intent intent = new Intent(context, LocationService.class);
+            intent.setPackage(BuildConfig.APPLICATION_ID);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent);
+            } else {
+                context.startService(intent);
+            }
+            return;
         } else {
-            context.startService(intent);
+            while (cursor.moveToNext()) {
+                System.out.println("query job:" + cursor.getInt(0) + " " + cursor.getString(1)
+                        + " " + cursor.getString(2) + " " + cursor.getString(3) + " " + cursor.getString(4)
+                        + " " + cursor.getString(5));
+                locationInfo.setBusinessCode(cursor.getInt(0));
+                locationInfo.setMessage(cursor.getString(1));
+                locationInfo.setLongitude(cursor.getString(2));
+                locationInfo.setLatitude(cursor.getString(3));
+                locationInfo.setAccuracy(cursor.getString(4));
+                Long lastLocateTime = (cursor.getString(5) != null ?
+                        Long.valueOf(cursor.getString(5)) : null);
+                locationInfo.setLastLocateTime(lastLocateTime);
+                // 将表中数据全部输出
+            }
+            // 关闭游标
+            cursor.close();
+
+            locationCallback.locationResponse(locationInfo);
         }
-        //如果启动service失败，有可能没有结果返回，测试需要让它自动返回一个timeout的结果。
     }
 
     public MediaMesageInfo getMediaMesage(Context context) {
