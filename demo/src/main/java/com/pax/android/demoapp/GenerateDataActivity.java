@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,11 @@ public class GenerateDataActivity extends Activity {
             switch (msg.what) {
                 case 0://upload
                     Bundle bundle = msg.getData();
+                    if (bundle == null) {
+                        Toast.makeText(GenerateDataActivity.this, "upload Data Error", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
                     if (bundle.getInt("code") == 0) {
                         Toast.makeText(GenerateDataActivity.this, "Upload business data Successed!", Toast.LENGTH_SHORT).show();
                         ret.clear();
@@ -303,6 +309,10 @@ public class GenerateDataActivity extends Activity {
                     mHandler.sendMessage(msg);
                 } catch (NotInitException e) {
                     e.printStackTrace();
+                    Message msg = Message.obtain();
+                    msg.what = 0;
+                    msg.setData(null);
+                    mHandler.sendMessage(msg);
                 }
             }
         });
@@ -340,6 +350,14 @@ public class GenerateDataActivity extends Activity {
 
                 } catch (NotInitException e) {
                     e.printStackTrace();
+
+
+                    Message msg = Message.obtain();
+                    msg.what = 1;
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", null);
+                    msg.setData(bundle);
+                    mHandler.sendMessage(msg);
                 }
             }
         });
@@ -347,6 +365,18 @@ public class GenerateDataActivity extends Activity {
 
     }
 
+
+    public static boolean isDimension(String column, List<DataQueryResultObject.Column> columns) {
+
+        for (int i = 0; i < columns.size(); i++) {
+            Log.d(TAG, "column:" + column + "      list item:" + columns.get(i).getColName());
+            if (column.equals(columns.get(i).getColName()) && columns.get(i).getType().equals("Dimension")) {
+                return true;
+            }
+
+        }
+        return false;
+    }
 
     public static ChartData trans_bar(DataQueryResultObject in) {
         if (in == null) {
@@ -372,15 +402,21 @@ public class GenerateDataActivity extends Activity {
         for (int i = 0; i < rows.size(); i++) {
             List<RowObject> oneData = rows.get(i);
             Object nnn[] = new Object[3];
+            nnn[0] = "";
             for (int j = 0; j < oneData.size(); j++) {
-                if (oneData.get(j).getColName().equals("acquirertype")) {
-                    nnn[0] = oneData.get(j).getValue();
-                } else if (oneData.get(j).getColName().equals("amount")) {
-                    nnn[1] = oneData.get(j).getValue();
-                } else if (oneData.get(j).getColName().equals("XXX")) {
-                    nnn[2] = oneData.get(j).getValue();
+                if (isDimension(oneData.get(j).getColName(), columns)) {
+                    nnn[0] += (String) oneData.get(j).getValue();
+                } else {
+                    if (TextUtils.isEmpty((String) oneData.get(j).getValue())) {
+                        nnn[1] = "";
+                    } else {
+                        nnn[1] = oneData.get(j).getValue();
+                    }
+
                 }
             }
+
+            Log.d(TAG, "nnn[0][1]" + (String) nnn[0] + ":" + (String) nnn[1]);
             ret.getDatas().add(nnn);
         }
 
@@ -467,16 +503,16 @@ public class GenerateDataActivity extends Activity {
             }
             Object bb[] = new Object[2];
             String xcord = (String) nnn[0];
-            if(Integer.parseInt((String) nnn[1])<10){
-                xcord = xcord+"0"+(String) nnn[1];
-            }else{
-                xcord = xcord+(String) nnn[1];
+            if (Integer.parseInt((String) nnn[1]) < 10) {
+                xcord = xcord + "0" + (String) nnn[1];
+            } else {
+                xcord = xcord + (String) nnn[1];
             }
 
-            if(Integer.parseInt((String) nnn[2])<10){
-                xcord = xcord+"0"+(String) nnn[2];
-            }else{
-                xcord = xcord+(String) nnn[2];
+            if (Integer.parseInt((String) nnn[2]) < 10) {
+                xcord = xcord + "0" + (String) nnn[2];
+            } else {
+                xcord = xcord + (String) nnn[2];
             }
 
             bb[0] = xcord;
