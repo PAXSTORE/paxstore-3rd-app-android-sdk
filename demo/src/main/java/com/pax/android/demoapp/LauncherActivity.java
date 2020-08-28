@@ -181,26 +181,25 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                DataQueryResultObject terminalData = null;
                 try {
-                    terminalData = StoreSdk.getInstance().goInsightApi().findMerchantData(queryCode);
-                    Log.d(TAG, "msg::" + terminalData.getMessage());
-                    List<DataQueryResultObject.Column> columns = terminalData.getColumns();
+                    DataQueryResultObject temrinalData = StoreSdk.getInstance().goInsightApi().findMerchantData(queryCode);
+                    Log.d(TAG, "msg::" + temrinalData.getMessage());
+                    List<DataQueryResultObject.Column> columns = temrinalData.getColumns();
                     //transform to chartData
                     ChartData chart;
                     switch (type) {
                         case BAR:
-                            chart = trans_bar(terminalData);
+                            chart = trans_bar(temrinalData);
                             chartData_bar = chart;
                             flags.put("BAR",true);
                             break;
                         case LINE:
-                            chart = trans_line(terminalData);
+                            chart = trans_line(temrinalData);
                             chartData_line = chart;
                             flags.put("LINE",true);
                             break;
                         case PI:
-                            chart = trans_pi(terminalData);
+                            chart = trans_pi(temrinalData);
                             chartData_pi = chart;
                             flags.put("PI",true);
                             break;
@@ -215,11 +214,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
 
 
                 if (flags.size()==3){
-                    if (terminalData.getBusinessCode() != 0) {
-                        for (FragmentReceiver listener : recivers) {
-                            listener.loadDataError("BusinessCode: " +terminalData.getBusinessCode() + " Message: " + terminalData.getMessage());
-                        }
-                    }
                     for (FragmentReceiver listener : recivers) {
                         listener.notifyFragment(LauncherActivity.this, null);
                     }
