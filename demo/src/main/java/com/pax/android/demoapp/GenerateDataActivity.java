@@ -48,6 +48,11 @@ public class GenerateDataActivity extends Activity {
             switch (msg.what) {
                 case 0://upload
                     Bundle bundle = msg.getData();
+                    if (bundle == null) {
+                        Toast.makeText(GenerateDataActivity.this, "upload Data Error", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
                     if (bundle.getInt("code") == 0) {
                         Toast.makeText(GenerateDataActivity.this, "Upload business data Successed!", Toast.LENGTH_SHORT).show();
                         ret.clear();
@@ -304,6 +309,10 @@ public class GenerateDataActivity extends Activity {
                     mHandler.sendMessage(msg);
                 } catch (NotInitException e) {
                     e.printStackTrace();
+                    Message msg = Message.obtain();
+                    msg.what = 0;
+                    msg.setData(null);
+                    mHandler.sendMessage(msg);
                 }
             }
         });
@@ -341,6 +350,14 @@ public class GenerateDataActivity extends Activity {
 
                 } catch (NotInitException e) {
                     e.printStackTrace();
+
+
+                    Message msg = Message.obtain();
+                    msg.what = 1;
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", null);
+                    msg.setData(bundle);
+                    mHandler.sendMessage(msg);
                 }
             }
         });
