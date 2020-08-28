@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -42,7 +41,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.pax.market.android.app.sdk.StoreSdk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,19 +152,15 @@ public class GoFragment extends Fragment implements FragmentReceiver {
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         for (int i = 0; i < rows.size(); i++) {
-            if (rows.get(i) == null) {
-                continue;
-            }
-            ArrayList<BarEntry> barEntries = new ArrayList<>();
-            if (rows.get(i)[1] == null) {
-                barEntries.add(new BarEntry(i, 0, rows.get(i)[0]));
-            } else {
+            try{
+                ArrayList<BarEntry> barEntries = new ArrayList<>();
                 barEntries.add(new BarEntry(i, Float.parseFloat((String) rows.get(i)[1]), rows.get(i)[0]));
+                BarDataSet barDataSet = new BarDataSet(barEntries, (String) rows.get(i)[0]);
+                barDataSet.setColor(colors.get(i));
+                dataSets.add(barDataSet);
+            }catch (NumberFormatException e){
+                e.printStackTrace();
             }
-            BarDataSet barDataSet = new BarDataSet(barEntries, (String) rows.get(i)[0]);
-            barDataSet.setColor(colors.get(i));
-
-            dataSets.add(barDataSet);
         }
 
 
@@ -544,16 +538,6 @@ public class GoFragment extends Fragment implements FragmentReceiver {
     public void notifyFragment(Context context, Object object) {
         Log.d(TAG,"getDAta");
         update_chart();
-    }
-
-    @Override
-    public void loadDataError(final String message) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     /**

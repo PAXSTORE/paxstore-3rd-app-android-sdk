@@ -80,7 +80,7 @@ If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/man
     -keep public class * extends android.content.BroadcastReceiver
     -keep public class * extends android.preference.Preference
 
-## API Usage
+## Set Up
 
 ### Step 1: Get Application Key and Secret
 Create a new app in PAXSTORE, and get **AppKey** and **AppSecret** from app detail page in developer center.

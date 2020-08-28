@@ -13,11 +13,10 @@ public class DownloadParamReceiver extends BroadcastReceiver {
     private static long lastReceiveTime = -1L;
     private static long timeStamp = -1L;
 
-    private static String ACTION_START_CUSTOMER_SERVICE = "com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS";
     /**
-     * Ignore tasks within 5 seconds
+     * Ignore tasks within 3 seconds
      */
-    private static long TIME_FILTER = 5_000L;
+    public static long TIME_FILTER = 3_000L;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -26,13 +25,10 @@ public class DownloadParamReceiver extends BroadcastReceiver {
         }
 
         Log.i("DownloadParamReceiver", "broadcast received");
-        Intent startIntent = new Intent(ACTION_START_CUSTOMER_SERVICE);
-        startIntent.setPackage(context.getPackageName());
-        startIntent.addCategory(context.getPackageName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(startIntent);
+            context.startForegroundService(DelayService.getCallingIntent(context));
         } else {
-            context.startService(startIntent);
+            context.startService(DelayService.getCallingIntent(context));
         }
     }
 
@@ -50,8 +46,8 @@ public class DownloadParamReceiver extends BroadcastReceiver {
         }
 
         // From PAXSTORE client version 7.2.1, you need below function to escape duplicate receiving of parmas.
-        long receiveTime = (Long) intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L);
-        if (receiveTime > 0 && Long.compare(receiveTime, timeStamp) == 0) {
+        long receiveTime = intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L);
+        if (receiveTime > 0 && receiveTime == timeStamp) {
             return true;
         } else {
             timeStamp = receiveTime;
