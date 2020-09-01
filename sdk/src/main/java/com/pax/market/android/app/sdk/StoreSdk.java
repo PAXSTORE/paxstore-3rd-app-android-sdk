@@ -313,6 +313,7 @@ public class StoreSdk {
         long lastGetBaseInfo = PreferencesUtils.getLong(context, CommonConstants.SP_LAST_GET_TERMINAL_INFO_TIME, 0L);
         if (System.currentTimeMillis() - lastGetBaseInfo < 1000L) { //Ignore call within 1 second
             callback.onError(new RemoteException(ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST));
+            return;
         }
         PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_TERMINAL_INFO_TIME, System.currentTimeMillis());
 
