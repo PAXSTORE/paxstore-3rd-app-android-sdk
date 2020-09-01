@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.RemoteException;
+import android.util.Log;
 
 import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
@@ -15,7 +17,6 @@ import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.activate.ActivateApi;
-import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
@@ -29,6 +30,8 @@ import org.slf4j.LoggerFactory;
 import java.util.TimeZone;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST;
 
 /**
  * Created by zhangchenyang on 2018/5/23.
@@ -307,6 +310,12 @@ public class StoreSdk {
      *                 For the return Object TerminalInfo, please refer to com.pax.market.android.app.sdk.dto.TerminalInfo
      */
     public void getBaseTerminalInfo(Context context, BaseApiService.ICallBack callback) {
+        long lastGetBaseInfo = PreferencesUtils.getLong(context, CommonConstants.SP_LAST_GET_TERMINAL_INFO_TIME, 0L);
+        if (System.currentTimeMillis() - lastGetBaseInfo < 1000L) { //Ignore call within 1 second
+            callback.onError(new RemoteException(ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST));
+        }
+        PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_TERMINAL_INFO_TIME, System.currentTimeMillis());
+
         BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
     }
 
@@ -386,6 +395,15 @@ public class StoreSdk {
      */
     public OnlineStatusInfo getOnlineStatusFromPAXSTORE(Context context) {
         OnlineStatusInfo onlineStatusInfo = new OnlineStatusInfo();
+        long lastSdkOnlineStatusTime = PreferencesUtils.getLong(context, CommonConstants.SP_LAST_GET_ONLINE_STATUS_TIME, 0L);
+        if (System.currentTimeMillis() - lastSdkOnlineStatusTime < 1000L) { //Ignore call within 1 second
+            onlineStatusInfo.setBusinessCode(QueryResult.GET_ONLINE_STATUS_TOO_FAST.getCode());
+            onlineStatusInfo.setMessage(QueryResult.GET_ONLINE_STATUS_TOO_FAST.getMsg());
+            Log.w("StoreSdk", QueryResult.GET_ONLINE_STATUS_TOO_FAST.getMsg());
+            return onlineStatusInfo;
+        }
+        PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_ONLINE_STATUS_TIME, System.currentTimeMillis());
+
         //对location表进行操作
         // 和上述类似,只是URI需要更改,从而匹配不同的URI CODE,从而找到不同的数据资源
         Uri uri_online_status = Uri.parse("content://com.pax.market.android.app/online_status");
@@ -408,9 +426,7 @@ public class StoreSdk {
             Boolean onlineStatus = (cursor.getString(2) != null ?
                     Boolean.valueOf(cursor.getString(2)) : null);
             onlineStatusInfo.setOnline(onlineStatus);
-            // 将表中数据全部输出
         }
-        // 关闭游标
         cursor.close();
 
         return onlineStatusInfo;
@@ -429,21 +445,28 @@ public class StoreSdk {
     }
 
     /**
-     * Get location from PAXSTORE.
+     * Get location from PAXSTORE. （from provider)
+     * if can not get loation from provider, get location from old service.
      * @param context
      * @param locationCallback
      */
     public void startLocate(Context context, LocationService.LocationCallback locationCallback) {
         LocationInfo locationInfo = new LocationInfo();
-        //对location表进行操作
-        // 和上述类似,只是URI需要更改,从而匹配不同的URI CODE,从而找到不同的数据资源
+        long lastSdkLocateTime = PreferencesUtils.getLong(context, CommonConstants.SP_LAST_GET_LOCATION_TIME, 0L);
+        if (System.currentTimeMillis() - lastSdkLocateTime < 1000L) { //Ignore call within 1 second
+            locationInfo.setBusinessCode(QueryResult.GET_LOCATION_TOO_FAST.getCode());
+            locationInfo.setMessage(QueryResult.GET_LOCATION_TOO_FAST.getMsg());
+            locationCallback.locationResponse(locationInfo);
+            Log.w("StoreSdk", QueryResult.GET_LOCATION_TOO_FAST.getMsg());
+            return;
+        }
+
+        PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_LOCATION_TIME, System.currentTimeMillis());
+
         Uri uri_location = Uri.parse("content://com.pax.market.android.app/location");
-        // 获取ContentResolver
         ContentResolver resolver = context.getContentResolver();
-        // 通过ContentResolver 根据URI 向ContentProvider中插入数据
-        // 通过ContentResolver 向ContentProvider中查询数据
         Cursor cursor = resolver.query(uri_location, null, null, null, null);
-        if (cursor == null) { // 如果读不到结果，使用旧的接口去读
+        if (cursor == null) {
             LocationService.setCallback(locationCallback);
             Intent intent = new Intent(context, LocationService.class);
             intent.setPackage(BuildConfig.APPLICATION_ID);
@@ -466,9 +489,7 @@ public class StoreSdk {
                 Long lastLocateTime = (cursor.getString(5) != null ?
                         Long.valueOf(cursor.getString(5)) : null);
                 locationInfo.setLastLocateTime(lastLocateTime);
-                // 将表中数据全部输出
             }
-            // 关闭游标
             cursor.close();
 
             locationCallback.locationResponse(locationInfo);
