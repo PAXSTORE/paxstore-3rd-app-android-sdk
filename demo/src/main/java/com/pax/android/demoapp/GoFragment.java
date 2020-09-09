@@ -42,9 +42,18 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.api.sdk.java.base.dto.DataQueryResultObject;
+import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.pax.android.demoapp.GenerateDataActivity.trans_bar;
+import static com.pax.android.demoapp.GenerateDataActivity.trans_line;
+import static com.pax.android.demoapp.GenerateDataActivity.trans_pi;
 
 
 /**
@@ -65,12 +74,16 @@ public class GoFragment extends Fragment implements FragmentReceiver {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ChartData chartData_line, chartData_bar, chartData_pi;
+    private Map<String, Boolean> flags = new ConcurrentHashMap<>();
+
 
     private OnFragmentInteractionListener mListener;
 
     private LinearLayout mContentWrap;
     private View contentView, mMore, mNodata;
     private View mProGress;
+    private View mNoData;
 
 
     private BarChart mBarChart;
@@ -153,13 +166,13 @@ public class GoFragment extends Fragment implements FragmentReceiver {
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         for (int i = 0; i < rows.size(); i++) {
-            try{
+            try {
                 ArrayList<BarEntry> barEntries = new ArrayList<>();
                 barEntries.add(new BarEntry(i, Float.parseFloat((String) rows.get(i)[1]), rows.get(i)[0]));
                 BarDataSet barDataSet = new BarDataSet(barEntries, (String) rows.get(i)[0]);
                 barDataSet.setColor(colors.get(i));
                 dataSets.add(barDataSet);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
@@ -236,9 +249,9 @@ public class GoFragment extends Fragment implements FragmentReceiver {
             @Override
             public String getFormattedValue(float position) {
 
-                for(int i = 0;i<values.size();i++){
-                    if(values.get(i).getX() == position){
-                        return (String)((rows.get((int)position))[0]);
+                for (int i = 0; i < values.size(); i++) {
+                    if (values.get(i).getX() == position) {
+                        return (String) ((rows.get((int) position))[0]);
                     }
                 }
 
@@ -288,7 +301,7 @@ public class GoFragment extends Fragment implements FragmentReceiver {
             values.add(new Entry(i, Float.parseFloat((String) rows.get(i)[1])));
 
         }
-        LineDataSet d = new LineDataSet(values,"");
+        LineDataSet d = new LineDataSet(values, "");
 
         // draw dashed line
         d.enableDashedLine(10f, 5f, 0f);
@@ -416,12 +429,21 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         mContentWrap = view.findViewById(R.id.contentWrap);
         mMore = view.findViewById(R.id.more);
         mProGress = view.findViewById(R.id.pro_wrap_fragment);
+        mNoData = view.findViewById(R.id.nodata_view);
         mProGress.setVisibility(View.VISIBLE);
         mMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //show pop window
                 showPopupWindow(getContext(), mContentWrap);
+            }
+        });
+        mNoData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                queryWrap();
+                mNoData.setVisibility(View.GONE);
+                mProGress.setVisibility(View.VISIBLE);
             }
         });
         return view;
@@ -432,7 +454,7 @@ public class GoFragment extends Fragment implements FragmentReceiver {
     @Override
     public void onPause() {
         super.onPause();
-        if(mPopWindow!=null){
+        if (mPopWindow != null) {
             mPopWindow.dismiss();
         }
 
@@ -468,7 +490,7 @@ public class GoFragment extends Fragment implements FragmentReceiver {
     }
 
 
-    public void update_chart(){
+    public void update_chart() {
         if (getActivity() == null) {
             Log.w(TAG, "getActivity() == null");
             return;
@@ -476,13 +498,20 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 mProGress.setVisibility(View.GONE);
                 View view = getView();
+
                 //判断chartData
-                ChartData chartData_line = ((LauncherActivity) getActivity()).getChartData_line();
-                ChartData chartData_bar = ((LauncherActivity) getActivity()).getChartData_bar();
-                ChartData chartData_pi = ((LauncherActivity) getActivity()).getChartData_pi();
-                if (chartData_line != null && !chartData_line.isEmpty() && chartData_bar != null && !chartData_bar.isEmpty() && chartData_pi != null && !chartData_pi.isEmpty()) {
+                ChartData chartData_line = getChartData_line();
+                ChartData chartData_bar = getChartData_bar();
+                ChartData chartData_pi = getChartData_pi();
+                if (chartData_line != null && !chartData_line.isEmpty()
+                        && chartData_bar != null && !chartData_bar.isEmpty()
+                        && chartData_pi != null && !chartData_pi.isEmpty()) {
+                    view.findViewById(R.id.chart_bar_wrap).setVisibility(View.VISIBLE);
+                    view.findViewById(R.id.chart_line_wrap).setVisibility(View.VISIBLE);
+                    view.findViewById(R.id.chart_pie_wrap).setVisibility(View.VISIBLE);
                     view.findViewById(R.id.nodata_view).setVisibility(View.GONE);
 
                     //******
@@ -537,7 +566,7 @@ public class GoFragment extends Fragment implements FragmentReceiver {
 
     @Override
     public void notifyFragment(Context context, Object object) {
-        Log.d(TAG,"getDAta");
+        Log.d(TAG, "getDAta");
         update_chart();
     }
 
@@ -615,50 +644,83 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         if (isVisibleToUser) {
             //TODO now it's visible to user
             Log.d(TAG, "yes");
-//            View view = getView();
-//            //判断chartData
-//            ChartData chartData = ((LauncherActivity) getActivity()).getChartData();
-//            if (chartData != null && !chartData.isEmpty()) {
-//                view.findViewById(R.id.nodata_view).setVisibility(View.GONE);
-//
-//                //******
-//                List<String> colums = chartData.getColumus();
-//                List<Object[]> datas = chartData.getDatas();
-//                //******
-//
-//
-//                //load chart
-//                mBarChart = view.findViewById(R.id.chart_bar);
-//                ((TextView) view.findViewById(R.id.bar_title)).setText(chartData.getTitle());
-//                view.findViewById(R.id.chart_bar_wrap).setVisibility(View.VISIBLE);
-//                creareBarChart(mBarChart, colums, datas);
-//
-//                //load linechart
-//                mLineChart = view.findViewById(R.id.chart_line);
-//                ((TextView) view.findViewById(R.id.line_title)).setText(chartData.getTitle());
-//                view.findViewById(R.id.chart_line_wrap).setVisibility(View.VISIBLE);
-//                createLineChart(mLineChart, colums, datas);
-//
-//
-//                if (colums.size() <= 2) {
-//                    //load piechart
-//                    mPieChart = view.findViewById(R.id.chart_pie);
-//                    ((TextView) view.findViewById(R.id.pie_title)).setText(chartData.getTitle());
-//                    view.findViewById(R.id.chart_pie_wrap).setVisibility(View.VISIBLE);
-//                    createPieChart(mPieChart, colums, datas);
-//                }
-//
-//
-//            } else {
-//                view.findViewById(R.id.chart_bar_wrap).setVisibility(View.GONE);
-//                view.findViewById(R.id.chart_line_wrap).setVisibility(View.GONE);
-//                view.findViewById(R.id.chart_pie_wrap).setVisibility(View.GONE);
-//                view.findViewById(R.id.nodata_view).setVisibility(View.VISIBLE);
-//            }
+            queryWrap();
         } else {
             //TODO now it's invisible to user
             Log.d(TAG, "no");
         }
     }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////// get data ///////////////////////////////
+    private void queryWrap() {
+        queryBizData("3hi0fs8i", ChartType.LINE);
+        queryBizData("v664nkfc", ChartType.BAR);
+        queryBizData("7a5ck60a", ChartType.PI);
+    }
+
+    private void queryBizData(final String queryCode, final ChartType type) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DataQueryResultObject terminalData = null;
+                try {
+                    terminalData = StoreSdk.getInstance().goInsightApi().findMerchantData(queryCode);
+                    Log.d(TAG, "msg::" + terminalData.getMessage());
+                    List<DataQueryResultObject.Column> columns = terminalData.getColumns();
+                    //transform to chartData
+                    ChartData chart;
+                    switch (type) {
+                        case BAR:
+                            chart = trans_bar(terminalData);
+                            chartData_bar = chart;
+                            flags.put("BAR", true);
+                            break;
+                        case LINE:
+                            chart = trans_line(terminalData);
+                            chartData_line = chart;
+                            flags.put("LINE", true);
+                            break;
+                        case PI:
+                            chart = trans_pi(terminalData);
+                            chartData_pi = chart;
+                            flags.put("PI", true);
+                            break;
+                    }
+
+                } catch (NotInitException e) {
+                    loadDataError("Init failed: " + e.getMessage());
+                    flags.put("LINE", false);
+                    flags.put("BAR", false);
+                    flags.put("PI", false);
+                }
+
+
+                if (flags.size() == 3) {
+                    if (terminalData != null && terminalData.getBusinessCode() != 0) {
+                        loadDataError("BusinessCode: " + terminalData.getBusinessCode() + " Message: " + terminalData.getMessage());
+                    }
+                    notifyFragment(getActivity(), null);
+                }
+            }
+        });
+        thread.start();
+
+    }
+
+
+    public ChartData getChartData_line() {
+        return chartData_line;
+    }
+
+
+    public ChartData getChartData_bar() {
+        return chartData_bar;
+    }
+
+
+    public ChartData getChartData_pi() {
+        return chartData_pi;
+    }
+
 
 }
