@@ -44,7 +44,7 @@ public class BaseApplication extends Application {
 
     private void initPaxStoreSdk() {
         //todo 1. Init AppKey，AppSecret and SN, make sure the appkey and appSecret is corret.
-        StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, SN, new BaseApiService.Callback() {
+        StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
             @Override
             public void initSuccess() {
                 Log.i(TAG, "initSuccess.");

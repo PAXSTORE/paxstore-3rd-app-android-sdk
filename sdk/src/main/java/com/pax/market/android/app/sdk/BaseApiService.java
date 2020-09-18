@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.pax.market.android.app.aidl.IApiUrlService;
 import com.pax.market.android.app.aidl.IRemoteSdkService;
+import com.pax.market.android.app.sdk.dto.DcUrlInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
@@ -38,8 +40,8 @@ public class BaseApiService implements ProxyDelegate {
     private static final String SP_STORE_PROXY_PORT = "proxyPort";
     private static final String SP_STORE_PROXY_AUTH = "proxyAuthorization";
     private static final String GET_TERMINAL_INFO_ACTION = "com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE";
-    private static final String INIT_ACTION = "com.pax.market.android.app.aidl.API_URL_SERVICE";
-    private static final String PAXSTORE_PACKAGE_NAME = "com.pax.market.android.app";
+    public static final String INIT_ACTION = "com.pax.market.android.app.aidl.API_URL_SERVICE";
+    public static final String PAXSTORE_PACKAGE_NAME = "com.pax.market.android.app";
 
 
     private static volatile BaseApiService instance;
@@ -63,7 +65,7 @@ public class BaseApiService implements ProxyDelegate {
         return instance;
     }
 
-    public void init(final String appKey, final String appSecret, final String terminalSerialNo,
+    public void init(final String appKey, final String appSecret,
                      final Callback callback1, final ApiCallBack apiCallBack) {
 
         ServiceConnection serviceConnection = new ServiceConnection() {
@@ -79,8 +81,9 @@ public class BaseApiService implements ProxyDelegate {
                         logger.warn(">>> Init proxy from PASXTORE : [NULL]");
                     }
                     setStoreProxyInfo(proxyInfo);
-                    final String apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
-                    new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, apiUrl));
+                    final String terminalSn = IApiUrlService.Stub.asInterface(service).getSn();
+
+                    new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, terminalSn));
                 } catch (RemoteException e) {
                     logger.error(">>> Get Api URL error", e);
                     callback1.initFailed(e);
@@ -105,15 +108,54 @@ public class BaseApiService implements ProxyDelegate {
         }
     }
 
+
+    public void getDcUrl(final DcCallBack callback1) {
+        ServiceConnection serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, final IBinder service) {
+                try {
+                    StoreProxyInfo proxyInfo = IApiUrlService.Stub.asInterface(service).getStoreProxyInfo();
+                    if(proxyInfo != null) {
+                        logger.info(">>> Init proxy from PAXSTORE : proxy[@{}/{}:{}], has proxy authenticator={}",
+                                proxyInfo.getType() == 1 ? "HTTP" : proxyInfo.getType() == 2 ? "SOCKS" : "DIRECT",
+                                proxyInfo.getHost(), proxyInfo.getPort(), proxyInfo.getAuthorization() != null);
+                    } else {
+                        logger.warn(">>> Init proxy from PASXTORE : [NULL]");
+                    }
+                    setStoreProxyInfo(proxyInfo);
+
+                    new InitDcUrlAsyncTask().execute(new DcApiParams(callback1, service));
+                } catch (RemoteException e) {
+                    logger.error(">>> Get Api URL error", e);
+                    callback1.initFailed(e);
+                }
+                context.unbindService(this);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                logger.error("onServiceDisconnected");
+            }
+        };
+
+        Intent intent = new Intent(INIT_ACTION);
+        intent.setPackage(PAXSTORE_PACKAGE_NAME);
+        boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (!bindResult) {
+            callback1.initFailed(new RemoteException(ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED));
+            context.unbindService(serviceConnection);
+        }
+    }
+
     private class InitApiParams {
         Callback callback1;
         ApiCallBack apiCallBack;
-        String apiUrl;
+        String terminalSn;
 
-        InitApiParams(ApiCallBack apiCallBack, Callback callback1, String apiUrl) {
+        InitApiParams(ApiCallBack apiCallBack, Callback callback1, String terminalSn) {
             this.callback1 = callback1;
             this.apiCallBack = apiCallBack;
-            this.apiUrl = apiUrl;
+            this.terminalSn = terminalSn;
         }
     }
 
@@ -125,8 +167,42 @@ public class BaseApiService implements ProxyDelegate {
             if (initApiParams1 == null) {
                 return null;
             }
-            initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl);
+            initApiParams1.apiCallBack.initSuccess(initApiParams1.terminalSn);
             initApiParams1.callback1.initSuccess();
+            return null;
+        }
+    }
+
+    private class DcApiParams {
+        DcCallBack dcCallBack;
+        IBinder service;
+
+        DcApiParams(DcCallBack callback1, IBinder service) {
+            this.dcCallBack = callback1;
+            this.service = service;
+        }
+    }
+
+    private class InitDcUrlAsyncTask extends AsyncTask<DcApiParams, Void, Void> {
+
+        @Override
+        protected Void doInBackground(DcApiParams... initApiParams) {
+            DcApiParams dcCallBack = initApiParams[0];
+            if (dcCallBack == null) {
+                return null;
+            }
+            final DcUrlInfo apiUrl = new DcUrlInfo();
+            try {
+                Log.w("BaseApiService", "ttt 123" + Thread.currentThread().getName());
+                DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
+                apiUrl.setLastAccessTime(info.getLastAccessTime());
+                apiUrl.setDcUrl(info.getDcUrl());
+                apiUrl.setBusinessCode(info.getBusinessCode());
+                apiUrl.setMessage(info.getMessage());
+            } catch (RemoteException e) {
+                Log.e("InitDcUrlAsyncTask", "e:" + e);
+            }
+            dcCallBack.dcCallBack.initSuccess(apiUrl.getDcUrl());
             return null;
         }
     }
@@ -175,6 +251,12 @@ public class BaseApiService implements ProxyDelegate {
         void onSuccess(Object obj);
 
         void onError(Exception e);
+    }
+
+    public interface DcCallBack {
+        void initSuccess(String baseUrl);
+
+        void initFailed(Exception e);
     }
 
 

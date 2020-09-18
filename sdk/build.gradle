@@ -43,7 +43,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.4'
     implementation 'dom4j:dom4j:1.6.1'
     implementation 'org.slf4j:slf4j-api:1.7.12'
-    api files('libs\\app-java-sdk-7.2.1.jar')
+    api files('libs\\app-java-sdk-7.2.2.jar')
 }
 
 publish {
