@@ -64,46 +64,7 @@ public class GenerateDataActivity extends Activity {
                     }
                     break;
                 case 1://query
-                    Bundle data = msg.getData();
-                    ChartData chartData = (ChartData) data.getSerializable("data");
-                    if (chartData == null) {
-                        Toast.makeText(GenerateDataActivity.this, "Query Data Error", Toast.LENGTH_SHORT).show();
-                        finish();
-                    } else {
-                        switch (mQueryCount) {
-                            case 0:
-                                ret.add(chartData);
-                                queryBizData("3hi0fs8i", LINE);
-                                break;
-                            case 1:
-                                ret.add(chartData);
-                                queryBizData("7a5ck60a", PI);
-                                break;
-                            case 2:
-                                ret.add(chartData);
-                                Bundle bun = new Bundle();
-                                for (ChartData item : ret) {
-                                    switch (item.getType()) {
-                                        case LINE:
-                                            bun.putSerializable("data_line", item);
-                                            break;
-                                        case BAR:
-                                            bun.putSerializable("data_bar", item);
-                                            break;
-                                        case PI:
-                                            bun.putSerializable("data_pi", item);
-                                            break;
-                                    }
-                                }
-                                mLoading.setVisibility(View.GONE);
-                                Intent intent = new Intent(GenerateDataActivity.this, LauncherActivity.class);
-                                intent.putExtra("back", bun);
-                                setResult(1, intent);
-                                finish();
-                                break;
-                        }
-                        mQueryCount++;
-                    }
+                    finish();
                     break;
             }
         }

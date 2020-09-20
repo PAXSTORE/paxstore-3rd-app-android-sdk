@@ -13,6 +13,7 @@ public enum QueryResult {
     GET_LOCATION_TOO_FAST(-4, "Get location too fast"),
     PUSH_NOT_ENABLED(-5, "Push not enabled"),
     QUERY_FROM_CONTENT_PROVIDER_FAILED(-6, "Query failed"),
+    GET_ONLINE_STATUS_TOO_FAST(-7, "Get online status too fast"),
     UNKNOWN(-10, "unknown");
 
     private final String msg;
