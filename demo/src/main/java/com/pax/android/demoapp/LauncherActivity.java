@@ -18,18 +18,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.pax.market.android.app.sdk.AdvertisementDialog;
-import com.pax.market.android.app.sdk.StoreSdk;
-import com.pax.market.api.sdk.java.base.dto.DataQueryResultObject;
-import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static com.pax.android.demoapp.GenerateDataActivity.trans_bar;
-import static com.pax.android.demoapp.GenerateDataActivity.trans_line;
-import static com.pax.android.demoapp.GenerateDataActivity.trans_pi;
 
 
 public class LauncherActivity extends FragmentActivity implements com.pax.android.demoapp.APIFragment.OnFragmentInteractionListener, com.pax.android.demoapp.GoFragment.OnFragmentInteractionListener, com.pax.android.demoapp.PushFragment.OnFragmentInteractionListener {
@@ -38,8 +29,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     private RadioGroup mGroup;
     private RadioButton mPush, mGo, mApi;
     private Fragment PushFragment, APIFragment, GoFragment;
-    private ChartData chartData_line, chartData_bar, chartData_pi;
-    private Map<String,Boolean> flags = new ConcurrentHashMap<>();
     private SPUtil spUtil;
     private MsgReceiver msgReceiver;
     private List<FragmentReceiver> recivers = new ArrayList<>();
@@ -48,21 +37,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     public static Handler getHandler() {
         return handler;
     }
-
-    public ChartData getChartData_line() {
-        return chartData_line;
-    }
-
-
-    public ChartData getChartData_bar() {
-        return chartData_bar;
-    }
-
-
-    public ChartData getChartData_pi() {
-        return chartData_pi;
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +119,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
             }
         });
 
-        queryWrap();
     }
 
 
@@ -159,69 +132,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult");
-        //解析返回数据更新UI
-        if (data != null) {
-            Bundle bundle = data.getBundleExtra("back");
-            ChartData graph_line = (ChartData) bundle.getSerializable("data_line");
-            ChartData graph_bar = (ChartData) bundle.getSerializable("data_bar");
-            ChartData graph_pi = (ChartData) bundle.getSerializable("data_pi");
-            chartData_line = graph_line;
-            chartData_bar = graph_bar;
-            chartData_pi = graph_pi;
-        }
-    }
-
-    private void queryWrap() {
-        queryBizData("3hi0fs8i", ChartType.LINE);
-        queryBizData("v664nkfc", ChartType.BAR);
-        queryBizData("7a5ck60a", ChartType.PI);
-    }
-
-    private void queryBizData(final String queryCode, final ChartType type) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    DataQueryResultObject temrinalData = StoreSdk.getInstance().goInsightApi().findMerchantData(queryCode);
-                    Log.d(TAG, "msg::" + temrinalData.getMessage());
-                    List<DataQueryResultObject.Column> columns = temrinalData.getColumns();
-                    //transform to chartData
-                    ChartData chart;
-                    switch (type) {
-                        case BAR:
-                            chart = trans_bar(temrinalData);
-                            chartData_bar = chart;
-                            flags.put("BAR",true);
-                            break;
-                        case LINE:
-                            chart = trans_line(temrinalData);
-                            chartData_line = chart;
-                            flags.put("LINE",true);
-                            break;
-                        case PI:
-                            chart = trans_pi(temrinalData);
-                            chartData_pi = chart;
-                            flags.put("PI",true);
-                            break;
-                    }
-
-                } catch (NotInitException e) {
-                    e.printStackTrace();
-                    flags.put("LINE",false);
-                    flags.put("BAR",false);
-                    flags.put("PI",false);
-                }
-
-
-                if (flags.size()==3){
-                    for (FragmentReceiver listener : recivers) {
-                        listener.notifyFragment(LauncherActivity.this, null);
-                    }
-                }
-            }
-        });
-        thread.start();
-
     }
 
 

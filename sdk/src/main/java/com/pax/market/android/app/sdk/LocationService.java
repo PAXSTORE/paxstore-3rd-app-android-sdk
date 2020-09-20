@@ -63,6 +63,10 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         NotificationUtils.showForeGround(this, "LocationService");
+        if (mBond) {
+            Log.w("LocationService", "Already bound service");
+            return super.onStartCommand(intent, flags, startId);
+        }
         //绑定服务
         conn = new MyConn();
         Intent intent2 = new Intent();
@@ -120,4 +124,5 @@ public class LocationService extends Service {
             LocationService.this.stopSelf();
         }
     }
+
 }

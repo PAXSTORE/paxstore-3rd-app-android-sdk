@@ -9,6 +9,7 @@ import com.pax.market.api.sdk.java.base.dto.SdkObject;
 public class LocationInfo extends SdkObject{
     private String longitude;
     private String latitude;
+    private String accuracy;
     private Long lastLocateTime;
 
     public String getLongitude() {
@@ -27,6 +28,14 @@ public class LocationInfo extends SdkObject{
         this.latitude = latitude;
     }
 
+    public String getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(String accuracy) {
+        this.accuracy = accuracy;
+    }
+
     public Long getLastLocateTime() {
         return lastLocateTime;
     }
@@ -40,6 +49,7 @@ public class LocationInfo extends SdkObject{
         return super.toString() + "LocationInfo{" +
                 "longitude='" + longitude + '\'' +
                 ", latitude='" + latitude + '\'' +
+                ", accuracy='" + accuracy + '\'' +
                 ", lastLocateTime=" + lastLocateTime +
                 '}';
     }
