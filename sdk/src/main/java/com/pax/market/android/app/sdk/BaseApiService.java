@@ -16,6 +16,7 @@ import com.pax.market.android.app.sdk.dto.DcUrlInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
+import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 
 import org.slf4j.Logger;
@@ -195,18 +196,21 @@ public class BaseApiService implements ProxyDelegate {
             if (dcCallBack == null) {
                 return null;
             }
-            final DcUrlInfo apiUrl = new DcUrlInfo();
+
+            DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
+            if (localDcUrlInfo != null && System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
+                dcCallBack.dcCallBack.initSuccess(localDcUrlInfo.getDcUrl());
+                return null;
+            }
+
             try {
                 Log.w("BaseApiService", "ttt 123" + Thread.currentThread().getName());
                 DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
-                apiUrl.setLastAccessTime(info.getLastAccessTime());
-                apiUrl.setDcUrl(info.getDcUrl());
-                apiUrl.setBusinessCode(info.getBusinessCode());
-                apiUrl.setMessage(info.getMessage());
+                dcCallBack.dcCallBack.initSuccess(info.getDcUrl());
             } catch (RemoteException e) {
                 Log.e("InitDcUrlAsyncTask", "e:" + e);
+                dcCallBack.dcCallBack.initFailed(e);
             }
-            dcCallBack.dcCallBack.initSuccess(apiUrl.getDcUrl());
             return null;
         }
     }

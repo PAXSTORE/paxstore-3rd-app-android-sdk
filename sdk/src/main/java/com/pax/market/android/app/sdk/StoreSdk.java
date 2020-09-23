@@ -511,7 +511,7 @@ public class StoreSdk {
         }
     }
 
-    public MediaMesageInfo getMediaMesage(Context context) {
+    public MediaMesageInfo getMediaMessage(Context context) {
         return PreferencesUtils.getObject(context, PushConstants.MEDIA_MESSAGE, MediaMesageInfo.class);
     }
 
@@ -519,10 +519,7 @@ public class StoreSdk {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             throw new NotInitException("Can not do this on MainThread!!");
         }
-        DcUrlInfo dcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
-        if (dcUrlInfo != null && System.currentTimeMillis() - dcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
-            return dcUrlInfo.getDcUrl();
-        }
+
         final StringBuilder dcUrl = new StringBuilder();
         Log.e("StoreSdk", "ttt 0");
 

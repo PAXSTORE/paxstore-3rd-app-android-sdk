@@ -10,16 +10,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".ProxyChangeService"/>
         <service android:name=".LocationService" />
-
-        <receiver android:name=".ProxyChangeReceiver"
-                  android:enabled="true"
-                  android:exported="true">
-            <intent-filter>
-                <action android:name="com.paxstore.PROXY_CHANGE" />
-            </intent-filter>
-        </receiver>
 
         <receiver android:name=".DownloadParamReceiver">
             <intent-filter>
