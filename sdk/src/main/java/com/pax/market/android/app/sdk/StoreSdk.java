@@ -16,7 +16,6 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
-import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.activate.ActivateApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
@@ -329,36 +328,6 @@ public class StoreSdk {
         PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_TERMINAL_INFO_TIME, System.currentTimeMillis());
 
         BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
-    }
-
-    /**
-     * Sync and update PAXSTORE proxy information
-     *
-     * @param context
-     * @param storeProxyInfo
-     */
-    public void updateStoreProxyInfo(Context context, StoreProxyInfo storeProxyInfo) {
-        BaseApiService.getInstance(context).setStoreProxyInfo(storeProxyInfo);
-        if (paramApi != null) {
-            paramApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("ParamApi is not initialized, please init StoreSdk first...");
-        }
-        if (syncApi != null) {
-            syncApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("SyncApi is not initialized, please init StoreSdk first...");
-        }
-        if (updateApi != null) {
-            updateApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("UpdateApi is not initialized, please init StoreSdk first...");
-        }
-        if (activateApi != null) {
-            activateApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("activateApi is not initialized, please init StoreSdk first...");
-        }
     }
 
     public String aesDecrypt(String encryptedData) {

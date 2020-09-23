@@ -311,23 +311,29 @@ public class BaseApiService implements ProxyDelegate {
 
 
     public void setStoreProxyInfo(StoreProxyInfo storeProxyInfo){
-        SharedPreferences.Editor editor = sp.edit();
         if(storeProxyInfo == null){
-            editor.remove(SP_STORE_PROXY_TYPE)
-                    .remove(SP_STORE_PROXY_HOST)
-                    .remove(SP_STORE_PROXY_PORT)
-                    .remove(SP_STORE_PROXY_AUTH)
-                    .remove(SP_STORE_PROXY_USER)
-                    .remove(SP_STORE_PROXY_PASS);
+            if (this.storeProxy != null) {
+                SharedPreferences.Editor editor = sp.edit();
+                editor.remove(SP_STORE_PROXY_TYPE)
+                        .remove(SP_STORE_PROXY_HOST)
+                        .remove(SP_STORE_PROXY_PORT)
+                        .remove(SP_STORE_PROXY_AUTH)
+                        .remove(SP_STORE_PROXY_USER)
+                        .remove(SP_STORE_PROXY_PASS)
+                        .apply();
+            }
         } else {
-            editor.putInt(SP_STORE_PROXY_TYPE, storeProxyInfo.getType())
-                    .putString(SP_STORE_PROXY_HOST, storeProxyInfo.getHost())
-                    .putInt(SP_STORE_PROXY_PORT, storeProxyInfo.getPort())
-                    .putString(SP_STORE_PROXY_AUTH, storeProxyInfo.getAuthorization())
-                    .putString(SP_STORE_PROXY_USER, storeProxyInfo.getUsername())
-                    .putString(SP_STORE_PROXY_PASS, String.copyValueOf(storeProxyInfo.getPassword()));
+            if (!storeProxyInfo.equals(this.storeProxy)) {
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt(SP_STORE_PROXY_TYPE, storeProxyInfo.getType())
+                        .putString(SP_STORE_PROXY_HOST, storeProxyInfo.getHost())
+                        .putInt(SP_STORE_PROXY_PORT, storeProxyInfo.getPort())
+                        .putString(SP_STORE_PROXY_AUTH, storeProxyInfo.getAuthorization())
+                        .putString(SP_STORE_PROXY_USER, storeProxyInfo.getUsername())
+                        .putString(SP_STORE_PROXY_PASS, String.copyValueOf(storeProxyInfo.getPassword()))
+                        .apply();
+            }
         }
-        editor.apply();
         this.storeProxy = storeProxyInfo;
     }
 
