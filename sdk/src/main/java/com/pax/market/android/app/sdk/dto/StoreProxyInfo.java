@@ -3,15 +3,19 @@ package com.pax.market.android.app.sdk.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Arrays;
+
 /**
  * Created by fojut on 2019/1/7.
  */
 public class StoreProxyInfo implements Parcelable {
 
-    private int type;   //0:DIRECT, 1:HTTP
+    private int type;   //0:DIRECT, 1:HTTP, 2:SOCKS
     private String host;
     private int port;
     private String authorization;
+    private String username;
+    private char[] password;
 
     public StoreProxyInfo() {
     }
@@ -21,6 +25,8 @@ public class StoreProxyInfo implements Parcelable {
         host = in.readString();
         port = in.readInt();
         authorization = in.readString();
+        username = in.readString();
+        password = in.createCharArray();
     }
 
     @Override
@@ -29,6 +35,8 @@ public class StoreProxyInfo implements Parcelable {
         dest.writeString(host);
         dest.writeInt(port);
         dest.writeString(authorization);
+        dest.writeString(username);
+        dest.writeCharArray(password);
     }
 
     @Override
@@ -80,6 +88,22 @@ public class StoreProxyInfo implements Parcelable {
         this.authorization = authorization;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public char[] getPassword() {
+        return password;
+    }
+
+    public void setPassword(char[] password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof StoreProxyInfo))
@@ -103,6 +127,10 @@ public class StoreProxyInfo implements Parcelable {
                 .append(port)
                 .append(", authorization=")
                 .append(authorization)
+                .append("， username=")
+                .append(username)
+                .append(", password=")
+                .append(Arrays.toString(password))
                 .append("}");
         return builder.toString();
     }

@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
 import java.net.Proxy;
 
 import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_FAILED;
@@ -39,6 +40,8 @@ public class BaseApiService implements ProxyDelegate {
     private static final String SP_STORE_PROXY_HOST = "proxyHost";
     private static final String SP_STORE_PROXY_PORT = "proxyPort";
     private static final String SP_STORE_PROXY_AUTH = "proxyAuthorization";
+    private static final String SP_STORE_PROXY_USER = "proxyUsername";
+    private static final String SP_STORE_PROXY_PASS = "proxyPassword";
     private static final String GET_TERMINAL_INFO_ACTION = "com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE";
     public static final String INIT_ACTION = "com.pax.market.android.app.aidl.API_URL_SERVICE";
     public static final String PAXSTORE_PACKAGE_NAME = "com.pax.market.android.app";
@@ -228,11 +231,15 @@ public class BaseApiService implements ProxyDelegate {
     }
 
     @Override
-    public String retrieveProxyAuthorization() {
+    public String retrieveBasicAuthorization() {
         StoreProxyInfo storeProxyInfo = getStoreProxyInfo();
         return storeProxyInfo == null ? null : storeProxyInfo.getAuthorization();
     }
 
+    @Override
+    public PasswordAuthentication retrievePasswordAuthentication() {
+        return new PasswordAuthentication(getStoreProxyInfo().getUsername(), getStoreProxyInfo().getPassword());
+    }
 
     public interface Callback {
         void initSuccess();
@@ -304,12 +311,16 @@ public class BaseApiService implements ProxyDelegate {
             editor.remove(SP_STORE_PROXY_TYPE)
                     .remove(SP_STORE_PROXY_HOST)
                     .remove(SP_STORE_PROXY_PORT)
-                    .remove(SP_STORE_PROXY_AUTH);
+                    .remove(SP_STORE_PROXY_AUTH)
+                    .remove(SP_STORE_PROXY_USER)
+                    .remove(SP_STORE_PROXY_PASS);
         } else {
             editor.putInt(SP_STORE_PROXY_TYPE, storeProxyInfo.getType())
                     .putString(SP_STORE_PROXY_HOST, storeProxyInfo.getHost())
                     .putInt(SP_STORE_PROXY_PORT, storeProxyInfo.getPort())
-                    .putString(SP_STORE_PROXY_AUTH, storeProxyInfo.getAuthorization());
+                    .putString(SP_STORE_PROXY_AUTH, storeProxyInfo.getAuthorization())
+                    .putString(SP_STORE_PROXY_USER, storeProxyInfo.getUsername())
+                    .putString(SP_STORE_PROXY_PASS, String.copyValueOf(storeProxyInfo.getPassword()));
         }
         editor.apply();
         this.storeProxy = storeProxyInfo;
@@ -322,6 +333,9 @@ public class BaseApiService implements ProxyDelegate {
             storeProxyInfo.setHost(sp.getString(SP_STORE_PROXY_HOST, null));
             storeProxyInfo.setPort(sp.getInt(SP_STORE_PROXY_PORT, 0));
             storeProxyInfo.setAuthorization(sp.getString(SP_STORE_PROXY_AUTH, null));
+            storeProxyInfo.setUsername(sp.getString(SP_STORE_PROXY_USER, null));
+            String password = sp.getString(SP_STORE_PROXY_PASS, null);
+            storeProxyInfo.setPassword(password != null ? password.toCharArray() : null);
             this.storeProxy = storeProxyInfo;
         }
         return this.storeProxy;
