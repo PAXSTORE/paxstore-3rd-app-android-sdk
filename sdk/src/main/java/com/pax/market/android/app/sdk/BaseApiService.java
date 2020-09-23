@@ -80,7 +80,7 @@ public class BaseApiService implements ProxyDelegate {
                         logger.info(">>> Init proxy from PAXSTORE : proxy[@{}/{}:{}], proxy authentication={}",
                                 proxyInfo.getType() == 1 ? "HTTP" : proxyInfo.getType() == 2 ? "SOCKS" : "DIRECT",
                                 proxyInfo.getHost(), proxyInfo.getPort(),
-                                proxyInfo.getAuthorization() != null ? "Baisc" : proxyInfo.getUsername() != null ? "Password" : "NULl");
+                                proxyInfo.getAuthorization() != null ? "Basic" : proxyInfo.getUsername() != null ? "Password" : "NULl");
                     } else {
                         logger.warn(">>> Init proxy from PASXTORE : [NULL]");
                     }
