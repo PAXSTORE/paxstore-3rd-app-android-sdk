@@ -3,7 +3,7 @@ package com.pax.market.android.app.sdk.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Arrays;
+import com.pax.market.android.app.sdk.util.StringUtils;
 
 /**
  * Created by fojut on 2019/1/7.
@@ -104,34 +104,37 @@ public class StoreProxyInfo implements Parcelable {
         this.password = password;
     }
 
+    public String getPasswordString() {
+        if (password == null) {
+            return null;
+        }
+        return String.valueOf(password);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof StoreProxyInfo))
             return false;
 
         StoreProxyInfo c = (StoreProxyInfo) obj;
-        if(c.toString().equals(toString())){
-            return true;
+        if (type != c.getType()) {
+            return false;
         }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder("StoreProxyInfo");
-        builder.append("{type=")
-                .append(type)
-                .append(", host=")
-                .append(host)
-                .append(", port=")
-                .append(port)
-                .append(", authorization=")
-                .append(authorization)
-                .append("， username=")
-                .append(username)
-                .append(", password=")
-                .append(Arrays.toString(password))
-                .append("}");
-        return builder.toString();
+        if (!StringUtils.equals(host, c.getHost())) {
+            return false;
+        }
+        if (port != c.getPort()) {
+            return false;
+        }
+        if (!StringUtils.equals(authorization, c.getAuthorization())) {
+            return false;
+        }
+        if (!StringUtils.equals(username, c.getUsername())) {
+            return false;
+        }
+        if (StringUtils.equals(getPasswordString(), c.getPasswordString())) {
+            return false;
+        }
+        return true;
     }
 }
