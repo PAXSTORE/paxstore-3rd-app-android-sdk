@@ -35,6 +35,11 @@
         <service android:name=".DelayService" />
 
         <activity android:name=".MessagerActivity" />
+
+
+        <!-- Add below meta-data to indicate that this sdk support multi-dis env -->
+        <meta-data android:name="DIS_SUPPORTED"
+            android:value="true"/>
     </application>
 
 </manifest>
