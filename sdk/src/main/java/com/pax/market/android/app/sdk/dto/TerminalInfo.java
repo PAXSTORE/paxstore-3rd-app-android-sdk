@@ -122,7 +122,7 @@ public class TerminalInfo implements Parcelable{
     }
 
     /**
-     * 注意： 新的字段只能加在最后，不然会影响已有SDK的读取
+     * Note: The new field can only be added at the end, otherwise it will affect the reading of the existing SDK
      * @param dest
      * @param flags
      */
@@ -140,7 +140,7 @@ public class TerminalInfo implements Parcelable{
     }
 
     /**
-     * 参数是一个Parcel,用它来存储与传输数据
+     * The parameter is a Parcel, use it to store and transmit data
      * @param dest
      */
     public void readFromParcel(Parcel dest) {

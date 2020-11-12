@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Type;
 
 /**
- * CloudMessage示例：
+ * CloudMessage example:
  * {
  *      "notification":{
- *          "title":"Portugal vs. Denmark",      //必填，如果未设置则自动使用应用名称
- *          "content":"great match!"             //非必填
+ *          "title":"Portugal vs. Denmark",      //Required, if not set, the application name will be used automatically
+ *          "content":"great match!"             //Not required
  *      },
  *      "data":{
  *          "nick":"Mario",
