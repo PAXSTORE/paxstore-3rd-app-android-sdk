@@ -330,7 +330,7 @@ public class BaseApiService implements ProxyDelegate {
                         .putInt(SP_STORE_PROXY_PORT, storeProxyInfo.getPort())
                         .putString(SP_STORE_PROXY_AUTH, storeProxyInfo.getAuthorization())
                         .putString(SP_STORE_PROXY_USER, storeProxyInfo.getUsername())
-                        .putString(SP_STORE_PROXY_PASS, String.copyValueOf(storeProxyInfo.getPassword()))
+                        .putString(SP_STORE_PROXY_PASS, storeProxyInfo.getPassword() == null ? null : String.copyValueOf(storeProxyInfo.getPassword()))
                         .apply();
             }
         }
