@@ -1,6 +1,7 @@
 package com.pax.market.android.app.sdk;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.pax.market.android.app.sdk.util.NetWorkUtils;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
@@ -38,6 +39,9 @@ public class ParamApiStrategy extends ParamApi{
         resultObject.setMessage(downloadResultObject.getMessage());
         resultObject.setBusinessCode(downloadResultObject.getBusinessCode());
         resultObject.setParamSavePath(saveFilePath);
+        if (resultObject.getBusinessCode() != 0) {
+            Log.e("Download Result:", "errorCode: " + resultObject.getBusinessCode() + " errorMessage: " + resultObject.getMessage());
+        }
         return resultObject;
     }
 
