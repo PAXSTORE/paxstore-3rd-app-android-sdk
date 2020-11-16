@@ -101,9 +101,8 @@ public class StoreSdk {
                     new BaseApiService.ApiCallBack() {
 
                         @Override
-                        public void initSuccess(String terminalSerialNo) {
-                            Log.e("StoreSdk ttt", terminalSerialNo);
-                            initApi(context, null, appKey, appSecret, terminalSerialNo, BaseApiService.getInstance(context));
+                        public void initSuccess(String apiUrl, String terminalSn) {
+                            initApi(context, apiUrl, appKey, appSecret, terminalSn, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -132,7 +131,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        paramApi.setBaseUrl(getDcUrl(context));
+        paramApi.setBaseUrl(getDcUrl(context, paramApi.getBaseUrl()));
         paramApi.setProxyDelegate(BaseApiService.getInstance(context));
         return paramApi;
     }
@@ -150,7 +149,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        activateApi.setBaseUrl(getDcUrl(context));
+        activateApi.setBaseUrl(getDcUrl(context, activateApi.getBaseUrl()));
         activateApi.setProxyDelegate(BaseApiService.getInstance(context));
         return activateApi;
     }
@@ -168,7 +167,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        syncApi.setBaseUrl(getDcUrl(context));
+        syncApi.setBaseUrl(getDcUrl(context, syncApi.getBaseUrl()));
         syncApi.setProxyDelegate(BaseApiService.getInstance(context));
         return syncApi;
     }
@@ -180,7 +179,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        goInsightApi.setBaseUrl(getDcUrl(context));
+        goInsightApi.setBaseUrl(getDcUrl(context, goInsightApi.getBaseUrl()));
         goInsightApi.setProxyDelegate(BaseApiService.getInstance(context));
         return goInsightApi;
     }
@@ -198,7 +197,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        updateApi.setBaseUrl(getDcUrl(context));
+        updateApi.setBaseUrl(getDcUrl(context, updateApi.getBaseUrl()));
         updateApi.setProxyDelegate(BaseApiService.getInstance(context));
         return updateApi;
     }
@@ -484,13 +483,12 @@ public class StoreSdk {
         return PreferencesUtils.getObject(context, PushConstants.MEDIA_MESSAGE, MediaMesageInfo.class);
     }
 
-    public String getDcUrl(final Context context) throws NotInitException {
+    public String getDcUrl(final Context context, String oriBaseUrl) throws NotInitException {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             throw new NotInitException("Can not do this on MainThread!!");
         }
 
         final StringBuilder dcUrl = new StringBuilder();
-        Log.e("StoreSdk", "ttt 0");
 
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -498,7 +496,6 @@ public class StoreSdk {
 
             @Override
             public void initSuccess(String baseUrl) {
-                Log.e("StoreSdk", "ttt 1");
                 DcUrlInfo dcUrlInfo1 = new DcUrlInfo();
                 dcUrlInfo1.setDcUrl(baseUrl);
                 dcUrlInfo1.setLastAccessTime(System.currentTimeMillis());
@@ -509,22 +506,19 @@ public class StoreSdk {
 
             @Override
             public void initFailed(Exception e) {
-                Log.e("StoreSdk", "ttt 2");
                 Log.e("StoreSdk", "e:" + e);
                 countDownLatch.countDown();
             }
-        });
+        }, oriBaseUrl);
 
         try {
             countDownLatch.await(30, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Log.e(TAG, "e:" + e);
         }
-        Log.e("StoreSdk", "ttt 3");
         if (dcUrl.toString().isEmpty() || dcUrl.toString().equalsIgnoreCase("null")) {
             throw new NotInitException("Get baseUrl failed");
         }
-        Log.e("StoreSdk ttt ", dcUrl.toString());
         return dcUrl.toString();
     }
 

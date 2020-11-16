@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.pax.market.android.app.sdk">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.pax.market.android.app.sdk">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+
     <application android:allowBackup="true"
                  android:label="@string/app_name">
         <service android:name=".RPCService" android:exported="true">
