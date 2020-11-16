@@ -2,9 +2,10 @@ package com.pax.android.demoapp;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.JsonElement;
@@ -59,7 +60,7 @@ public class DownloadParamService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         spUtil = new SPUtil();
         //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
-        saveFilePath = getFilesDir() + "/YourPath/";
+        saveFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/YourPath/";
 
         //show downloading info in main page
         updateUI(DemoConstants.DOWNLOAD_STATUS_START);

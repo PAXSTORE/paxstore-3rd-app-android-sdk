@@ -2,7 +2,7 @@ package com.pax.market.android.app.sdk;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.pax.market.android.app.sdk.util.NotificationUtils;

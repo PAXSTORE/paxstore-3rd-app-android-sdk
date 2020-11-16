@@ -1,9 +1,13 @@
 package com.pax.android.demoapp;
 
+import android.Manifest;
 import android.app.Application;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.RemoteException;
+import android.provider.Settings;
+import androidx.core.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,7 +25,7 @@ public class BaseApplication extends Application {
 
     private static final String TAG = BaseApplication.class.getSimpleName();
 
-    private boolean isReadyToUpdate=true;
+    private boolean isReadyToUpdate = true;
 
     //todo make sure to replace with your own app's appkey and appsecret
     private static final String appkey = "DQOSMMGSBDCNIXOFZR1U";
@@ -29,7 +33,6 @@ public class BaseApplication extends Application {
     //todo please make sure get the correct SN here, for pax device you can integrate NeptuneLite SDK to get the correct SN
     private String SN = Build.SERIAL;
     public static AppPreferences appPreferences;
-
 
 
     @Override
@@ -40,7 +43,6 @@ public class BaseApplication extends Application {
         appPreferences = new AppPreferences(getApplicationContext()); // this Preference comes for free from the library
 
     }
-
 
     private void initPaxStoreSdk() {
         //todo 1. Init AppKey，AppSecret and SN, make sure the appkey and appSecret is corret.

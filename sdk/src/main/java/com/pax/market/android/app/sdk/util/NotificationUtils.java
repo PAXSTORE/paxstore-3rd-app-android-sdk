@@ -5,7 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import com.pax.market.android.app.sdk.BuildConfig;
 import com.pax.market.android.app.sdk.R;
