@@ -83,7 +83,7 @@ public class BaseApiService implements ProxyDelegate {
                         logger.info(">>> Init proxy from PAXSTORE : proxy[@{}/{}:{}], proxy authentication={}",
                                 proxyInfo.getType() == 1 ? "HTTP" : proxyInfo.getType() == 2 ? "SOCKS" : "DIRECT",
                                 proxyInfo.getHost(), proxyInfo.getPort(),
-                                proxyInfo.getAuthorization() != null ? "Basic" : proxyInfo.getUsername() != null ? "Password" : "NULl");
+                                proxyInfo.getAuthorization() != null ? "Basic" : proxyInfo.getUsername() != null ? "Password" : "NULL");
                     } else {
                         logger.warn(">>> Init proxy from PASXTORE : [NULL]");
                     }
@@ -140,11 +140,12 @@ public class BaseApiService implements ProxyDelegate {
                 try {
                     StoreProxyInfo proxyInfo = IApiUrlService.Stub.asInterface(service).getStoreProxyInfo();
                     if(proxyInfo != null) {
-                        logger.info(">>> Init proxy from PAXSTORE : proxy[@{}/{}:{}], has proxy authenticator={}",
+                        logger.info(">>> Get proxy from PAXSTORE : proxy[@{}/{}:{}], proxy authentication={}",
                                 proxyInfo.getType() == 1 ? "HTTP" : proxyInfo.getType() == 2 ? "SOCKS" : "DIRECT",
-                                proxyInfo.getHost(), proxyInfo.getPort(), proxyInfo.getAuthorization() != null);
+                                proxyInfo.getHost(), proxyInfo.getPort(),
+                                proxyInfo.getAuthorization() != null ? "Basic" : proxyInfo.getUsername() != null ? "Password" : "NULL");
                     } else {
-                        logger.warn(">>> Init proxy from PASXTORE : [NULL]");
+                        logger.warn(">>> Get proxy from PASXTORE : [NULL]");
                     }
                     setStoreProxyInfo(proxyInfo);
 
