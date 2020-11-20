@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.Settings;
 import android.util.Log;
 
 import com.pax.market.android.app.aidl.IApiUrlService;
@@ -48,8 +47,9 @@ public class BaseApiService implements ProxyDelegate {
     private static final String GET_TERMINAL_INFO_ACTION = "com.pax.market.android.app.aidl.REMOTE_SDK_SERVICE";
     public static final String INIT_ACTION = "com.pax.market.android.app.aidl.API_URL_SERVICE";
     public static final String PAXSTORE_PACKAGE_NAME = "com.pax.market.android.app";
-    public final String GET_DC_URL_FAILED = "No baseUrl, please init first!";
-
+    public final String ERR_GET_DC_URL_FAILED = "No baseUrl, please init first!";
+    public final String ERR_GET_SN_FAILED = "Cannot get terminal serialNo, please update store client first";
+    public final String VALUE_NULL = "NULL";
     private static volatile BaseApiService instance;
     private Context context;
     private SharedPreferences sp;
@@ -79,7 +79,7 @@ public class BaseApiService implements ProxyDelegate {
             public void onServiceConnected(ComponentName name, IBinder service) {
                 try {
                     StoreProxyInfo proxyInfo = IApiUrlService.Stub.asInterface(service).getStoreProxyInfo();
-                    if(proxyInfo != null) {
+                    if (proxyInfo != null) {
                         logger.info(">>> Init proxy from PAXSTORE : proxy[@{}/{}:{}], proxy authentication={}",
                                 proxyInfo.getType() == 1 ? "HTTP" : proxyInfo.getType() == 2 ? "SOCKS" : "DIRECT",
                                 proxyInfo.getHost(), proxyInfo.getPort(),
@@ -119,16 +119,10 @@ public class BaseApiService implements ProxyDelegate {
         }
     }
 
-    /**
-     * todo  尝试android8,9,10机型上获取SN是否会有问题
-     * @return
-     */
-    public String getSN() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return Build.getSerial();
-        }
+    private String getSN() {
+        Log.w("BaseApiService", "Please update PAXSTORE client to latest version!!");
+        // When it comes to Android 8+， you may not get serialNo by Build.SERIAL. Then you should update PAXSTORE
+        // client to the latest version to get SerialNo from PAXSTORE client.
         return Build.SERIAL;
     }
 
@@ -194,8 +188,14 @@ public class BaseApiService implements ProxyDelegate {
             if (initApiParams1 == null) {
                 return null;
             }
-            initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl, initApiParams1.terminalSn);
-            initApiParams1.callback1.initSuccess();
+            if (initApiParams1.terminalSn == null || VALUE_NULL.equalsIgnoreCase(initApiParams1.terminalSn)) {
+                Log.w("Init", "sn:" + initApiParams1.terminalSn);
+                initApiParams1.apiCallBack.initFailed();
+                initApiParams1.callback1.initFailed(new RemoteException(ERR_GET_SN_FAILED));
+            } else {
+                initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl, initApiParams1.terminalSn);
+                initApiParams1.callback1.initSuccess();
+            }
             return null;
         }
     }
@@ -234,8 +234,8 @@ public class BaseApiService implements ProxyDelegate {
                 DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
                 if (info == null) {
                     if (oriBaseUrl == null) { // 当PAXSTORE client是低版本的时候，拿不到dcurl, 此时应该有默认url才对。
-                        Log.e("InitDcUrlAsyncTask", GET_DC_URL_FAILED);
-                        dcCallBack.dcCallBack.initFailed(new Exception(GET_DC_URL_FAILED));
+                        Log.e("InitDcUrlAsyncTask", ERR_GET_DC_URL_FAILED);
+                        dcCallBack.dcCallBack.initFailed(new Exception(ERR_GET_DC_URL_FAILED));
                         return null;
                     }
                     info = new DcUrlInfo();
