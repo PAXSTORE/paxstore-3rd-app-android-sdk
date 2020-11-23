@@ -1,6 +1,7 @@
 package com.pax.market.android.app.sdk;
 
 import android.app.IntentService;
+import android.content.ComponentName;
 import android.content.Intent;
 import androidx.annotation.Nullable;
 import android.util.Log;
@@ -49,6 +50,7 @@ public class ParamService extends IntentService {
         }
 
         sendBroadcast(new Intent(ACTION_TO_DOWNLOAD_PARAMS)
+                .setComponent(new ComponentName(getApplicationContext(), "com.pax.market.android.app.sdk.DownloadParamReceiver"))
                 .addCategory(getPackageName())
                 .setPackage(getPackageName())
                 .putExtra(TERMINAL_SEND_TIME, taskTimeStamp)
