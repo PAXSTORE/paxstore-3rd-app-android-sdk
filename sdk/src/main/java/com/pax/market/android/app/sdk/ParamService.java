@@ -1,10 +1,11 @@
 package com.pax.market.android.app.sdk;
 
 import android.app.IntentService;
-import android.content.ComponentName;
 import android.content.Intent;
-import androidx.annotation.Nullable;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 
@@ -13,7 +14,6 @@ import com.pax.market.android.app.sdk.util.NotificationUtils;
  */
 public class ParamService extends IntentService {
     private static final String TAG = ParamService.class.getSimpleName();
-    private static final String ACTION_TO_DOWNLOAD_PARAMS = "com.sdk.ACTION_TO_DOWNLOAD_PARAMS";
     public static final String TERMINAL_SERIALNUM = "SN";
     public static final String TERMINAL_SEND_TIME = "SEND_TIME";
 
@@ -42,19 +42,24 @@ public class ParamService extends IntentService {
             return;
         }
         String sn = (String) intent.getSerializableExtra(TERMINAL_SERIALNUM);
-        Long taskTimeStamp = (Long) intent.getLongExtra(TERMINAL_SEND_TIME, -1L);
+        long taskTimeStamp = intent.getLongExtra(TERMINAL_SEND_TIME, -1L);
 
         if (sn == null) {
             Log.w(TAG, "sn == null");
             return;
         }
-
-        sendBroadcast(new Intent(ACTION_TO_DOWNLOAD_PARAMS)
-                .setComponent(new ComponentName(getApplicationContext(), "com.pax.market.android.app.sdk.DownloadParamReceiver"))
-                .addCategory(getPackageName())
-                .setPackage(getPackageName())
-                .putExtra(TERMINAL_SEND_TIME, taskTimeStamp)
-                .putExtra(TERMINAL_SERIALNUM, sn));
-
+        // 此时肯定是新版本的PAXSTORE client, receiver 那边可能收不到，收到的情况也不处理
+        if (taskTimeStamp > 0L) {
+            Intent startIntent = new Intent(CommonConstants.ACTION_START_CUSTOMER_SERVICE);
+            startIntent.setPackage(getPackageName());
+            startIntent.addCategory(getPackageName());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(startIntent);
+            } else {
+                startService(startIntent);
+            }
+        } else {
+            Log.w(TAG, "No taskTimeStamp, depending on DownloadParamReceiver to handle downloading of params");
+        }
     }
 }

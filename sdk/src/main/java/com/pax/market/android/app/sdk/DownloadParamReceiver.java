@@ -20,7 +20,10 @@ public class DownloadParamReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (isDuplicate(intent)) {
+        if ((intent != null && intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L) > 0)) {
+            //1.如果是有sendTime的，证明是>=7.4.0的client， 肯定会有service通知，不需要receiver处理。
+            //2.如果无sendTime, 那么就需要判断是否重复，可能PAXSTORE client会通知一遍，
+            // 自己的service会通知一遍，因为没有sendTime，所以无法判断client那边会用哪种方式通知过来
             return;
         }
 
@@ -30,30 +33,5 @@ public class DownloadParamReceiver extends BroadcastReceiver {
         } else {
             context.startService(DelayService.getCallingIntent(context));
         }
-    }
-
-    /**
-     * 1. Ignore tasks within 5 seconds.
-     * 2. From PAXSTORE client version 7.2.1, you need below function to escape duplicate receiving of parmas.
-     *
-     * @param intent
-     * @return
-     */
-    private boolean isDuplicate(Intent intent) {
-        // Ignore tasks within 5 seconds.
-        if (System.currentTimeMillis() - lastReceiveTime < TIME_FILTER) {
-            return true;
-        }
-
-        // From PAXSTORE client version 7.2.1, you need below function to escape duplicate receiving of parmas.
-        long receiveTime = intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L);
-        if (receiveTime > 0 && receiveTime == timeStamp) {
-            return true;
-        } else {
-            timeStamp = receiveTime;
-        }
-
-        lastReceiveTime = System.currentTimeMillis();
-        return false;
     }
 }

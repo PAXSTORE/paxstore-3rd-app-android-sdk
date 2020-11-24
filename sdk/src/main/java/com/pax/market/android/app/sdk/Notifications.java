@@ -23,6 +23,7 @@ import androidx.core.app.NotificationCompat;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.base.util.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -73,6 +74,9 @@ public final class Notifications {
     }
 
     public Notifications setSmallIcon(int smallIcon) {
+        if (context != null) {
+            PreferencesUtils.putInt(context, CommonConstants.SP_SMALL_LOGO_ICON, smallIcon);
+        }
         this.smallIcon = smallIcon;
         return this;
     }

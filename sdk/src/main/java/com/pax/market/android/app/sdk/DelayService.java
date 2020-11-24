@@ -15,8 +15,6 @@ import static com.pax.market.android.app.sdk.DownloadParamReceiver.TIME_FILTER;
 
 public class DelayService extends Service {
 
-    private static String ACTION_START_CUSTOMER_SERVICE = "com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS";
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -35,7 +33,7 @@ public class DelayService extends Service {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent startIntent = new Intent(ACTION_START_CUSTOMER_SERVICE);
+                Intent startIntent = new Intent(CommonConstants.ACTION_START_CUSTOMER_SERVICE);
                 startIntent.setPackage(getPackageName());
                 startIntent.addCategory(getPackageName());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

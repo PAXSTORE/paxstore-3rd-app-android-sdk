@@ -2,11 +2,11 @@ package com.pax.android.demoapp;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.IBinder;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -94,7 +94,7 @@ public class DownloadParamService extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        NotificationUtils.showForeGround(this, "Downloading params");
+        NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params");
         return super.onStartCommand(intent, flags, startId);
     }
 
