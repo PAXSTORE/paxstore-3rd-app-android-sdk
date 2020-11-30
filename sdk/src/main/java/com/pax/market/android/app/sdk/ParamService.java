@@ -50,16 +50,14 @@ public class ParamService extends IntentService {
         }
         // 此时肯定是新版本的PAXSTORE client, receiver 那边可能收不到，收到的情况也不处理
         if (taskTimeStamp > 0L) {
-            Intent startIntent = new Intent(CommonConstants.ACTION_START_CUSTOMER_SERVICE);
-            startIntent.setPackage(getPackageName());
-            startIntent.addCategory(getPackageName());
+            Log.i("DownloadParamReceiver", "broadcast received");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(startIntent);
+                startForegroundService(DelayService.getCallingIntent(getApplicationContext()));
             } else {
-                startService(startIntent);
+                startService(DelayService.getCallingIntent(getApplicationContext()));
             }
         } else {
-            Log.w(TAG, "No taskTimeStamp, depending on DownloadParamReceiver to handle downloading of params");
+            Log.w(TAG, "No taskTimeStamp, depending on DownloadParamReceiver to download params");
         }
     }
 }

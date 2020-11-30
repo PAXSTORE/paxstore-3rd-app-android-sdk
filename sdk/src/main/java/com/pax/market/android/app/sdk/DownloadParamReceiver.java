@@ -10,13 +10,6 @@ import android.util.Log;
  * Created by zcy on 2020/06/30 0002.
  */
 public class DownloadParamReceiver extends BroadcastReceiver {
-    private static long lastReceiveTime = -1L;
-    private static long timeStamp = -1L;
-
-    /**
-     * Ignore tasks within 3 seconds
-     */
-    public static long TIME_FILTER = 3_000L;
 
     @Override
     public void onReceive(Context context, Intent intent) {
