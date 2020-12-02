@@ -42,22 +42,17 @@ public class ParamService extends IntentService {
             return;
         }
         String sn = (String) intent.getSerializableExtra(TERMINAL_SERIALNUM);
-        long taskTimeStamp = intent.getLongExtra(TERMINAL_SEND_TIME, -1L);
 
         if (sn == null) {
             Log.w(TAG, "sn == null");
             return;
         }
-        // 此时肯定是新版本的PAXSTORE client, receiver 那边可能收不到，收到的情况也不处理
-        if (taskTimeStamp > 0L) {
-            Log.i("DownloadParamReceiver", "broadcast received");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(DelayService.getCallingIntent(getApplicationContext()));
-            } else {
-                startService(DelayService.getCallingIntent(getApplicationContext()));
-            }
+        // 此时肯定是新版本的PAXSTORE client, receiver 那边可能收不到，收到的情况也不处理 versionCode>=200
+        Log.i("ParamService", "intent received");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(DelayService.getCallingIntent(getApplicationContext()));
         } else {
-            Log.w(TAG, "No taskTimeStamp, depending on DownloadParamReceiver to download params");
+            startService(DelayService.getCallingIntent(getApplicationContext()));
         }
     }
 }

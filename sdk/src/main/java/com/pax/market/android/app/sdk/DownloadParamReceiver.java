@@ -11,12 +11,13 @@ import android.util.Log;
  */
 public class DownloadParamReceiver extends BroadcastReceiver {
 
+    private static final String STORE_PACKAGENAME = "com.pax.market.android.app";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        if ((intent != null && intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L) > 0)) {
-            //1.如果是有sendTime的，证明是>=7.4.0的client， 肯定会有service通知，不需要receiver处理。
-            //2.如果无sendTime, 那么就需要判断是否重复，可能PAXSTORE client会通知一遍，
-            // 自己的service会通知一遍，因为没有sendTime，所以无法判断client那边会用哪种方式通知过来
+        if ((intent != null && intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L) > 0)
+                || getVerCodeByPackageName(context, STORE_PACKAGENAME) >= 200) {
+            Log.d("DownloadParamReceiver", "Ignore this broadcast, since STORE client will send Intent to ParamService");
             return;
         }
 
@@ -26,5 +27,22 @@ public class DownloadParamReceiver extends BroadcastReceiver {
         } else {
             context.startService(DelayService.getCallingIntent(context));
         }
+    }
+
+    /**
+     * getVersionCode by packageName
+     *
+     * @param packageName
+     * @return
+     */
+    public static int getVerCodeByPackageName(Context context, String packageName) {
+        int verCode = -1;
+        try {
+            verCode = context.getPackageManager()
+                    .getPackageInfo(packageName, 0).versionCode;
+        } catch (Exception e) {
+            Log.e("DownloadParamReceiver", e.toString());
+        }
+        return verCode;
     }
 }
