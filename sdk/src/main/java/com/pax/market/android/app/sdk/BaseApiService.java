@@ -230,7 +230,6 @@ public class BaseApiService implements ProxyDelegate {
             }
 
             try {
-                Log.w("BaseApiService", "ttt 123" + Thread.currentThread().getName());
                 DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
                 if (info == null) {
                     if (oriBaseUrl == null) { // 当PAXSTORE client是低版本的时候，拿不到dcurl, 此时应该有默认url才对。

@@ -489,35 +489,19 @@ public class GenerateDataActivity extends Activity {
 
         for (int i = 0; i < rows.size(); i++) {
             List<RowObject> oneData = rows.get(i);
-            Object nnn[] = new Object[4];
+            Object amount = new Object();
+            String eventTime = null;
             for (int j = 0; j < oneData.size(); j++) {
-                if (oneData.get(j).getColName().equals("year__eventtime")) {
-                    nnn[0] = oneData.get(j).getValue();
-                } else if (oneData.get(j).getColName().equals("month__eventtime")) {
-                    nnn[1] = oneData.get(j).getValue();
-                } else if (oneData.get(j).getColName().equals("day__eventtime")) {
-                    nnn[2] = oneData.get(j).getValue();
+                if (oneData.get(j).getColName().equals("_eventtime")) {
+                    eventTime = (String) oneData.get(j).getValue();
                 } else if (oneData.get(j).getColName().equals("amount")) {
-                    nnn[3] = oneData.get(j).getValue();
+                    amount = oneData.get(j).getValue();
                 }
             }
-            Object bb[] = new Object[2];
-            String xcord = (String) nnn[0];
-            if (Integer.parseInt((String) nnn[1]) < 10) {
-                xcord = xcord + "0" + (String) nnn[1];
-            } else {
-                xcord = xcord + (String) nnn[1];
-            }
-
-            if (Integer.parseInt((String) nnn[2]) < 10) {
-                xcord = xcord + "0" + (String) nnn[2];
-            } else {
-                xcord = xcord + (String) nnn[2];
-            }
-
-            bb[0] = xcord;
-            bb[1] = nnn[3];
-            ret.getDatas().add(bb);
+            Object item[] = new Object[2];
+            item[0] = eventTime;
+            item[1] = amount;
+            ret.getDatas().add(item);
         }
 
         ret.setType(LINE);
