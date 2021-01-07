@@ -21,9 +21,13 @@ android {
         abortOnError false
     }
 
-    android.applicationVariants.all { variant ->
+
+    applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "PAXSTORE SDK Demo-${buildType.name}-v${defaultConfig.versionName}.apk"
+            if (outputFileName.endsWith('.apk') && 'release'.equals(variant.buildType.name)) {
+                variant.getPackageApplicationProvider().get().outputDirectory = new File(buildDir, "outputs/apk")
+                outputFileName = "PAXSTORE SDK Demo-${buildType.name}-v${defaultConfig.versionName}.apk"
+            }
         }
     }
 
