@@ -41,7 +41,7 @@ public class ImageUtil {
     }
 
     /**
-     * 从相应目录中获取图片
+     * Get pictures from the corresponding catalog
      *
      * @param filePath
      * @param context
@@ -112,7 +112,7 @@ public class ImageUtil {
     }
 
     /**
-     * 从inputStream中获取字节流 数组大小
+     * Get byte stream from inputStream array size
      **/
     public static byte[] readStream(InputStream inStream) throws Exception{
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();

@@ -10,17 +10,14 @@ import android.util.Log;
  * Created by zcy on 2020/06/30 0002.
  */
 public class DownloadParamReceiver extends BroadcastReceiver {
-    private static long lastReceiveTime = -1L;
-    private static long timeStamp = -1L;
 
-    /**
-     * Ignore tasks within 3 seconds
-     */
-    public static long TIME_FILTER = 3_000L;
+    private static final String STORE_PACKAGENAME = "com.pax.market.android.app";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (isDuplicate(intent)) {
+        if ((intent != null && intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L) > 0)
+                || getVerCodeByPackageName(context, STORE_PACKAGENAME) >= 200) {
+            Log.d("DownloadParamReceiver", "Ignore this broadcast, since STORE client will send Intent to ParamService");
             return;
         }
 
@@ -33,27 +30,19 @@ public class DownloadParamReceiver extends BroadcastReceiver {
     }
 
     /**
-     * 1. Ignore tasks within 5 seconds.
-     * 2. From PAXSTORE client version 7.2.1, you need below function to escape duplicate receiving of parmas.
+     * getVersionCode by packageName
      *
-     * @param intent
+     * @param packageName
      * @return
      */
-    private boolean isDuplicate(Intent intent) {
-        // Ignore tasks within 5 seconds.
-        if (System.currentTimeMillis() - lastReceiveTime < TIME_FILTER) {
-            return true;
+    public static int getVerCodeByPackageName(Context context, String packageName) {
+        int verCode = -1;
+        try {
+            verCode = context.getPackageManager()
+                    .getPackageInfo(packageName, 0).versionCode;
+        } catch (Exception e) {
+            Log.e("DownloadParamReceiver", e.toString());
         }
-
-        // From PAXSTORE client version 7.2.1, you need below function to escape duplicate receiving of parmas.
-        long receiveTime = intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L);
-        if (receiveTime > 0 && receiveTime == timeStamp) {
-            return true;
-        } else {
-            timeStamp = receiveTime;
-        }
-
-        lastReceiveTime = System.currentTimeMillis();
-        return false;
+        return verCode;
     }
 }

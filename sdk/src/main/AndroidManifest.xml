@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.pax.market.android.app.sdk">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.pax.market.android.app.sdk">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application android:allowBackup="true"
@@ -10,16 +11,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".ProxyChangeService"/>
         <service android:name=".LocationService" />
-
-        <receiver android:name=".ProxyChangeReceiver"
-                  android:enabled="true"
-                  android:exported="true">
-            <intent-filter>
-                <action android:name="com.paxstore.PROXY_CHANGE" />
-            </intent-filter>
-        </receiver>
 
         <receiver android:name=".DownloadParamReceiver">
             <intent-filter>
@@ -44,6 +36,11 @@
         <service android:name=".DelayService" />
 
         <activity android:name=".MessagerActivity" />
+
+
+        <!-- Add below meta-data to indicate that this sdk support multi-dis env -->
+        <meta-data android:name="DIS_SUPPORTED"
+            android:value="true"/>
     </application>
 
 </manifest>

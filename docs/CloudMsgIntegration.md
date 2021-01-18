@@ -60,11 +60,17 @@ shown as you previewed in the web through below api. Or you can get media messag
 ##### 5.3. Know more about AdvertisementDialog
 See [AdvertisementDialog](AdvertisementDialog.md)
 
+##### 5.4. Customize the notification
+        //The sdk will show notification for Cloud Messag, you can customized it.
+        Notifications.I.init(getApplicationContext())
+                .setSmallIcon(R.drawable.logo_demo_white)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo_demo));
+                
+        //Or you can disable it.
+        Notifications.I.setEnabled(false);
+
+
 
 ### 6.Additional Requirement
-1. PAXSTORE client version 7.0+
-2. Market subscribes the Cloud Message service.
-
-### 7.Additional Requirement
 1. PAXSTORE client version 7.0+
 2. Market subscribes the Cloud Message service.

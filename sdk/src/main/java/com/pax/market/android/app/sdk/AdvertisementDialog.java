@@ -47,7 +47,7 @@ public class AdvertisementDialog extends Dialog {
 
     View layout;
     /**
-     * CountDownTimer 实现倒计时
+     * CountDownTimer realizes countdown
      */
     private CountDownTimer countDownTimer;
     private Context context;
@@ -361,7 +361,7 @@ public class AdvertisementDialog extends Dialog {
         }
 
         /**
-         * 通过build方法可以添加 任意多个dialog，用户自己判断
+         *You can add as many dialogs as you want through the build method, and users can judge by themselves
          *
          * @return
          */
@@ -419,7 +419,7 @@ public class AdvertisementDialog extends Dialog {
         }
 
         /**
-         * 根据sp里存的message来显示dialog
+         * Display the dialog according to the message stored in the sp
          * @param mediaMesageInfo
          */
         private void setBuilder(MediaMesageInfo mediaMesageInfo, OnLinkClick moreDetailListener) {
