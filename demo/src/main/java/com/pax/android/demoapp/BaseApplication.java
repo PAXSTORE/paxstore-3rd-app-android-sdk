@@ -2,7 +2,6 @@ package com.pax.android.demoapp;
 
 import android.app.Application;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,15 +20,13 @@ public class BaseApplication extends Application {
 
     private static final String TAG = BaseApplication.class.getSimpleName();
 
-    private boolean isReadyToUpdate=true;
+    private boolean isReadyToUpdate = true;
 
     //todo make sure to replace with your own app's appkey and appsecret
     private static final String appkey = "your key";
     private static final String appSecret = "your secret";
     //todo please make sure get the correct SN here, for pax device you can integrate NeptuneLite SDK to get the correct SN
-    private String SN = Build.SERIAL;
     public static AppPreferences appPreferences;
-
 
 
     @Override
@@ -41,10 +38,9 @@ public class BaseApplication extends Application {
 
     }
 
-
     private void initPaxStoreSdk() {
         //todo 1. Init AppKey，AppSecret and SN, make sure the appkey and appSecret is corret.
-        StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, SN, new BaseApiService.Callback() {
+        StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
             @Override
             public void initSuccess() {
                 Log.i(TAG, "initSuccess.");
@@ -57,12 +53,12 @@ public class BaseApplication extends Application {
                 Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
             }
         });
-        //if you want the sdk to show notifications for you, initialize the Notifications
+        //if you want to customize the notification for Cloud Message.
         Notifications.I.init(getApplicationContext())
                 .setSmallIcon(R.drawable.logo_demo_white)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo_demo));
 
-        //if you want to customize the notification, disable the Notifications we provided through below code.
+        // disable the Notifications we provided through below code.
         // Notifications.I.setEnabled(false);
     }
 

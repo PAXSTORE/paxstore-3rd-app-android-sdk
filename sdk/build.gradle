@@ -3,16 +3,16 @@ apply plugin: 'com.novoda.bintray-release'
 
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 29
         versionCode 101
         versionName "${version}"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -32,12 +32,19 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:support-compat:27.0.2'
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.core:core:1.0.0'
     implementation 'org.slf4j:slf4j-android:1.7.25'
     implementation 'io.jsonwebtoken:jjwt:0.9.0'
 
-    api 'com.pax.market:paxstore-3rd-app-java-sdk:7.3.0'
+    api 'com.pax.market:paxstore-3rd-app-java-sdk:7.4.0'
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'commons-io:commons-io:2.4'
+    implementation 'dom4j:dom4j:1.6.1'
+    implementation 'org.slf4j:slf4j-api:1.7.12'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 }
 
 publish {

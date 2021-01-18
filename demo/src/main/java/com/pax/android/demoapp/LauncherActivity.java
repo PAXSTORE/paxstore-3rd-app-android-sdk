@@ -9,10 +9,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -41,7 +41,7 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.laucnher);
+        setContentView(R.layout.launcher);
 
         showAd(this);
 
