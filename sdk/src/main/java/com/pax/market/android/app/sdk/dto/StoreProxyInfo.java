@@ -3,15 +3,19 @@ package com.pax.market.android.app.sdk.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.pax.market.android.app.sdk.util.StringUtils;
+
 /**
  * Created by fojut on 2019/1/7.
  */
 public class StoreProxyInfo implements Parcelable {
 
-    private int type;   //0:DIRECT, 1:HTTP
+    private int type;   //0:DIRECT, 1:HTTP, 2:SOCKS
     private String host;
     private int port;
     private String authorization;
+    private String username;
+    private char[] password;
 
     public StoreProxyInfo() {
     }
@@ -21,6 +25,8 @@ public class StoreProxyInfo implements Parcelable {
         host = in.readString();
         port = in.readInt();
         authorization = in.readString();
+        username = in.readString();
+        password = in.createCharArray();
     }
 
     @Override
@@ -29,6 +35,8 @@ public class StoreProxyInfo implements Parcelable {
         dest.writeString(host);
         dest.writeInt(port);
         dest.writeString(authorization);
+        dest.writeString(username);
+        dest.writeCharArray(password);
     }
 
     @Override
@@ -80,30 +88,53 @@ public class StoreProxyInfo implements Parcelable {
         this.authorization = authorization;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public char[] getPassword() {
+        return password;
+    }
+
+    public void setPassword(char[] password) {
+        this.password = password;
+    }
+
+    public String getPasswordString() {
+        if (password == null) {
+            return null;
+        }
+        return String.valueOf(password);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof StoreProxyInfo))
             return false;
 
         StoreProxyInfo c = (StoreProxyInfo) obj;
-        if(c.toString().equals(toString())){
-            return true;
+        if (type != c.getType()) {
+            return false;
         }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder("StoreProxyInfo");
-        builder.append("{type=")
-                .append(type)
-                .append(", host=")
-                .append(host)
-                .append(", port=")
-                .append(port)
-                .append(", authorization=")
-                .append(authorization)
-                .append("}");
-        return builder.toString();
+        if (!StringUtils.equals(host, c.getHost())) {
+            return false;
+        }
+        if (port != c.getPort()) {
+            return false;
+        }
+        if (!StringUtils.equals(authorization, c.getAuthorization())) {
+            return false;
+        }
+        if (!StringUtils.equals(username, c.getUsername())) {
+            return false;
+        }
+        if (StringUtils.equals(getPasswordString(), c.getPasswordString())) {
+            return false;
+        }
+        return true;
     }
 }

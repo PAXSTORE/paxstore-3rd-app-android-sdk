@@ -7,14 +7,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.pax.market.android.app.sdk.dto.DcUrlInfo;
 import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
-import com.pax.market.android.app.sdk.dto.StoreProxyInfo;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.activate.ActivateApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
@@ -28,9 +29,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.TimeZone;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.ContentValues.TAG;
 import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST;
 
 /**
@@ -51,7 +54,7 @@ public class StoreSdk {
     private GoInsightApi goInsightApi;
     private UpdateApi updateApi;
     private ActivateApi activateApi;
-
+    private Context context;
 
     private Semaphore semaphore;
     private String appKey;
@@ -78,14 +81,14 @@ public class StoreSdk {
      * @param context
      * @param appKey
      * @param appSecret
-     * @param terminalSerialNo
      * @param callback
      */
     public void init(final Context context, final String appKey, final String appSecret,
-                     final String terminalSerialNo, final BaseApiService.Callback callback) throws NullPointerException {
+                     final BaseApiService.Callback callback) throws NullPointerException {
         if (paramApi == null && syncApi == null && updateApi == null
                 && activateApi == null && semaphore.availablePermits() != 1) {
-            validParams(context, appKey, appSecret, terminalSerialNo);
+            validParams(context, appKey, appSecret);
+            this.context = context;
             this.appKey = appKey;
             this.appSecret = appSecret;
             try {
@@ -94,12 +97,12 @@ public class StoreSdk {
             } catch (InterruptedException e) {
                 logger.error("e:" + e);
             }
-            BaseApiService.getInstance(context).init(appKey, appSecret, terminalSerialNo, callback,
+            BaseApiService.getInstance(context).init(appKey, appSecret, callback,
                     new BaseApiService.ApiCallBack() {
 
                         @Override
-                        public void initSuccess(String baseUrl) {
-                            initApi(context, baseUrl, appKey, appSecret, terminalSerialNo, BaseApiService.getInstance(context));
+                        public void initSuccess(String apiUrl, String terminalSn) {
+                            initApi(context, apiUrl, appKey, appSecret, terminalSn, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -128,6 +131,8 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
+        paramApi.setBaseUrl(getDcUrl(context, paramApi.getBaseUrl()));
+        paramApi.setProxyDelegate(BaseApiService.getInstance(context));
         return paramApi;
     }
 
@@ -144,6 +149,8 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
+        activateApi.setBaseUrl(getDcUrl(context, activateApi.getBaseUrl()));
+        activateApi.setProxyDelegate(BaseApiService.getInstance(context));
         return activateApi;
     }
 
@@ -160,6 +167,8 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
+        syncApi.setBaseUrl(getDcUrl(context, syncApi.getBaseUrl()));
+        syncApi.setProxyDelegate(BaseApiService.getInstance(context));
         return syncApi;
     }
 
@@ -170,6 +179,8 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
+        goInsightApi.setBaseUrl(getDcUrl(context, goInsightApi.getBaseUrl()));
+        goInsightApi.setProxyDelegate(BaseApiService.getInstance(context));
         return goInsightApi;
     }
 
@@ -186,6 +197,8 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
+        updateApi.setBaseUrl(getDcUrl(context, updateApi.getBaseUrl()));
+        updateApi.setProxyDelegate(BaseApiService.getInstance(context));
         return updateApi;
     }
 
@@ -253,10 +266,9 @@ public class StoreSdk {
      * @param context
      * @param appKey
      * @param appSecret
-     * @param terminalSerialNo
      * @throws NullPointerException
      */
-    private void validParams(Context context, String appKey, String appSecret, String terminalSerialNo) throws NullPointerException {
+    private void validParams(Context context, String appKey, String appSecret) throws NullPointerException {
         if (context == null) {
             throw new NullPointerException("Context needed");
         }
@@ -265,9 +277,6 @@ public class StoreSdk {
         }
         if (appSecret == null || appSecret.isEmpty()) {
             throw new NullPointerException("AppSecret needed");
-        }
-        if (terminalSerialNo == null || terminalSerialNo.isEmpty()) {
-            throw new NullPointerException("TerminalSerialNo needed");
         }
     }
 
@@ -320,41 +329,11 @@ public class StoreSdk {
         BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
     }
 
-    /**
-     * Sync and update PAXSTORE proxy information
-     *
-     * @param context
-     * @param storeProxyInfo
-     */
-    public void updateStoreProxyInfo(Context context, StoreProxyInfo storeProxyInfo) {
-        BaseApiService.getInstance(context).setStoreProxyInfo(storeProxyInfo);
-        if (paramApi != null) {
-            paramApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("ParamApi is not initialized, please init StoreSdk first...");
-        }
-        if (syncApi != null) {
-            syncApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("SyncApi is not initialized, please init StoreSdk first...");
-        }
-        if (updateApi != null) {
-            updateApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("UpdateApi is not initialized, please init StoreSdk first...");
-        }
-        if (activateApi != null) {
-            activateApi.setProxyDelegate(BaseApiService.getInstance(context));
-        } else {
-            logger.warn("activateApi is not initialized, please init StoreSdk first...");
-        }
-    }
-
     public String aesDecrypt(String encryptedData) {
         if (appSecret == null) {
             logger.error("Store sdk not initialized");
         }
-        return  CryptoUtils.aesDecrypt(encryptedData, appSecret);
+        return CryptoUtils.aesDecrypt(encryptedData, appSecret);
     }
 
 
@@ -373,6 +352,7 @@ public class StoreSdk {
 
     /**
      * open PAXSTORE's download page
+     *
      * @param packageName your app packagename
      * @param context
      */
@@ -391,6 +371,7 @@ public class StoreSdk {
 
     /**
      * Get PAXSTORE PUSH online status.
+     *
      * @param context
      * @return
      */
@@ -448,6 +429,7 @@ public class StoreSdk {
     /**
      * Get location from PAXSTORE. （from provider)
      * if can not get loation from provider, get location from old service.
+     *
      * @param context
      * @param locationCallback
      */
@@ -497,8 +479,47 @@ public class StoreSdk {
         }
     }
 
-    public MediaMesageInfo getMediaMesage(Context context) {
+    public MediaMesageInfo getMediaMessage(Context context) {
         return PreferencesUtils.getObject(context, PushConstants.MEDIA_MESSAGE, MediaMesageInfo.class);
+    }
+
+    public String getDcUrl(final Context context, String oriBaseUrl) throws NotInitException {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            throw new NotInitException("Can not do this on MainThread!!");
+        }
+
+        final StringBuilder dcUrl = new StringBuilder();
+
+
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        BaseApiService.getInstance(context).getDcUrl(new BaseApiService.DcCallBack() {
+
+            @Override
+            public void initSuccess(String baseUrl) {
+                DcUrlInfo dcUrlInfo1 = new DcUrlInfo();
+                dcUrlInfo1.setDcUrl(baseUrl);
+                dcUrlInfo1.setLastAccessTime(System.currentTimeMillis());
+                PreferencesUtils.putObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, dcUrlInfo1);
+                dcUrl.append(baseUrl);
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void initFailed(Exception e) {
+                Log.e("StoreSdk", "e:" + e);
+                countDownLatch.countDown();
+            }
+        }, oriBaseUrl);
+
+        try {
+            countDownLatch.await(30, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "e:" + e);
+        }
+        if (dcUrl.toString().isEmpty() || dcUrl.toString().equalsIgnoreCase("null")) {
+            throw new NotInitException("Get baseUrl failed");
+        }
+        return dcUrl.toString();
     }
 
 }

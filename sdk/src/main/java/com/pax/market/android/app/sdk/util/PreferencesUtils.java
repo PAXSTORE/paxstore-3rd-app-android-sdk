@@ -18,7 +18,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
 /**
- * sp工具类
+ * sp tools
  */
 public class PreferencesUtils {
 
