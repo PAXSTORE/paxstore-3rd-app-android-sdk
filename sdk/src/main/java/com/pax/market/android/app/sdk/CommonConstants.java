@@ -23,4 +23,12 @@ public class CommonConstants {
     public static final String SP_LAST_GET_ONLINE_STATUS_TIME =  "sp_last_get_online_time";
     public static final String SP_LAST_GET_LOCATION_TIME =  "sp_last_get_location_time";
 
+    public static final String SP_LAST_GET_DCURL_TIME =  "sp_last_get_dcurl_time";
+
+    public static final String SP_SMALL_LOGO_ICON = "sp_small_logo_icon";
+
+    public static final long ONE_HOUR_INTERVAL =  3600_000L;
+
+    public static final String ACTION_START_CUSTOMER_SERVICE = "com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS";
+
 }
