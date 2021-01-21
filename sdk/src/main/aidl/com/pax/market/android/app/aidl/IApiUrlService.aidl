@@ -11,4 +11,5 @@ interface IApiUrlService {
     StoreProxyInfo getStoreProxyInfo();
     DcUrlInfo getDcUrlInfo();
     String getSn();
+    String getModel();
 }

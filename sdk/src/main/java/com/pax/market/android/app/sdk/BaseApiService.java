@@ -94,7 +94,8 @@ public class BaseApiService implements ProxyDelegate {
                         terminalSn = getSN();
                         apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
                     }
-                    new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, apiUrl, terminalSn));
+                    String model = IApiUrlService.Stub.asInterface(service).getModel();
+                    new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, apiUrl, terminalSn, model));
                 } catch (RemoteException e) {
                     logger.error(">>> Get Api URL error", e);
                     callback1.initFailed(e);
@@ -170,13 +171,15 @@ public class BaseApiService implements ProxyDelegate {
         Callback callback1;
         ApiCallBack apiCallBack;
         String terminalSn;
+        String model;
         String apiUrl;
 
-        InitApiParams(ApiCallBack apiCallBack, Callback callback1, String apiUrl, String terminalSn) {
+        InitApiParams(ApiCallBack apiCallBack, Callback callback1, String apiUrl, String terminalSn, String model) {
             this.callback1 = callback1;
             this.apiCallBack = apiCallBack;
             this.apiUrl = apiUrl;
             this.terminalSn = terminalSn;
+            this.model = model;
         }
     }
 
@@ -193,7 +196,7 @@ public class BaseApiService implements ProxyDelegate {
                 initApiParams1.apiCallBack.initFailed();
                 initApiParams1.callback1.initFailed(new RemoteException(ERR_GET_SN_FAILED));
             } else {
-                initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl, initApiParams1.terminalSn);
+                initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl, initApiParams1.terminalSn, initApiParams1.model);
                 initApiParams1.callback1.initSuccess();
             }
             return null;
@@ -292,7 +295,7 @@ public class BaseApiService implements ProxyDelegate {
 
 
     public interface ApiCallBack {
-        void initSuccess(String apiUrl, String terminalSn);
+        void initSuccess(String apiUrl, String terminalSn, String model);
 
         void initFailed();
     }

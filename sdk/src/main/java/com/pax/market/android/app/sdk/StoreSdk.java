@@ -101,8 +101,8 @@ public class StoreSdk {
                     new BaseApiService.ApiCallBack() {
 
                         @Override
-                        public void initSuccess(String apiUrl, String terminalSn) {
-                            initApi(context, apiUrl, appKey, appSecret, terminalSn, BaseApiService.getInstance(context));
+                        public void initSuccess(String apiUrl, String terminalSn, String model) {
+                            initApi(context, apiUrl, appKey, appSecret, terminalSn, model, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -289,12 +289,12 @@ public class StoreSdk {
      * @param appSecret
      * @param terminalSerialNo
      */
-    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
+    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, String model, ProxyDelegate proxyDelegate) {
         paramApi = new ParamApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
-        activateApi = new ActivateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        activateApi = new ActivateApi(apiUrl, appKey, appSecret, terminalSerialNo, model == null ? "" : model).setProxyDelegate(proxyDelegate);
     }
 
     /**
