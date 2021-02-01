@@ -28,6 +28,7 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.ParamObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
@@ -62,7 +63,7 @@ public class APIFragment extends Fragment {
     private Button getTerminalInfoBtn;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide, lvGetLastSuccessParam;
     private EditText etTid;
     private ImageView mImgRetrieve, mImgActivate;
     private LinearLayout lvChildRetrieve;
@@ -117,6 +118,7 @@ public class APIFragment extends Fragment {
         versionTV = (TextView) view.findViewById(R.id.versionText);
         versionTV.setText(getResources().getString(R.string.label_version_text) + " " + BuildConfig.VERSION_NAME);
         openDownloadList = (LinearLayout) view.findViewById(R.id.open_downloadlist_page);
+        lvGetLastSuccessParam = (LinearLayout) view.findViewById(R.id.get_last_success_param);
 
         lvActivate = view.findViewById(R.id.lv_activate);
         lvActivateHide = view.findViewById(R.id.lv_activate_hide);
@@ -199,6 +201,33 @@ public class APIFragment extends Fragment {
 
             }
         });
+
+        lvGetLastSuccessParam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final ParamObject paramObject = StoreSdk.getInstance().paramApi().getLastSuccessParm();
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                   Toast.makeText(getContext(), "Get Last Success Param Result:" + paramObject.toString(), Toast.LENGTH_SHORT).show();
+                                   Log.d(TAG, "Get Last Success Param Result: " + paramObject.toString());
+                                }
+                            });
+
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                        }
+                    }
+                }) ;
+
+                thread.start();
+            }
+        });
+
 
         lvActivate.setOnClickListener(new View.OnClickListener() {
             @Override

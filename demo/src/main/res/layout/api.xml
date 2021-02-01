@@ -246,6 +246,41 @@
                 android:background="#DDDDDD" />
 
             <LinearLayout
+                android:id="@+id/get_last_success_param"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/get_last_success_param" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="#ffffff"
+                        android:padding="16dp"
+                        android:src="@mipmap/list_btn_arrow" />
+                </LinearLayout>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#DDDDDD" />
+
+            <LinearLayout
                 android:id="@+id/lv_activate"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
