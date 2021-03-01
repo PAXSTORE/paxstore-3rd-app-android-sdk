@@ -45,4 +45,27 @@ public class ParamApiStrategy extends ParamApi{
         return resultObject;
     }
 
+    public DownloadResultObject downloadLastSuccessParamToPath(String saveFilePath, String paramTemplateName) {
+
+        InnerDownloadResultObject downloadResultObject;
+        if (paramTemplateName != null) {
+            downloadResultObject = super.downloadLastSuccessParmToPath(saveFilePath, paramTemplateName);
+        } else {
+            downloadResultObject = super.downloadLastSuccessParmToPath(saveFilePath);
+        }
+
+        DownloadResultObject resultObject = new DownloadResultObject();
+        resultObject.setMessage(downloadResultObject.getMessage());
+        resultObject.setBusinessCode(downloadResultObject.getBusinessCode());
+        resultObject.setParamSavePath(saveFilePath);
+        if (resultObject.getBusinessCode() != 0) {
+            Log.e("Download Result:", "errorCode: " + resultObject.getBusinessCode() + " errorMessage: " + resultObject.getMessage());
+        }
+        return resultObject;
+    }
+
+    public DownloadResultObject downloadLastSuccessParamToPath(String saveFilePath) {
+        return downloadLastSuccessParamToPath(saveFilePath, null);
+    }
+
 }

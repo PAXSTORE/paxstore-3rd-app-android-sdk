@@ -28,7 +28,7 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
-import com.pax.market.api.sdk.java.base.dto.ParamObject;
+import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
@@ -209,12 +209,19 @@ public class APIFragment extends Fragment {
                     @Override
                     public void run() {
                         try {
-                            final ParamObject paramObject = StoreSdk.getInstance().paramApi().getLastSuccessParm();
+                            String path = getActivity().getExternalCacheDir() + "/YourPath/";
+                            final DownloadResultObject downloadResultObject = StoreSdk.getInstance().paramApi().downloadLastSuccessParamToPath(path);
                             LauncherActivity.getHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
-                                   Toast.makeText(getContext(), "Get Last Success Param Result:" + paramObject.toString(), Toast.LENGTH_SHORT).show();
-                                   Log.d(TAG, "Get Last Success Param Result: " + paramObject.toString());
+                                    if (downloadResultObject.getBusinessCode() == 0) {
+                                        bannerSubTextTV.setText(downloadResultObject.getParamSavePath());
+                                        Toast.makeText(getContext(), "Get success, Param save in" + downloadResultObject.getParamSavePath(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        bannerSubTextTV.setText("");
+                                        Toast.makeText(getContext(), "Get failed," + downloadResultObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    Log.d(TAG, "Get Last Success Param Result: " + downloadResultObject.toString());
                                 }
                             });
 
