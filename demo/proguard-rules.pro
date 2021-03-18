@@ -45,18 +45,20 @@
 -keep class com.fasterxml.jackson.**{*;}
 -dontwarn com.pax.market.api.sdk.java.base.util.**
 -keep class com.pax.market.api.sdk.java.base.util.**{*;}
+
+
 -dontwarn org.w3c.dom.**
 -keep class org.w3c.dom.**{*;}
 -dontwarn javax.xml.**
 -keep class javax.xml.**{*;}
-
 #dto
 -dontwarn com.pax.market.api.sdk.java.base.dto.**
 -keep class com.pax.market.api.sdk.java.base.dto.**{*;}
-
+-keep class com.pax.market.api.sdk.java.api.sync.dto.**{*;}
 
 #这里是google默认不混淆 Activity 、Service ... 类的子类
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.preference.Preference
+
