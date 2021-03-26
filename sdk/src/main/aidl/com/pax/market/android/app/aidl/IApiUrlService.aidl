@@ -12,4 +12,5 @@ interface IApiUrlService {
     DcUrlInfo getDcUrlInfo();
     String getSn();
     String getModel();
+    DcUrlInfo getDcUrlInfoByTid(String tid);
 }

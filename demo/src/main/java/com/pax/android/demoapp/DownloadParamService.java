@@ -76,19 +76,21 @@ public class DownloadParamService extends IntentService {
         }
 
 //                businesscode==0, means download successful, if not equal to 0, please check the return message when need.
-        if (downloadResult != null && downloadResult.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-            Log.i(TAG, "download successful.");
+        if (downloadResult != null ) {
+            if (downloadResult.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                Log.i(TAG, "download successful.");
 
-            //todo start to add your own logic.
-            //below is only for demo
-            readDataToDisplay();
-        } else {
-            //todo check the Error Code and Error Message for fail reason
-            Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());
-            //update download fail info in main page for Demo
-            spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
-            spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT, "Your push parameters file task failed at " + sdf.format(new Date()) + ", please check error log.");
-            updateUI(DemoConstants.DOWNLOAD_STATUS_FAILED);
+                //todo start to add your own logic.
+                //below is only for demo
+                readDataToDisplay();
+            } else {
+                //todo check the Error Code and Error Message for fail reason
+                Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());
+                //update download fail info in main page for Demo
+                spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
+                spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT, "Your push parameters file task failed at " + sdf.format(new Date()) + ", please check error log.");
+                updateUI(DemoConstants.DOWNLOAD_STATUS_FAILED);
+            }
         }
     }
 

@@ -227,13 +227,18 @@ public class BaseApiService implements ProxyDelegate {
             }
 
             DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
-            if (localDcUrlInfo != null && System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
+            if (localDcUrlInfo != null && localDcUrlInfo.getDcUrl()!= null && !"null".equalsIgnoreCase(localDcUrlInfo.getDcUrl())
+                    && System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
                 dcCallBack.dcCallBack.initSuccess(localDcUrlInfo.getDcUrl());
                 return null;
             }
 
             try {
-                DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
+                DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfoByTid("");
+                if (info == null) { // 如果info为空，说明是比较老的PAXSTORE client, 小于8.0.0
+                    info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
+
+                }
                 if (info == null) {
                     if (oriBaseUrl == null) { // 当PAXSTORE client是低版本的时候，拿不到dcurl, 此时应该有默认url才对。
                         Log.e("InitDcUrlAsyncTask", ERR_GET_DC_URL_FAILED);
