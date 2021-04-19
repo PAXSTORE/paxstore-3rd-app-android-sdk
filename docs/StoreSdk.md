@@ -7,7 +7,7 @@ com.pax.market.android.app.sdk.StoreSdk
 ```
 // Initialize StoreSdk api
 public void init(final Context context, final String appKey, final String appSecret,
-                     final String terminalSerialNo, final BaseApiService.Callback callback) throws NullPointerException
+                 final BaseApiService.Callback callback) throws NullPointerException
 ```
 
 | Parameter        | Type                    | Description    |
@@ -15,7 +15,6 @@ public void init(final Context context, final String appKey, final String appSec
 | context          | Context                 | Context        |
 | appKey           | String                  | The app key    |
 | appSecret        | String                  | The app secret |
-| terminalSerialNo | String                  | The teminal SN |
 | callback         | BaseApiService.Callback | Callback       |
 
 **com.pax.market.android.app.sdk.BaseApiService**
