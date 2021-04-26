@@ -1,6 +1,6 @@
 # Migrations
 
-### Migration to 8.0.0
+### Migration to 8.0.1
 No other efforts needed.
 
 ### Migration to 7.4.0
