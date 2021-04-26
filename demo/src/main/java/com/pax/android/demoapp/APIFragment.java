@@ -63,7 +63,7 @@ public class APIFragment extends Fragment {
     private Button getTerminalInfoBtn;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide, lvGetLastSuccessParam;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide;
     private EditText etTid;
     private ImageView mImgRetrieve, mImgActivate;
     private LinearLayout lvChildRetrieve;
@@ -118,7 +118,6 @@ public class APIFragment extends Fragment {
         versionTV = (TextView) view.findViewById(R.id.versionText);
         versionTV.setText(getResources().getString(R.string.label_version_text) + " " + BuildConfig.VERSION_NAME);
         openDownloadList = (LinearLayout) view.findViewById(R.id.open_downloadlist_page);
-        lvGetLastSuccessParam = (LinearLayout) view.findViewById(R.id.get_last_success_param);
 
         lvActivate = view.findViewById(R.id.lv_activate);
         lvActivateHide = view.findViewById(R.id.lv_activate_hide);
@@ -201,40 +200,6 @@ public class APIFragment extends Fragment {
 
             }
         });
-
-        lvGetLastSuccessParam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Thread thread =  new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            String path = getActivity().getFilesDir() + "/YourPath/";
-                            final DownloadResultObject downloadResultObject = StoreSdk.getInstance().paramApi().downloadLastSuccessParamToPath(path);
-                            LauncherActivity.getHandler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (downloadResultObject.getBusinessCode() == 0) {
-                                        bannerSubTextTV.setText(downloadResultObject.getParamSavePath());
-                                        Toast.makeText(getContext(), "Get success, Param save in" + downloadResultObject.getParamSavePath(), Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        bannerSubTextTV.setText("");
-                                        Toast.makeText(getContext(), "Get failed," + downloadResultObject.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                    Log.d(TAG, "Get Last Success Param Result: " + downloadResultObject.toString());
-                                }
-                            });
-
-                        } catch (NotInitException e) {
-                            Log.e(TAG, "e:" + e);
-                        }
-                    }
-                }) ;
-
-                thread.start();
-            }
-        });
-
 
         lvActivate.setOnClickListener(new View.OnClickListener() {
             @Override
