@@ -240,6 +240,7 @@
                         android:src="@mipmap/list_btn_arrow" />
                 </LinearLayout>
             </LinearLayout>
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"

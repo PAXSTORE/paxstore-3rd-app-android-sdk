@@ -78,6 +78,17 @@ public DownloadResultObject downloadParamFileOnly(ParamObject paramObject, Strin
 | ------------- | ------ | ------------------------------ |
 | paramSavePath | String | The path that param file saved |
 
+### Get last success param
+
+```
+ public ParamObject getLastSuccessParm()
+ public ParamObject getLastSuccessParm(String paramTemplateName)
+```
+
+| Parameter    | Type        | Description                                                  |
+| ------------ | ----------- | ------------------------------------------------------------ |
+| paramTemplateName | String | This name of param template |
+
 ### Update push task status
 
 ```
