@@ -8,7 +8,6 @@ import android.graphics.DashPathEffect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -84,6 +85,7 @@ public class GoFragment extends Fragment implements FragmentReceiver {
     private View contentView, mMore, mNodata;
     private View mProGress;
     private View mNoData;
+    private long lastShowHintTime;
 
 
     private BarChart mBarChart;
@@ -111,6 +113,18 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
     }
 
     @Override
@@ -173,7 +187,7 @@ public class GoFragment extends Fragment implements FragmentReceiver {
                 barDataSet.setColor(colors.get(i));
                 dataSets.add(barDataSet);
             } catch (NumberFormatException e) {
-                e.printStackTrace();
+                showParseErrorHint();
             }
         }
 
@@ -220,7 +234,6 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         barChart.setData(theData);
 
     }
-
 
     public void createLineChart(LineChart lineChart, List<String> colums, final List<Object[]> rows) {
         lineChart.setDrawGridBackground(false);
@@ -298,7 +311,11 @@ public class GoFragment extends Fragment implements FragmentReceiver {
 
 
         for (int i = 0; i < rows.size(); i++) {
-            values.add(new Entry(i, Float.parseFloat((String) rows.get(i)[1])));
+            try {
+                values.add(new Entry(i, Float.parseFloat((String) rows.get(i)[1])));
+            } catch (NumberFormatException e) {
+                showParseErrorHint();
+            }
 
         }
         LineDataSet d = new LineDataSet(values, "");
@@ -336,6 +353,13 @@ public class GoFragment extends Fragment implements FragmentReceiver {
 
         LineData data = new LineData(dataSets);
         lineChart.setData(data);
+    }
+
+    private void showParseErrorHint() {
+        if (System.currentTimeMillis() - lastShowHintTime > 5_000L) {// toast filter.
+            lastShowHintTime = System.currentTimeMillis();
+            Toast.makeText(getContext(), "Please select none format for your data", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void createPieChart(PieChart pieChart, List<String> colums, List<Object[]> rows) {
@@ -382,7 +406,11 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < rows.size(); i++) {
-            entries.add(new PieEntry(Float.parseFloat((String) rows.get(i)[1]), (String) rows.get(i)[0]));
+            try {
+                entries.add(new PieEntry(Float.parseFloat((String) rows.get(i)[1]), (String) rows.get(i)[0]));
+            } catch (NumberFormatException e) {
+                showParseErrorHint();
+            }
         }
 
 
@@ -418,7 +446,6 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         pieChart.setData(datafr);
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -488,7 +515,6 @@ public class GoFragment extends Fragment implements FragmentReceiver {
     public void onRecive(Context context, Intent intent) {
 
     }
-
 
     public void update_chart() {
         if (getActivity() == null) {
@@ -580,22 +606,6 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         });
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-
     private void showPopupWindow(Context context, View rootView) {
         //设置contentView
         View contentView = LayoutInflater.from(context).inflate(R.layout.more_pop, null);
@@ -624,20 +634,6 @@ public class GoFragment extends Fragment implements FragmentReceiver {
 
     }
 
-
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
-
-    public static int getStatusBarHeight(Context context) {
-        Resources resources = context.getResources();
-        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-        int height = resources.getDimensionPixelSize(resourceId);
-        return height;
-    }
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -651,7 +647,7 @@ public class GoFragment extends Fragment implements FragmentReceiver {
         }
     }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////// get data ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////// get data ///////////////////////////////
     private void queryWrap() {
         queryBizData("3hi0fs8i", ChartType.LINE);
         queryBizData("v664nkfc", ChartType.BAR);
@@ -707,19 +703,32 @@ public class GoFragment extends Fragment implements FragmentReceiver {
 
     }
 
-
     public ChartData getChartData_line() {
         return chartData_line;
     }
-
 
     public ChartData getChartData_bar() {
         return chartData_bar;
     }
 
-
     public ChartData getChartData_pi() {
         return chartData_pi;
+    }
+
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 
 

@@ -28,6 +28,7 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;

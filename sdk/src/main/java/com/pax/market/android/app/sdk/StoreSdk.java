@@ -16,8 +16,8 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
+import com.pax.market.android.app.sdk.util.ActivateApiStrategy;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
-import com.pax.market.api.sdk.java.api.activate.ActivateApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
@@ -53,7 +53,7 @@ public class StoreSdk {
     private SyncApi syncApi;
     private GoInsightApi goInsightApi;
     private UpdateApi updateApi;
-    private ActivateApi activateApi;
+    private ActivateApiStrategy activateApi;
     private Context context;
 
     private Semaphore semaphore;
@@ -101,8 +101,8 @@ public class StoreSdk {
                     new BaseApiService.ApiCallBack() {
 
                         @Override
-                        public void initSuccess(String apiUrl, String terminalSn) {
-                            initApi(context, apiUrl, appKey, appSecret, terminalSn, BaseApiService.getInstance(context));
+                        public void initSuccess(String apiUrl, String terminalSn, String model) {
+                            initApi(context, apiUrl, appKey, appSecret, terminalSn, model, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -131,7 +131,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        paramApi.setBaseUrl(getDcUrl(context, paramApi.getBaseUrl()));
+        paramApi.setBaseUrl(getDcUrl(context, paramApi.getBaseUrl(), false));
         paramApi.setProxyDelegate(BaseApiService.getInstance(context));
         return paramApi;
     }
@@ -142,14 +142,14 @@ public class StoreSdk {
      * @return
      * @throws NotInitException
      */
-    public ActivateApi activateApi() throws NotInitException {
+    public ActivateApiStrategy activateApi() throws NotInitException {
         if (activateApi == null) {
             acquireSemaphore();
             if (activateApi == null) {
                 throw new NotInitException("Not initialized");
             }
         }
-        activateApi.setBaseUrl(getDcUrl(context, activateApi.getBaseUrl()));
+        activateApi.setBaseUrl(getDcUrl(context, activateApi.getBaseUrl(), true));
         activateApi.setProxyDelegate(BaseApiService.getInstance(context));
         return activateApi;
     }
@@ -167,7 +167,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        syncApi.setBaseUrl(getDcUrl(context, syncApi.getBaseUrl()));
+        syncApi.setBaseUrl(getDcUrl(context, syncApi.getBaseUrl(), false));
         syncApi.setProxyDelegate(BaseApiService.getInstance(context));
         return syncApi;
     }
@@ -179,7 +179,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        goInsightApi.setBaseUrl(getDcUrl(context, goInsightApi.getBaseUrl()));
+        goInsightApi.setBaseUrl(getDcUrl(context, goInsightApi.getBaseUrl(), false));
         goInsightApi.setProxyDelegate(BaseApiService.getInstance(context));
         return goInsightApi;
     }
@@ -197,7 +197,7 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        updateApi.setBaseUrl(getDcUrl(context, updateApi.getBaseUrl()));
+        updateApi.setBaseUrl(getDcUrl(context, updateApi.getBaseUrl(), false));
         updateApi.setProxyDelegate(BaseApiService.getInstance(context));
         return updateApi;
     }
@@ -289,12 +289,12 @@ public class StoreSdk {
      * @param appSecret
      * @param terminalSerialNo
      */
-    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
+    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, String model, ProxyDelegate proxyDelegate) {
         paramApi = new ParamApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
-        activateApi = new ActivateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        activateApi = new ActivateApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo, model == null ? "" : model).setProxyDelegate(proxyDelegate);
     }
 
     /**
@@ -483,7 +483,7 @@ public class StoreSdk {
         return PreferencesUtils.getObject(context, PushConstants.MEDIA_MESSAGE, MediaMesageInfo.class);
     }
 
-    public String getDcUrl(final Context context, String oriBaseUrl) throws NotInitException {
+    public String getDcUrl(final Context context, String oriBaseUrl, boolean tid) throws NotInitException {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             throw new NotInitException("Can not do this on MainThread!!");
         }
@@ -517,7 +517,11 @@ public class StoreSdk {
             Log.e(TAG, "e:" + e);
         }
         if (dcUrl.toString().isEmpty() || dcUrl.toString().equalsIgnoreCase("null")) {
-            throw new NotInitException("Get baseUrl failed");
+            if (tid) {
+                return null;
+            } else {
+                throw new NotInitException("Get baseUrl failed, client is not installed or terminal is not activated.");
+            }
         }
         return dcUrl.toString();
     }

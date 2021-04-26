@@ -94,7 +94,8 @@ public class BaseApiService implements ProxyDelegate {
                         terminalSn = getSN();
                         apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
                     }
-                    new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, apiUrl, terminalSn));
+                    String model = IApiUrlService.Stub.asInterface(service).getModel();
+                    new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, apiUrl, terminalSn, model));
                 } catch (RemoteException e) {
                     logger.error(">>> Get Api URL error", e);
                     callback1.initFailed(e);
@@ -170,13 +171,15 @@ public class BaseApiService implements ProxyDelegate {
         Callback callback1;
         ApiCallBack apiCallBack;
         String terminalSn;
+        String model;
         String apiUrl;
 
-        InitApiParams(ApiCallBack apiCallBack, Callback callback1, String apiUrl, String terminalSn) {
+        InitApiParams(ApiCallBack apiCallBack, Callback callback1, String apiUrl, String terminalSn, String model) {
             this.callback1 = callback1;
             this.apiCallBack = apiCallBack;
             this.apiUrl = apiUrl;
             this.terminalSn = terminalSn;
+            this.model = model;
         }
     }
 
@@ -193,7 +196,7 @@ public class BaseApiService implements ProxyDelegate {
                 initApiParams1.apiCallBack.initFailed();
                 initApiParams1.callback1.initFailed(new RemoteException(ERR_GET_SN_FAILED));
             } else {
-                initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl, initApiParams1.terminalSn);
+                initApiParams1.apiCallBack.initSuccess(initApiParams1.apiUrl, initApiParams1.terminalSn, initApiParams1.model);
                 initApiParams1.callback1.initSuccess();
             }
             return null;
@@ -224,13 +227,18 @@ public class BaseApiService implements ProxyDelegate {
             }
 
             DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
-            if (localDcUrlInfo != null && System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
+            if (localDcUrlInfo != null && localDcUrlInfo.getDcUrl()!= null && !"null".equalsIgnoreCase(localDcUrlInfo.getDcUrl())
+                    && System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
                 dcCallBack.dcCallBack.initSuccess(localDcUrlInfo.getDcUrl());
                 return null;
             }
 
             try {
-                DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
+                DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfoByTid("");
+                if (info == null) { // 如果info为空，说明是比较老的PAXSTORE client, 小于8.0.0
+                    info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
+
+                }
                 if (info == null) {
                     if (oriBaseUrl == null) { // 当PAXSTORE client是低版本的时候，拿不到dcurl, 此时应该有默认url才对。
                         Log.e("InitDcUrlAsyncTask", ERR_GET_DC_URL_FAILED);
@@ -292,7 +300,7 @@ public class BaseApiService implements ProxyDelegate {
 
 
     public interface ApiCallBack {
-        void initSuccess(String apiUrl, String terminalSn);
+        void initSuccess(String apiUrl, String terminalSn, String model);
 
         void initFailed();
     }

@@ -6,8 +6,8 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 150
-        versionName "7.4.0"
+        versionCode 172
+        versionName "8.0.1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -40,6 +40,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
 
     implementation project(':sdk')
+//    implementation 'com.github.PAXSTORE:paxstore-3rd-app-android-sdk:8.0.1-test'
+
 
     //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'

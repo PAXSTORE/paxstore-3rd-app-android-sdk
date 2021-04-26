@@ -4,11 +4,13 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.4'
         //https://github.com/novoda/bintray-release check latest version of novoda
-        classpath 'com.novoda:bintray-release:0.9.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
