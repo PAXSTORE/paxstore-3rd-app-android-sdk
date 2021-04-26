@@ -1,5 +1,8 @@
 # Migrations
 
+### Migration to 8.0.0
+No other efforts needed.
+
 ### Migration to 7.4.0
 You are no longer required to get terminal serialNo by yourself to do the initialization.
 
