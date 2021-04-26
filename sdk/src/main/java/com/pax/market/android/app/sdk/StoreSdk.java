@@ -85,9 +85,6 @@ public class StoreSdk {
      */
     public void init(final Context context, final String appKey, final String appSecret,
                      final BaseApiService.Callback callback) throws NullPointerException {
-        Log.e("StoreSdk", "ttttttttttttttttttttttttttttttttttttt" +
-                "This is a test message " +
-                "ttttttttttttttttttttttttttttttttttttt");
         if (paramApi == null && syncApi == null && updateApi == null
                 && activateApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
