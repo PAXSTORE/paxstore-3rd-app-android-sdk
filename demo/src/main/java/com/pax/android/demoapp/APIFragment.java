@@ -209,7 +209,7 @@ public class APIFragment extends Fragment {
                     @Override
                     public void run() {
                         try {
-                            String path = getActivity().getExternalCacheDir() + "/YourPath/";
+                            String path = getActivity().getFilesDir() + "/YourPath/";
                             final DownloadResultObject downloadResultObject = StoreSdk.getInstance().paramApi().downloadLastSuccessParamToPath(path);
                             LauncherActivity.getHandler().post(new Runnable() {
                                 @Override
