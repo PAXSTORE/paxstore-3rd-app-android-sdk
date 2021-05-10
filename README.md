@@ -29,6 +29,7 @@ Gradle:
 
 <font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Jitpack center, please update your gradle to integrate with our latest sdk.**
 </font>
+
 Add it in your root build.gradle at the end of repositories:
 
 
@@ -56,7 +57,7 @@ PAXSTORE Android SDK need the following permissions, please add them in AndroidM
 ## ProGuard
 If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/manual) in your project add the following lines to your configuration:
 
-Please check the our [ProGuard.md](docs/ProGuard.md)
+Please check the our [ProGuard.md](docs/Proguard.md)
 
 ## Set Up
 
