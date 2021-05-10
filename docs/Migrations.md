@@ -1,9 +1,26 @@
 # Migrations
 
 ### Migration to 8.0.1
-No other efforts needed.
+<font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Jitpack center, please update your gradle to integrate with our latest sdk.**
+</font>
+Add it in your root build.gradle at the end of repositories:
+
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+
+ Add the dependency
+
+```
+implementation 'com.github.PAXSTORE:paxstore-3rd-app-android-sdk:8.0.1'
+```
 
 ### Migration to 7.4.0
+
 You are no longer required to get terminal serialNo by yourself to do the initialization.
 
     StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
@@ -11,7 +28,7 @@ You are no longer required to get terminal serialNo by yourself to do the initia
             public void initSuccess() {
                //TODO Do your business here
             }
-
+    
             @Override
             public void initFailed(RemoteException e) {
                //TODO Do failed logic here
@@ -31,7 +48,6 @@ Register your IntentService
             <category android:name="${applicationId}"/>
         </intent-filter>
     </service>
-
 
 
 
