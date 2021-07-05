@@ -1,5 +1,13 @@
 # Proguard
 
+    #okhttp
+    -dontwarn com.squareup.okhttp.**
+    -keep class com.squareup.okhttp.** { *; }
+    -keep interface com.squareup.okhttp.** { *; }
+    -dontwarn com.squareup.okhttp3.**
+    -keep class com.squareup.okhttp3.** { *;}
+    -dontwarn okio.**
+    
     #Gson
     -dontwarn com.google.gson.**
     -keep class sun.misc.Unsafe { *; }
