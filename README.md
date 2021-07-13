@@ -1,5 +1,5 @@
 
-# PAXSTORE 3rd App Android SDK [![](https://jitpack.io/v/PAXSTORE/paxstore-3rd-app-android-sdk.svg)](https://jitpack.io/#PAXSTORE/paxstore-3rd-app-android-sdk)
+# PAXSTORE 3rd App Android SDK
 
 PAXSTORE 3rd App Android SDK provides simple and easy-to-use service interfaces for third party developers to develop android apps on PAXSTORE. The services currently include the following features:
 
@@ -30,20 +30,10 @@ Gradle:
 <font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Jitpack center, please update your gradle to integrate with our latest sdk.**
 </font>
 
-Add it in your root build.gradle at the end of repositories:
-
-
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
-
  Add the dependency
 
 ```
-implementation 'com.github.PAXSTORE:paxstore-3rd-app-android-sdk:8.0.1'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.0.1'
 ```
 
 
@@ -57,7 +47,7 @@ PAXSTORE Android SDK need the following permissions, please add them in AndroidM
 ## ProGuard
 If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/manual) in your project add the following lines to your configuration:
 
-Please check the our [ProGuard.md](docs/Proguard.md)
+Please check the our [proguard-rules.pro](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/demo/proguard-rules.pro)
 
 ## Set Up
 
