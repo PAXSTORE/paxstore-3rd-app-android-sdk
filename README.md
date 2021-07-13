@@ -30,6 +30,15 @@ Gradle:
 <font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Jitpack center, please update your gradle to integrate with our latest sdk.**
 </font>
 
+Add it in your root build.gradle at the end of repositories:
+
+
+	allprojects {
+		repositories {
+			...
+			mavenCentral()
+		}
+	}
  Add the dependency
 
 ```
@@ -67,36 +76,36 @@ Configuring the application element, edit AndroidManifest.xml, it will have an a
 Initializing AppKey,AppSecret and SN
 >Please note, make sure you have put your own app's AppKey and AppSecret correctly
 
-public class BaseApplication extends Application {
+    public class BaseApplication extends Application {
 
-    private static final String TAG = BaseApplication.class.getSimpleName();
+        private static final String TAG = BaseApplication.class.getSimpleName();
+        
+        //todo make sure to replace with your own app's appKey and appSecret
+        private String appkey = "Your APPKEY";
+        private String appSecret = "Your APPSECRET";
+        
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            initPaxStoreSdk();
+        }
+        
+        private void initPaxStoreSdk() {
+           //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
+            StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
+                @Override
+                public void initSuccess() {
+                   //TODO Do your business here
+                }
     
-    //todo make sure to replace with your own app's appKey and appSecret
-    private String appkey = "Your APPKEY";
-    private String appSecret = "Your APPSECRET";
-    
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        initPaxStoreSdk();
+                @Override
+                public void initFailed(RemoteException e) {
+                   //TODO Do failed logic here
+                    Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
-    
-    private void initPaxStoreSdk() {
-       //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
-        StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
-            @Override
-            public void initSuccess() {
-               //TODO Do your business here
-            }
-
-            @Override
-            public void initFailed(RemoteException e) {
-               //TODO Do failed logic here
-                Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-}
 
 ## More Apis
 
