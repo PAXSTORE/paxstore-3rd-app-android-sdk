@@ -1,5 +1,5 @@
 
-# PAXSTORE 3rd App Android SDK [![](https://jitpack.io/v/PAXSTORE/paxstore-3rd-app-android-sdk.svg)](https://jitpack.io/#PAXSTORE/paxstore-3rd-app-android-sdk)
+# PAXSTORE 3rd App Android SDK
 
 PAXSTORE 3rd App Android SDK provides simple and easy-to-use service interfaces for third party developers to develop android apps on PAXSTORE. The services currently include the following features:
 
@@ -36,14 +36,14 @@ Add it in your root build.gradle at the end of repositories:
 	allprojects {
 		repositories {
 			...
-			maven { url 'https://jitpack.io' }
+			mavenCentral()
 		}
 	}
 
  Add the dependency
 
 ```
-implementation 'com.github.PAXSTORE:paxstore-3rd-app-android-sdk:8.0.1'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.0.2'
 ```
 
 
@@ -57,7 +57,7 @@ PAXSTORE Android SDK need the following permissions, please add them in AndroidM
 ## ProGuard
 If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/manual) in your project add the following lines to your configuration:
 
-Please check the our [ProGuard.md](docs/Proguard.md)
+Please check the our [proguard-rules.pro](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/demo/proguard-rules.pro)
 
 ## Set Up
 
@@ -77,36 +77,36 @@ Configuring the application element, edit AndroidManifest.xml, it will have an a
 Initializing AppKey,AppSecret and SN
 >Please note, make sure you have put your own app's AppKey and AppSecret correctly
 
-public class BaseApplication extends Application {
+    public class BaseApplication extends Application {
 
-    private static final String TAG = BaseApplication.class.getSimpleName();
+        private static final String TAG = BaseApplication.class.getSimpleName();
+        
+        //todo make sure to replace with your own app's appKey and appSecret
+        private String appkey = "Your APPKEY";
+        private String appSecret = "Your APPSECRET";
+        
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            initPaxStoreSdk();
+        }
+        
+        private void initPaxStoreSdk() {
+           //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
+            StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
+                @Override
+                public void initSuccess() {
+                   //TODO Do your business here
+                }
     
-    //todo make sure to replace with your own app's appKey and appSecret
-    private String appkey = "Your APPKEY";
-    private String appSecret = "Your APPSECRET";
-    
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        initPaxStoreSdk();
+                @Override
+                public void initFailed(RemoteException e) {
+                   //TODO Do failed logic here
+                    Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
-    
-    private void initPaxStoreSdk() {
-       //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
-        StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
-            @Override
-            public void initSuccess() {
-               //TODO Do your business here
-            }
-
-            @Override
-            public void initFailed(RemoteException e) {
-               //TODO Do failed logic here
-                Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-}
 
 ## More Apis
 
