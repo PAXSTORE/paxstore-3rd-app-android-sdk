@@ -12,6 +12,7 @@ Refer to the [SetUp](../README.md)
                   android:value="true"/>
 
 ### 3.Upload BizData Sample
+Attention: If you upload failed, you need to apply your own strategy to upload it again.
 
         // You have to create dataSet in GoInsight, and each key you uploaded should exists in dataSet.
         // You will find how to create dataSet in our GoInsight document.
