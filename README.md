@@ -27,7 +27,7 @@ By using this SDK, developers can easily integrate with PAXSTORE. Please take ca
 ## Download
 Gradle:
 
-<font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Jitpack center, please update your gradle to integrate with our latest sdk.**
+<font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Maven center, please update your gradle to integrate with our latest sdk.**
 </font>
 
  Add the dependency
