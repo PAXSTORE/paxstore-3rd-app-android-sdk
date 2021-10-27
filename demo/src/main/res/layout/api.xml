@@ -460,6 +460,129 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/lv_msg_tab"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:text="Message Tab" />
+
+                <ImageButton
+                    android:id="@+id/img_msg_tab"
+                    android:clickable="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:background="#ffffff"
+                    android:padding="16dp"
+                    android:src="@mipmap/list_btn_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lv_msg_tab_hide"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Create message tabs"
+                    android:textColor="#a9aabd"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+                <EditText
+                    android:id="@+id/et_msg_create"
+                    android:enabled="true"
+                    android:hint="Enter the message tabs, separated by the English delimiter ','"
+                    android:focusableInTouchMode="true"
+                    android:defaultFocusHighlightEnabled="true"
+                    android:layout_marginLeft="16dp"
+                    android:focusable="true"
+
+                    android:focusedByDefault="true"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Delete message tabs"
+                    android:textColor="#a9aabd"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <EditText
+                    android:id="@+id/et_msg_delete"
+                    android:enabled="true"
+                    android:hint="Enter the message tabs, separated by the English delimiter ','"
+                    android:focusableInTouchMode="true"
+                    android:defaultFocusHighlightEnabled="true"
+                    android:layout_marginLeft="16dp"
+                    android:focusable="true"
+                    android:focusedByDefault="true"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#DDDDDD" />
+
+                <Button
+                    android:id="@+id/btn_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_margin="10dp"
+                    android:background="#63af57"
+                    android:textAllCaps="false"
+                    android:gravity="center|center_vertical"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    android:text="Send"/>
+            </LinearLayout>
         </LinearLayout>
 
         <ImageView

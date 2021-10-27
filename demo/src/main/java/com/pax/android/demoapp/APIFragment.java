@@ -28,10 +28,12 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
-import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
+
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
+
+import java.util.Arrays;
 
 
 /**
@@ -61,15 +63,16 @@ public class APIFragment extends Fragment {
     private LinearLayout openClientlayout;
     private Switch tradingStateSwitch;
     private Button getTerminalInfoBtn;
+    private Button btnSend;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide;
-    private EditText etTid;
-    private ImageView mImgRetrieve, mImgActivate;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide, lvMsgTab, lvMsgTabHide;
+    private EditText etTid, etCreateMsgTab, etDeleteMsgTab;
+    private ImageView mImgRetrieve, mImgActivate, mImgMsgTab;
     private LinearLayout lvChildRetrieve;
     private Button getTerminalLocation, getOnlineStatus, activateTerminal; // todo remove
     private OnFragmentInteractionListener mListener;
-    private boolean isDataExpanded, isActivateExpanded;
+    private boolean isDataExpanded, isActivateExpanded, isMsgTabExpanded;
     public APIFragment() {
         // Required empty public constructor
     }
@@ -121,6 +124,13 @@ public class APIFragment extends Fragment {
 
         lvActivate = view.findViewById(R.id.lv_activate);
         lvActivateHide = view.findViewById(R.id.lv_activate_hide);
+        lvMsgTab = view.findViewById(R.id.lv_msg_tab);
+        mImgMsgTab = view.findViewById(R.id.img_msg_tab);
+        lvMsgTabHide = view.findViewById(R.id.lv_msg_tab_hide);
+        etCreateMsgTab = view.findViewById(R.id.et_msg_create);
+        etDeleteMsgTab = view.findViewById(R.id.et_msg_delete);
+        btnSend = view.findViewById(R.id.btn_send);
+
         etTid = view.findViewById(R.id.et_tid);
         activateTerminal = view.findViewById(R.id.btn_activate);
         mImgActivate = view.findViewById(R.id.img_activate);
@@ -220,6 +230,85 @@ public class APIFragment extends Fragment {
                 }
             }
         });
+
+        lvMsgTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isMsgTabExpanded) {
+                    isMsgTabExpanded = false;
+                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                            hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    mImgMsgTab.setImageResource(R.mipmap.list_btn_arrow);
+                    lvMsgTabHide.setVisibility(View.GONE);
+                } else {
+                    etCreateMsgTab.requestFocus();
+                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                            toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
+                    isMsgTabExpanded = true;
+                    mImgMsgTab.setImageResource(R.mipmap.list_btn_arrow_down);
+                    lvMsgTabHide.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] messageTabs = new String[2];
+                String createMessageTabs = "";
+                String deleteMessageTabs = "";
+
+                if (etCreateMsgTab.getText() != null) {
+                    createMessageTabs = etCreateMsgTab.getText().toString();
+                }
+                if (etDeleteMsgTab.getText() != null) {
+                    deleteMessageTabs = etDeleteMsgTab.getText().toString();
+                }
+
+                if (createMessageTabs.isEmpty() && deleteMessageTabs.isEmpty()) {
+                    Toast.makeText(getContext(), "Please input message tab", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                messageTabs[0] = createMessageTabs;
+                messageTabs[1] = deleteMessageTabs;
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final SdkObject sdkObject;
+
+                            if (!messageTabs[0].isEmpty() && !messageTabs[1].isEmpty()) {
+                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().syncMsgTab(Arrays.asList( messageTabs[0].split(",")), Arrays.asList( messageTabs[1].split(",")));
+                            } else if (messageTabs[0].isEmpty()) {
+                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().deleteMsgTab(Arrays.asList( messageTabs[1].split(",")));
+                            } else {
+                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().createMsgTab(Arrays.asList( messageTabs[0].split(",")));
+                            }
+
+                            Log.d(TAG, "sdkObject:" + sdkObject.toString());
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String msg = "";
+                                    if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        msg = "Operation succeed!";
+                                    } else {
+                                        msg = "Operation failed: " + sdkObject.toString();
+                                    }
+                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                        }
+                    }
+                }) ;
+
+                thread.start();
+            }
+        });
+
         activateTerminal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

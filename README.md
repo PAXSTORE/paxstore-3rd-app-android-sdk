@@ -110,6 +110,8 @@ Initializing AppKey,AppSecret and SN
 
 #### [ResultCode](docs/ResultCode.md)
 
+[SyncMsgTabApi](docs/SyncMsgTabApi.md)
+
 
 ## Migrating to Android 8.0
 Since Android 8.0 has lots of changes that will affect your app's behavior, we recommand you to follow the guide to migrate
