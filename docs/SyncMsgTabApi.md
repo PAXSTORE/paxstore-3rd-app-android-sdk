@@ -40,7 +40,7 @@ public SdkObject createMsgTab(List<String> tabNames)
 | --------- | ---- | ---------------------- |
 | tabNames  | List | The msg tabs to create |
 
-**Delete msg ab**
+**Delete msg tab**
 
 ```
 public SdkObject deleteMsgTab(List<String> deleteTabNames) 
