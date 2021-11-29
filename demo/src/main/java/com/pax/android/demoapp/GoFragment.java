@@ -184,7 +184,7 @@ public class GoFragment extends Fragment implements FragmentReceiver {
                 ArrayList<BarEntry> barEntries = new ArrayList<>();
                 barEntries.add(new BarEntry(i, Float.parseFloat((String) rows.get(i)[1]), rows.get(i)[0]));
                 BarDataSet barDataSet = new BarDataSet(barEntries, (String) rows.get(i)[0]);
-                barDataSet.setColor(colors.get(i));
+                barDataSet.setColor(colors.get(i % colors.size()));
                 dataSets.add(barDataSet);
             } catch (NumberFormatException e) {
                 showParseErrorHint();
