@@ -473,7 +473,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:layout_weight="1"
-                    android:text="Message Tab" />
+                    android:text="Message Tag" />
 
                 <ImageButton
                     android:id="@+id/img_msg_tab"
@@ -488,7 +488,7 @@
 
             <LinearLayout
                 android:id="@+id/lv_msg_tab_hide"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
@@ -508,7 +508,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="sans-serif"
-                    android:text="Create message tabs"
+                    android:text="Attach message tags"
                     android:textColor="#a9aabd"
                     android:textSize="12sp"
                     android:textStyle="normal" />
@@ -521,7 +521,7 @@
                 <EditText
                     android:id="@+id/et_msg_create"
                     android:enabled="true"
-                    android:hint="Enter the message tabs, separated by the English delimiter ','"
+                    android:hint="Detach the message tags, separated by the English delimiter ','"
                     android:focusableInTouchMode="true"
                     android:defaultFocusHighlightEnabled="true"
                     android:layout_marginLeft="16dp"
@@ -582,6 +582,24 @@
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:text="Send"/>
+
+                <Button
+                    android:id="@+id/btn_get_all_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_margin="10dp"
+                    android:background="#63af57"
+                    android:textAllCaps="false"
+                    android:gravity="center|center_vertical"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    android:text="Get all tag"/>
+
+                <TextView
+                    android:id="@+id/tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </LinearLayout>
 

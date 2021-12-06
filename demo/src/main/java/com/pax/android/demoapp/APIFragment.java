@@ -29,6 +29,7 @@ import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
 
+import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
@@ -64,6 +65,8 @@ public class APIFragment extends Fragment {
     private Switch tradingStateSwitch;
     private Button getTerminalInfoBtn;
     private Button btnSend;
+    private Button btnGetAllTag;
+    private TextView tagsText;
 
     private ScrollView scrollView;
     private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide, lvMsgTab, lvMsgTabHide;
@@ -125,11 +128,13 @@ public class APIFragment extends Fragment {
         lvActivate = view.findViewById(R.id.lv_activate);
         lvActivateHide = view.findViewById(R.id.lv_activate_hide);
         lvMsgTab = view.findViewById(R.id.lv_msg_tab);
+        btnGetAllTag = view.findViewById(R.id.btn_get_all_tag);
         mImgMsgTab = view.findViewById(R.id.img_msg_tab);
         lvMsgTabHide = view.findViewById(R.id.lv_msg_tab_hide);
         etCreateMsgTab = view.findViewById(R.id.et_msg_create);
         etDeleteMsgTab = view.findViewById(R.id.et_msg_delete);
         btnSend = view.findViewById(R.id.btn_send);
+        tagsText = view.findViewById(R.id.tags);
 
         etTid = view.findViewById(R.id.et_tid);
         activateTerminal = view.findViewById(R.id.btn_activate);
@@ -308,6 +313,42 @@ public class APIFragment extends Fragment {
                 thread.start();
             }
         });
+
+
+        btnGetAllTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final MsgTagObject msgTagObject = StoreSdk.getInstance().syncMsgTabApi().getAllTag();
+
+                            Log.d(TAG, "sdkObject:" + msgTagObject.toString());
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String msg = "";
+                                    if (msgTagObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        msg = "Operation succeed!";
+                                    } else {
+                                        msg = "Operation failed: " + msgTagObject.toString();
+                                    }
+                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                    tagsText.setText(msgTagObject.getTags().toString());
+                                }
+                            });
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                        }
+                    }
+                }) ;
+
+                thread.start();
+            }
+        });
+
+
 
         activateTerminal.setOnClickListener(new View.OnClickListener() {
             @Override
