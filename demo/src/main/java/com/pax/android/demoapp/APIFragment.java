@@ -328,14 +328,15 @@ public class APIFragment extends Fragment {
                             LauncherActivity.getHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    String msg = "";
                                     if (msgTagObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                                        msg = "Operation succeed!";
+                                        if(msgTagObject.getTags()!= null && !msgTagObject.getTags().isEmpty()) {
+                                            tagsText.setText(msgTagObject.getTags().toString());
+                                        } else {
+                                            Toast.makeText(getContext(), "Tags is empty", Toast.LENGTH_LONG).show();
+                                        }
                                     } else {
-                                        msg = "Operation failed: " + msgTagObject.toString();
+                                        Toast.makeText(getContext(), "Get tags failed:" + msgTagObject.toString(), Toast.LENGTH_LONG).show();
                                     }
-                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-                                    tagsText.setText(msgTagObject.getTags().toString());
                                 }
                             });
                         } catch (NotInitException e) {
