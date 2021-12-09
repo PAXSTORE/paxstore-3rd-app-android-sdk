@@ -286,7 +286,7 @@ public class BaseApiService implements ProxyDelegate {
 
     @Override
     public PasswordAuthentication retrievePasswordAuthentication() {
-        if (getStoreProxyInfo().getUsername() == null) {
+        if (getStoreProxyInfo() == null || getStoreProxyInfo().getUsername() == null) {
             return null;
         }
         return new PasswordAuthentication(getStoreProxyInfo().getUsername(), getStoreProxyInfo().getPassword() == null ? "".toCharArray() : getStoreProxyInfo().getPassword());
