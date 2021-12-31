@@ -50,4 +50,16 @@ public SdkObject detachMsgTag(List<String> tagNames)
 | ------------ | ----------- | ------------------------------------------------------------ |
 | tagNames | List    | The msg tags to detach                     |
 
+**Get all tag**
+
+```
+ public MsgTagObject getAllTag() {}
+ 
+```
+
+**com.pax.market.api.sdk.java.base.dto.MsgTagObject**
+
+| Property | Type         | Description                              |
+| -------- | ------------ | ---------------------------------------- |
+| tags     | List<String> | The tags you attached to the application |
 
