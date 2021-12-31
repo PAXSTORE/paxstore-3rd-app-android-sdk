@@ -284,11 +284,11 @@ public class APIFragment extends Fragment {
                             final SdkObject sdkObject;
 
                             if (!messageTabs[0].isEmpty() && !messageTabs[1].isEmpty()) {
-                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().syncMsgTab(Arrays.asList( messageTabs[0].split(",")), Arrays.asList( messageTabs[1].split(",")));
+                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().syncMsgTag(Arrays.asList( messageTabs[0].split(",")), Arrays.asList( messageTabs[1].split(",")));
                             } else if (messageTabs[0].isEmpty()) {
-                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().deleteMsgTab(Arrays.asList( messageTabs[1].split(",")));
+                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().detachMsgTag(Arrays.asList( messageTabs[1].split(",")));
                             } else {
-                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().createMsgTab(Arrays.asList( messageTabs[0].split(",")));
+                                sdkObject = StoreSdk.getInstance().syncMsgTabApi().attachMsgTag(Arrays.asList( messageTabs[0].split(",")));
                             }
 
                             Log.d(TAG, "sdkObject:" + sdkObject.toString());

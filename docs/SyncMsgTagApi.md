@@ -1,11 +1,11 @@
-# SyncMsgTabApi
+# SyncMsgTagApi
 
-com.pax.market.api.sdk.java.api.sync.SyncMsgTabApi, extends BaseApi
+com.pax.market.api.sdk.java.api.sync.SyncMsgTagApi, extends BaseApi
 
-### Constructors of SyncMsgTabApi
+### Constructors of SyncMsgTagApi
 
 ```java
- public SyncMsgTabApi(String baseUrl, String appKey, String appSecret, String terminalSN) {
+ public SyncMsgTagApi(String baseUrl, String appKey, String appSecret, String terminalSN) {
         super(baseUrl, appKey, appSecret, terminalSN);
  }
 ```
@@ -19,35 +19,35 @@ com.pax.market.api.sdk.java.api.sync.SyncMsgTabApi, extends BaseApi
 | terminalSN | String | The terminal SN |
 
 
-### Sync msg tab
+### Sync msg tag
 
 ```
-public SdkObject syncMsgTab(List<String> tabNames, List<String> deleteTabNames)
+public SdkObject syncMsgTag(List<String> attachTagNames, List<String> detachTagNames)
 ```
 
 | Parameter      | Type | Description            |
 | -------------- | ---- | ---------------------- |
-| tabNames       | List | The msg tabs to create |
-| deleteTabNames | List | The msg tabs to delete |
+| attachTagNames | List | The msg tags to attach |
+| detachTagNames | List | The msg tags to detach |
 
-**Create msg tab**
+**Attach msg tag**
 
 ```
-public SdkObject createMsgTab(List<String> tabNames)
+public SdkObject attachMsgTag(List<String> tagNames)
 ```
 
 | Parameter | Type | Description            |
 | --------- | ---- | ---------------------- |
-| tabNames  | List | The msg tabs to create |
+| tagNames  | List | The msg tags to attach |
 
-**Delete msg tab**
+**Detach msg tag**
 
 ```
-public SdkObject deleteMsgTab(List<String> deleteTabNames) 
+public SdkObject detachMsgTag(List<String> tagNames) 
 ```
 
 | Parameter | Type | Description |
 | ------------ | ----------- | ------------------------------------------------------------ |
-| deleteTabNames | List    | The msg tabs to delete                            |
+| tagNames | List    | The msg tags to detach                     |
 
 
