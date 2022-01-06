@@ -37,4 +37,9 @@
         <item name="android:drawablePadding">3.0dip</item>
         <item name="android:layout_weight">1.0</item>
     </style>
+
+    <style name="Dialog_Fullscreen">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

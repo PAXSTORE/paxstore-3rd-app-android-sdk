@@ -22,4 +22,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="activate_terminal">Activate terminal</string>
+    <string name="label_cloud_message">CloudMessage Tag Setting</string>t
+    <string name="attach_msg_tags">Attach Message Tags</string>
+    <string name="delete_msg_tags">Delete Message Tags</string>
+    <string name="msg_tag_list">Message Tag List</string>
+    <string name="get_all_tag">GET ALL TAG</string>
+    <string name="msg_tip">Separated multiple tags by the English Delimiter ‘,’</string>
+    <string name="send">Send</string>
 </resources>
