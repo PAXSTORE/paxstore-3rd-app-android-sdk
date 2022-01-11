@@ -330,6 +330,7 @@ public class APIFragment extends Fragment {
                                             cloudMsgTagAdapter.loadData(msgTagObject.getTags());
                                         } else {
                                             Toast.makeText(getContext(), "Tags is empty", Toast.LENGTH_SHORT).show();
+                                            cloudMsgTagAdapter.loadData(new ArrayList<String>());
                                         }
                                     } else {
                                         Toast.makeText(getContext(), "Get tags failed:" + msgTagObject.toString(), Toast.LENGTH_SHORT).show();
