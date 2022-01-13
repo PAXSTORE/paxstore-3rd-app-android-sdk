@@ -34,9 +34,12 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.core:core:1.0.0'
     implementation 'org.slf4j:slf4j-android:1.7.25'
-    implementation 'io.jsonwebtoken:jjwt:0.9.0'
+    implementation ('io.jsonwebtoken:jjwt:0.9.0') {
+        exclude group : 'com.fasterxml.jackson.core'
+    }
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
 
-    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:8.1.0'
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:8.2.1'
 
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'commons-io:commons-io:2.4'
@@ -44,6 +47,9 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.12'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+
+    //test
+//    api files('src/libs/app-java-sdk-8.2.1.jar')
 }
 
 apply from :"../publishAndroidLib.gradle"

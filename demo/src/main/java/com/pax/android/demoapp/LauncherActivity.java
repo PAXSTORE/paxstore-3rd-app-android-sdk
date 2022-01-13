@@ -9,13 +9,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
-import android.util.Log;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.pax.market.android.app.sdk.AdvertisementDialog;
 
@@ -23,13 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LauncherActivity extends FragmentActivity implements com.pax.android.demoapp.APIFragment.OnFragmentInteractionListener, com.pax.android.demoapp.GoFragment.OnFragmentInteractionListener, com.pax.android.demoapp.PushFragment.OnFragmentInteractionListener {
+public class LauncherActivity extends FragmentActivity implements com.pax.android.demoapp.APIFragment.OnFragmentInteractionListener, com.pax.android.demoapp.PushFragment.OnFragmentInteractionListener {
     private static final String TAG = LauncherActivity.class.getSimpleName();
     private ViewPager viewPager;
     private RadioGroup mGroup;
-    private RadioButton mPush, mGo, mApi;
-    private Fragment PushFragment, APIFragment, GoFragment;
-    private SPUtil spUtil;
+    private RadioButton mPush, mApi;
+    private Fragment PushFragment, APIFragment;
     private MsgReceiver msgReceiver;
     private List<FragmentReceiver> recivers = new ArrayList<>();
     private static Handler handler = new Handler();
@@ -46,7 +46,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
         showAd(this);
 
         verifyStoragePermissions(this);
-        spUtil = new SPUtil();
 
         //receiver to get UI update.
         msgReceiver = new MsgReceiver();
@@ -59,7 +58,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
         mGroup = findViewById(R.id.r_group);
         mPush = findViewById(R.id.push);
         mPush.setChecked(true);
-        mGo = findViewById(R.id.go);
         mApi = findViewById(R.id.api);
 
         mGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -68,9 +66,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
                 switch (checkedId) {
                     case R.id.push:
                         viewPager.setCurrentItem(0);
-                        break;
-                    case R.id.go:
-                        viewPager.setCurrentItem(1);
                         break;
                     case R.id.api:
                         viewPager.setCurrentItem(2);
@@ -81,14 +76,11 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
 
         List<Fragment> fragments = new ArrayList<Fragment>();
         PushFragment = new PushFragment();
-        GoFragment = new GoFragment();
         APIFragment = new APIFragment();
         fragments.add(PushFragment);
-        fragments.add(GoFragment);
         fragments.add(APIFragment);
 
         recivers.add((PushFragment)PushFragment);
-        recivers.add((GoFragment)GoFragment);
         FragAdapter adapter = new FragAdapter(getSupportFragmentManager(), fragments);
         //设定适配器
         viewPager.setAdapter(adapter);
@@ -103,9 +95,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
                 switch (position) {
                     case 0:
                         mPush.setChecked(true);
-                        break;
-                    case 1:
-                        mGo.setChecked(true);
                         break;
                     case 2:
                         mApi.setChecked(true);
