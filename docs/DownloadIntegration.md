@@ -1,10 +1,17 @@
 # PAXSTORE Downloading Parameter Integration
 
 By integrating with this function, admin can dilivery parameters to the application.
-### 1：Initialization of Sdk
+
+### 1: Below two steps can save like 15 hours in average( Do not skip this!!!)
+1. Check the appKey and appSecret that are the same with the web, and check again, and again, three times should be fine.
+2. Check the apk you installed on the terminal matches the packageName and versionCode that you uploaded to PAXSTORE developer center,  and check again, and again.
+
+Now you can go through below contents.
+
+### 2：Initialization of Sdk
 Refer to the [SetUp](../README.md)
 
-### 2：Download Parameters API
+### 3：Download Parameters API
 `Notice: If you have integrated with our sdk before, you need to do some changes to migrate to our newest one.
 Registing receiver is no more needed, just registering the IntentService will be enough.`
 
