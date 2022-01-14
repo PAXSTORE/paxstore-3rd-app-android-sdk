@@ -33,7 +33,7 @@ Gradle:
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.0.2'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.2.2'
 ```
 
 
@@ -109,6 +109,8 @@ Initializing AppKey,AppSecret and SN
 #### [UpdateApi](docs/UpdateApi.md)
 
 #### [ResultCode](docs/ResultCode.md)
+
+#### [SyncMsgTagApi](docs/SyncMsgTagApi.md)
 
 
 ## Migrating to Android 8.0

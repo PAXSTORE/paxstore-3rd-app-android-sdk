@@ -18,8 +18,10 @@ import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.util.ActivateApiStrategy;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
+import com.pax.market.api.sdk.java.api.check.CheckServiceApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
+import com.pax.market.api.sdk.java.api.sync.SyncMsgTagApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
@@ -52,7 +54,9 @@ public class StoreSdk {
     private ParamApiStrategy paramApi;
     private SyncApi syncApi;
     private GoInsightApi goInsightApi;
+    private SyncMsgTagApi syncMsgTagApi;
     private UpdateApi updateApi;
+    private CheckServiceApi checkServiceApi;
     private ActivateApiStrategy activateApi;
     private Context context;
 
@@ -85,8 +89,8 @@ public class StoreSdk {
      */
     public void init(final Context context, final String appKey, final String appSecret,
                      final BaseApiService.Callback callback) throws NullPointerException {
-        if (paramApi == null && syncApi == null && updateApi == null
-                && activateApi == null && semaphore.availablePermits() != 1) {
+        if (paramApi == null && syncApi == null && updateApi == null && checkServiceApi == null
+                && activateApi == null && syncMsgTagApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
             this.context = context;
             this.appKey = appKey;
@@ -203,13 +207,50 @@ public class StoreSdk {
     }
 
     /**
+     * Get UpdateApi instance
+     *
+     * @return
+     * @throws NotInitException
+     */
+    public CheckServiceApi checkServiceApi() throws NotInitException {
+        if (checkServiceApi == null) {
+            acquireSemaphore();
+            if (checkServiceApi == null) {
+                throw new NotInitException("Not initialized");
+            }
+        }
+        checkServiceApi.setBaseUrl(getDcUrl(context, checkServiceApi.getBaseUrl(), false));
+        checkServiceApi.setProxyDelegate(BaseApiService.getInstance(context));
+        return checkServiceApi;
+    }
+
+    /**
+     * Get SyncMsgTabApi instance
+     *
+     * @return
+     * @throws NotInitException
+     */
+    public SyncMsgTagApi syncMsgTabApi() throws NotInitException {
+        if (syncMsgTagApi == null) {
+            acquireSemaphore();
+            if (syncMsgTagApi == null) {
+                throw new NotInitException("Not initialized");
+            }
+        }
+        syncMsgTagApi.setBaseUrl(getDcUrl(context, syncMsgTagApi.getBaseUrl(), false));
+        syncMsgTagApi.setProxyDelegate(BaseApiService.getInstance(context));
+        return syncMsgTagApi;
+    }
+
+    /**
      * Check if initialized
      * true: initialized
      *
      * @return
      */
     public boolean checkInitialization() {
-        if (paramApi != null && syncApi != null && updateApi != null && activateApi != null) {
+        if (paramApi != null && syncApi != null && updateApi != null && activateApi != null
+            && checkServiceApi != null && syncMsgTagApi != null) {
             return true;
         }
         return false;
@@ -293,8 +334,10 @@ public class StoreSdk {
         paramApi = new ParamApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        checkServiceApi = new CheckServiceApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
         activateApi = new ActivateApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo, model == null ? "" : model).setProxyDelegate(proxyDelegate);
+        syncMsgTagApi = new SyncMsgTagApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 
     /**

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -28,10 +30,15 @@ import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
-import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
+
+import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -61,15 +68,19 @@ public class APIFragment extends Fragment {
     private LinearLayout openClientlayout;
     private Switch tradingStateSwitch;
     private Button getTerminalInfoBtn;
+    private Button btnGetAllTag;
+    private CloudMsgTagAdapter cloudMsgTagAdapter;
+    private List<String> tags = new ArrayList<>();
+    private ListView tagListView;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide, lvAttachTag, lvDeleteTag;
     private EditText etTid;
-    private ImageView mImgRetrieve, mImgActivate;
+    private ImageView mImgRetrieve, mImgActivate, mImgMsgTab;
     private LinearLayout lvChildRetrieve;
     private Button getTerminalLocation, getOnlineStatus, activateTerminal; // todo remove
     private OnFragmentInteractionListener mListener;
-    private boolean isDataExpanded, isActivateExpanded;
+    private boolean isDataExpanded, isActivateExpanded, isMsgTabExpanded;
     public APIFragment() {
         // Required empty public constructor
     }
@@ -121,10 +132,18 @@ public class APIFragment extends Fragment {
 
         lvActivate = view.findViewById(R.id.lv_activate);
         lvActivateHide = view.findViewById(R.id.lv_activate_hide);
+        lvAttachTag = view.findViewById(R.id.lv_attach_tag);
+        lvDeleteTag = view.findViewById(R.id.lv_delete_tag);
+        btnGetAllTag = view.findViewById(R.id.get_tag_btn);
+        btnGetAllTag = view.findViewById(R.id.get_tag_btn);
+
         etTid = view.findViewById(R.id.et_tid);
         activateTerminal = view.findViewById(R.id.btn_activate);
         mImgActivate = view.findViewById(R.id.img_activate);
 
+        tagListView = view.findViewById(R.id.tag_list);
+        cloudMsgTagAdapter = new CloudMsgTagAdapter(getContext(), tags, R.layout.param_detail_list_item);
+        tagListView.setAdapter(cloudMsgTagAdapter);
 
         checkUpdate = (LinearLayout) view.findViewById(R.id.check_update);
         lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
@@ -220,6 +239,113 @@ public class APIFragment extends Fragment {
                 }
             }
         });
+
+        lvAttachTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CloudMsgDialog.newBuilder().context(getActivity()).title(getString(R.string.attach_msg_tags)).listener(new CloudMsgDialog.ClickListener() {
+                    @Override
+                    public void onClick(final String tags) {
+                        if (!tags.isEmpty()) {
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        final SdkObject sdkObject = StoreSdk.getInstance().syncMsgTabApi().attachMsgTag(Arrays.asList(tags.split(",")));
+                                        Log.d(TAG, "sdkObject:" + sdkObject.toString());
+                                        LauncherActivity.getHandler().post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                String msg;
+                                                if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                                    msg = "Operation succeed!";
+                                                } else {
+                                                    msg = "Operation failed: " + sdkObject.toString();
+                                                }
+                                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } catch (NotInitException e) {
+                                        Log.e(TAG, "e:" + e);
+                                    }
+                                }
+                            });
+                            thread.start();
+                        }
+                    }
+                }).build().show();
+            }
+        });
+
+        lvDeleteTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CloudMsgDialog.newBuilder().context(getActivity()).title(getString(R.string.delete_msg_tags)).listener(new CloudMsgDialog.ClickListener() {
+                    @Override
+                    public void onClick(final String tags) {
+                        if (!tags.isEmpty()) {
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        final SdkObject sdkObject = StoreSdk.getInstance().syncMsgTabApi().detachMsgTag(Arrays.asList(tags.split(",")));
+                                        LauncherActivity.getHandler().post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                String msg;
+                                                if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                                    msg = "Operation succeed!";
+                                                } else {
+                                                    msg = "Operation failed: " + sdkObject.toString();
+                                                }
+                                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } catch (NotInitException e) {
+                                        Log.e(TAG, "e:" + e);
+                                    }
+                                }
+                            });
+                            thread.start();
+                        }
+                    }
+                }).build().show();
+            }
+        });
+
+
+        btnGetAllTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final MsgTagObject msgTagObject = StoreSdk.getInstance().syncMsgTabApi().getAllTag();
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (msgTagObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        if(msgTagObject.getTags()!= null && !msgTagObject.getTags().isEmpty()) {
+                                            cloudMsgTagAdapter.loadData(msgTagObject.getTags());
+                                        } else {
+                                            Toast.makeText(getContext(), "Tags is empty", Toast.LENGTH_SHORT).show();
+                                            cloudMsgTagAdapter.loadData(new ArrayList<String>());
+                                        }
+                                    } else {
+                                        Toast.makeText(getContext(), "Get tags failed:" + msgTagObject.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                        }
+                    }
+                }) ;
+                thread.start();
+            }
+        });
+
         activateTerminal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,21 +1,14 @@
 package com.pax.android.demoapp;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.pax.market.android.app.sdk.StoreSdk;
-import com.pax.market.api.sdk.java.base.dto.DataQueryResultObject;
-import com.pax.market.api.sdk.java.base.dto.RowObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
@@ -27,10 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static com.pax.android.demoapp.ChartType.BAR;
-import static com.pax.android.demoapp.ChartType.LINE;
-import static com.pax.android.demoapp.ChartType.PI;
-
 public class GenerateDataActivity extends Activity {
     private static final String TAG = GenerateDataActivity.class.getSimpleName();
     private List<DataBean> datas = new ArrayList<>();
@@ -41,34 +30,6 @@ public class GenerateDataActivity extends Activity {
     private View mLoading;
     private int mQueryCount = 0;
     private List<ChartData> ret = new ArrayList<>();
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0://upload
-                    Bundle bundle = msg.getData();
-                    if (bundle == null) {
-                        Toast.makeText(GenerateDataActivity.this, "upload Data Error", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-
-                    if (bundle.getInt("code") == 0) {
-                        Toast.makeText(GenerateDataActivity.this, "Upload business data Successed!", Toast.LENGTH_SHORT).show();
-                        ret.clear();
-                        queryBizData("v664nkfc", BAR);
-                    } else {
-                        Toast.makeText(GenerateDataActivity.this, "" + bundle.getInt("code") + ":" + bundle.getString("msg"), Toast.LENGTH_SHORT).show();
-                        mLoading.setVisibility(View.GONE);
-                        finish();
-                    }
-                    break;
-                case 1://query
-                    finish();
-                    break;
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,19 +222,8 @@ public class GenerateDataActivity extends Activity {
                     }
                     final SdkObject SyncObject = StoreSdk.getInstance().goInsightApi().syncTerminalBizData(list);
                     Log.d(TAG, "code>>" + SyncObject.getBusinessCode() + "   message>>" + SyncObject.getMessage());
-                    Message msg = Message.obtain();
-                    msg.what = 0;
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("code", SyncObject.getBusinessCode());
-                    bundle.putString("msg", SyncObject.getMessage());
-                    msg.setData(bundle);
-                    mHandler.sendMessage(msg);
                 } catch (NotInitException e) {
-                    e.printStackTrace();
-                    Message msg = Message.obtain();
-                    msg.what = 0;
-                    msg.setData(null);
-                    mHandler.sendMessage(msg);
+                    Log.e(TAG, "e:" + e);
                 }
             }
         });
@@ -281,192 +231,4 @@ public class GenerateDataActivity extends Activity {
         thread.start();
     }
 
-
-    private void queryBizData(final String queryCode, final ChartType type) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    DataQueryResultObject temrinalData = StoreSdk.getInstance().goInsightApi().findMerchantData(queryCode);
-                    Log.d(TAG, "msg::" + temrinalData.getMessage());
-                    List<DataQueryResultObject.Column> columns = temrinalData.getColumns();
-                    //transform to chartData
-                    ChartData chartData = null;
-                    if (type == LINE) {
-                        chartData = trans_line(temrinalData);
-                    } else if (type == BAR) {
-                        chartData = trans_bar(temrinalData);
-                    } else if (type == PI) {
-                        chartData = trans_pi(temrinalData);
-                    }
-
-
-                    //transform to chartData
-                    Message msg = Message.obtain();
-                    msg.what = 1;
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("data", chartData);
-                    msg.setData(bundle);
-                    mHandler.sendMessage(msg);
-
-                } catch (NotInitException e) {
-                    e.printStackTrace();
-
-
-                    Message msg = Message.obtain();
-                    msg.what = 1;
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("data", null);
-                    msg.setData(bundle);
-                    mHandler.sendMessage(msg);
-                }
-            }
-        });
-        thread.start();
-
-    }
-
-
-    public static boolean isDimension(String column, List<DataQueryResultObject.Column> columns) {
-
-        for (int i = 0; i < columns.size(); i++) {
-            Log.d(TAG, "column:" + column + "      list item:" + columns.get(i).getColName());
-            if (column.equals(columns.get(i).getColName()) && columns.get(i).getType().equals("Dimension")) {
-                return true;
-            }
-
-        }
-        return false;
-    }
-
-    public static ChartData trans_bar(DataQueryResultObject in) {
-        if (in == null) {
-            return null;
-        }
-
-        ChartData ret = new ChartData();
-        List<DataQueryResultObject.Column> columns = in.getColumns();
-        List<List<RowObject>> rows = in.getRows();
-
-        if (columns == null || rows == null) {
-            return null;
-        }
-
-
-        ret.setTitle(in.getWorksheetName());
-
-        for (int i = 0; i < columns.size(); i++) {
-            ret.getColumus().add(columns.get(i).getColName());
-        }
-
-
-        for (int i = 0; i < rows.size(); i++) {
-            List<RowObject> oneData = rows.get(i);
-            Object nnn[] = new Object[3];
-            nnn[0] = "";
-            for (int j = 0; j < oneData.size(); j++) {
-                if (isDimension(oneData.get(j).getColName(), columns)) {
-                    nnn[0] += (String) oneData.get(j).getValue();
-                } else {
-                    if (TextUtils.isEmpty((String) oneData.get(j).getValue())) {
-                        nnn[1] = "";
-                    } else {
-                        nnn[1] = oneData.get(j).getValue();
-                    }
-
-                }
-            }
-
-            Log.d(TAG, "nnn[0][1]" + (String) nnn[0] + ":" + (String) nnn[1]);
-            ret.getDatas().add(nnn);
-        }
-
-        ret.setType(ChartType.BAR);
-
-        return ret;
-    }
-
-
-    public static ChartData trans_pi(DataQueryResultObject in) {
-        if (in == null) {
-            return null;
-        }
-
-        ChartData ret = new ChartData();
-        List<DataQueryResultObject.Column> columns = in.getColumns();
-        List<List<RowObject>> rows = in.getRows();
-
-        if (columns == null || rows == null) {
-            return null;
-        }
-
-
-        ret.setTitle(in.getWorksheetName());
-
-        for (int i = 0; i < columns.size(); i++) {
-            ret.getColumus().add(columns.get(i).getColName());
-        }
-
-
-        for (int i = 0; i < rows.size(); i++) {
-            List<RowObject> oneData = rows.get(i);
-            Object nnn[] = new Object[3];
-            for (int j = 0; j < oneData.size(); j++) {
-                if (oneData.get(j).getColName().equals("acquirertype")) {
-                    nnn[0] = oneData.get(j).getValue();
-                } else if (oneData.get(j).getColName().equals("amount")) {
-                    nnn[1] = oneData.get(j).getValue();
-                } else if (oneData.get(j).getColName().equals("XXX")) {
-                    nnn[2] = oneData.get(j).getValue();
-                }
-            }
-            ret.getDatas().add(nnn);
-        }
-
-        ret.setType(ChartType.PI);
-
-        return ret;
-    }
-
-
-    public static ChartData trans_line(DataQueryResultObject in) {
-        if (in == null) {
-            return null;
-        }
-
-        ChartData ret = new ChartData();
-        List<DataQueryResultObject.Column> columns = in.getColumns();
-        List<List<RowObject>> rows = in.getRows();
-
-        if (columns == null || rows == null) {
-            return null;
-        }
-
-        ret.setTitle(in.getWorksheetName());
-
-        for (int i = 0; i < columns.size(); i++) {
-            ret.getColumus().add(columns.get(i).getColName());
-        }
-
-        for (int i = 0; i < rows.size(); i++) {
-            List<RowObject> oneData = rows.get(i);
-            Object amount = new Object();
-            String eventTime = null;
-            for (int j = 0; j < oneData.size(); j++) {
-                if (oneData.get(j).getColName().equals("_eventtime")) {
-                    eventTime = (String) oneData.get(j).getValue();
-                } else if (oneData.get(j).getColName().equals("amount")) {
-                    amount = oneData.get(j).getValue();
-                }
-            }
-            Object item[] = new Object[2];
-            item[0] = eventTime;
-            item[1] = amount;
-            ret.getDatas().add(item);
-        }
-
-        ret.setType(LINE);
-
-        return ret;
-    }
 }
