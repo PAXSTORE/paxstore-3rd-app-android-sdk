@@ -39,15 +39,7 @@ dependencies {
     }
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
 
-    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:8.2.1'
-
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'commons-io:commons-io:2.4'
-    implementation 'dom4j:dom4j:1.6.1'
-    implementation 'org.slf4j:slf4j-api:1.7.12'
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:8.2.2'
     //test
 //    api files('src/libs/app-java-sdk-8.2.1.jar')
 }
