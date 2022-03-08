@@ -2,18 +2,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pax.market.android.app.sdk">
 
+<!--    <permission-->
+<!--        android:name="com.market.android.app.sdk.DOWNLOAD_PARAM"-->
+<!--        android:label="@string/perm_param_label"-->
+<!--        android:description="@string/perm_param_des"-->
+<!--        android:permissionGroup="android.Manifest.permission_group"-->
+<!--        android:protectionLevel="normal" />-->
+
+<!--    <permission-->
+<!--        android:name="com.market.android.app.sdk.DOWNLOAD_PARAM_BD"-->
+<!--        android:description="@string/perm_open_detail_page_des"-->
+<!--        android:label="@string/perm_open_detail_page_label"-->
+<!--        android:permissionGroup="android.Manifest.permission_group"-->
+<!--        android:protectionLevel="normal" />-->
+<!--    &lt;!&ndash;    2&ndash;&gt;-->
+<!--    <permission-->
+<!--        android:name="com.market.android.app.sdk.DOWNLOAD_PARAM_SERVICE"-->
+<!--        android:description="@string/perm_open_download_list_des"-->
+<!--        android:label="@string/perm_open_download_list_label"-->
+<!--        android:permissionGroup="android.Manifest.permission_group"-->
+<!--        android:protectionLevel="normal" />-->
+<!--    &lt;!&ndash;    3&ndash;&gt;-->
+<!--    <permission-->
+<!--        android:name="com.market.android.app.sdk.INSTALL_INQUIRER"-->
+<!--        android:description="@string/perm_online_location_des"-->
+<!--        android:label="@string/perm_online_location_label"-->
+<!--        android:permissionGroup="android.Manifest.permission_group"-->
+<!--        android:protectionLevel="normal" />-->
+<!--    &lt;!&ndash;    4&ndash;&gt;-->
+<!--    <permission-->
+<!--        android:name="com.market.android.app.sdk.CLOUD_MSG"-->
+<!--        android:description="@string/perm_sn_host_des"-->
+<!--        android:label="@string/perm_sn_host_label"-->
+<!--        android:permissionGroup="android.Manifest.permission_group"-->
+<!--        android:protectionLevel="normal" />-->
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!--   FOR MARKET CLIENT  -->
+    <uses-permission android:name="com.market.android.app.OPEN_DETAIL_PAGE" />
+    <uses-permission android:name="com.market.android.app.OPEN_DOWNLOAD_LIST" />
+    <uses-permission android:name="com.market.android.app.ONLINE_LOCATION" />
+    <uses-permission android:name="com.market.android.app.SN_HOST" />
+    <uses-permission android:name="com.market.android.app.OLD_LOCATION" />
+    <uses-permission android:name="com.market.android.app.TERMINAL_INFO" />
+    <!--    END  -->
+
+
     <application android:allowBackup="true"
                  android:label="@string/app_name">
-        <service android:name=".RPCService" android:exported="true">
+
+        <service android:name=".RPCService"
+                 android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
+                 android:exported="true">
             <intent-filter>
                 <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
             </intent-filter>
         </service>
+         <service android:name=".LocationService" />
 
-        <service android:name=".LocationService" />
-
-        <receiver android:name=".DownloadParamReceiver">
+        <receiver android:name=".DownloadParamReceiver"
+            android:permission="com.market.android.app.sdk.DOWNLOAD_PARAM_BD"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.paxmarket.ACTION_TO_DOWNLOAD_PARAMS" />
                 <action android:name="com.sdk.ACTION_TO_DOWNLOAD_PARAMS" />
@@ -21,13 +71,17 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".CloudMessageService" android:exported="true">
+        <service android:name=".CloudMessageService"
+            android:permission="com.market.android.app.sdk.CLOUD_MSG"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.paxstore.mpush.CLOUD_MESSAGE_RECEIVED"/>
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </service>
-        <service android:name=".ParamService"  android:exported="true">
+        <service android:name=".ParamService"
+            android:permission="com.market.android.app.sdk.DOWNLOAD_PARAM_SERVICE"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.market.service.ACTION_TO_DOWNLOAD_PARAMS"/>
                 <category android:name="${applicationId}"/>
