@@ -13,27 +13,4 @@
 <resources>
     <string name="app_name">SDK</string>
 
-    <string name="perm_param_label">SDK download params</string>
-    <string name="perm_param_des">Allows the app to notify specific app to download params. Malicious apps may cause specific applications to wake up frequently.</string>
-    <!--PERMISSION DESCRIPTION-->
-    <!--1-->
-    <string name="perm_open_detail_page_des" translatable="false">Open app detail page</string>
-    <string name="perm_open_detail_page_label" translatable="false">Allows the app to open detail page for this app in storew ithout your intervention.</string>
-    <!--2-->
-    <string name="perm_open_download_list_des" translatable="false">Open download list</string>
-    <string name="perm_open_download_list_label" translatable="false">Allows the app to open download list page for this app in store without your intervention.</string>
-    <!--3-->
-    <string name="perm_online_location_des" translatable="false">Get location or online status</string>
-    <string name="perm_online_location_label" translatable="false">Allows the app to get location or online status from store without your intervention.</string>
-    <!--4-->
-    <string name="perm_sn_host_des" translatable="false">Get environment host</string>
-    <string name="perm_sn_host_label" translatable="false">Allows the app to get environment host for this app from store without your intervention.</string>
-    <!--5-->
-    <string name="perm_old_location_des" translatable="false">Get location</string>
-    <string name="perm_old_location_label" translatable="false">Allows the app to get location for this app from store without your intervention.</string>
-    <!--6-->
-    <string name="perm_terminal_info_des" translatable="false">Get terminal info</string>
-    <string name="perm_terminal_info_label" translatable="false">Allows the app to get terminal base information for this app from store without your intervention.</string>
-    <!--  END  -->
-
 </resources>

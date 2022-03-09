@@ -2,41 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pax.market.android.app.sdk">
 
-<!--    <permission-->
-<!--        android:name="com.market.android.app.sdk.DOWNLOAD_PARAM"-->
-<!--        android:label="@string/perm_param_label"-->
-<!--        android:description="@string/perm_param_des"-->
-<!--        android:permissionGroup="android.Manifest.permission_group"-->
-<!--        android:protectionLevel="normal" />-->
-
-<!--    <permission-->
-<!--        android:name="com.market.android.app.sdk.DOWNLOAD_PARAM_BD"-->
-<!--        android:description="@string/perm_open_detail_page_des"-->
-<!--        android:label="@string/perm_open_detail_page_label"-->
-<!--        android:permissionGroup="android.Manifest.permission_group"-->
-<!--        android:protectionLevel="normal" />-->
-<!--    &lt;!&ndash;    2&ndash;&gt;-->
-<!--    <permission-->
-<!--        android:name="com.market.android.app.sdk.DOWNLOAD_PARAM_SERVICE"-->
-<!--        android:description="@string/perm_open_download_list_des"-->
-<!--        android:label="@string/perm_open_download_list_label"-->
-<!--        android:permissionGroup="android.Manifest.permission_group"-->
-<!--        android:protectionLevel="normal" />-->
-<!--    &lt;!&ndash;    3&ndash;&gt;-->
-<!--    <permission-->
-<!--        android:name="com.market.android.app.sdk.INSTALL_INQUIRER"-->
-<!--        android:description="@string/perm_online_location_des"-->
-<!--        android:label="@string/perm_online_location_label"-->
-<!--        android:permissionGroup="android.Manifest.permission_group"-->
-<!--        android:protectionLevel="normal" />-->
-<!--    &lt;!&ndash;    4&ndash;&gt;-->
-<!--    <permission-->
-<!--        android:name="com.market.android.app.sdk.CLOUD_MSG"-->
-<!--        android:description="@string/perm_sn_host_des"-->
-<!--        android:label="@string/perm_sn_host_label"-->
-<!--        android:permissionGroup="android.Manifest.permission_group"-->
-<!--        android:protectionLevel="normal" />-->
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!--   FOR MARKET CLIENT  -->
