@@ -33,7 +33,7 @@ Gradle:
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.2.3'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.2.4'
 ```
 
 

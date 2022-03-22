@@ -64,8 +64,8 @@ public class BaseApplication extends Application {
 
 
     private void initInquirer() {
-        //todo 2. Init checking of whether app can be updated
 
+        //todo 2. Init checking of whether app can be updated
         StoreSdk.getInstance().initInquirer(new StoreSdk.Inquirer() {
             @Override
             public boolean isReadyUpdate() {
