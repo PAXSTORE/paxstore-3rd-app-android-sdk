@@ -239,7 +239,8 @@ public class BaseApiService implements ProxyDelegate {
 
             try {
                 DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfoByTid("");
-                Log.e("InitDcUrlAsyncTask","ttt 2 > " + info.toString());
+
+                Log.e("InitDcUrlAsyncTask","ttt 2 > " + (info !=null ? info.toString() : "DcUrlInfo is null"));
                 if (info == null) { // if info is null, it explains that the PAXSTORE client is lower than 8.0.0
                     info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
                 }
