@@ -227,20 +227,24 @@ public class BaseApiService implements ProxyDelegate {
             }
 
             DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
+            Log.e("InitDcUrlAsyncTask", "ttt 0" + localDcUrlInfo);
             if (localDcUrlInfo != null && localDcUrlInfo.getDcUrl()!= null && !"null".equalsIgnoreCase(localDcUrlInfo.getDcUrl())
                     && System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
+                Log.e("InitDcUrlAsyncTask", "ttt 1");
+                Log.d("InitDcUrlAsyncTask","ttt 1 > " + localDcUrlInfo.getDcUrl());
                 dcCallBack.dcCallBack.initSuccess(localDcUrlInfo.getDcUrl());
                 return null;
             }
+            Log.e("InitDcUrlAsyncTask","ttt 1.5 > ");
 
             try {
                 DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfoByTid("");
-                if (info == null) { // 如果info为空，说明是比较老的PAXSTORE client, 小于8.0.0
+                Log.e("InitDcUrlAsyncTask","ttt 2 > " + info.toString());
+                if (info == null) { // if info is null, it explains that the PAXSTORE client is lower than 8.0.0
                     info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
-
                 }
                 if (info == null) {
-                    if (oriBaseUrl == null) { // 当PAXSTORE client是低版本的时候，拿不到dcurl, 此时应该有默认url才对。
+                    if (oriBaseUrl == null) { // when PAXSTORE client is lower than 8.0.0，cannot get dcurl, there supposed to have a default url
                         Log.e("InitDcUrlAsyncTask", ERR_GET_DC_URL_FAILED);
                         dcCallBack.dcCallBack.initFailed(new Exception(ERR_GET_DC_URL_FAILED));
                         return null;
@@ -249,6 +253,7 @@ public class BaseApiService implements ProxyDelegate {
                     info.setDcUrl(oriBaseUrl);
                     info.setLastAccessTime(System.currentTimeMillis());
                 }
+                Log.e("InitDcUrlAsyncTask","ttt 3 > " + info.getDcUrl());
                 dcCallBack.dcCallBack.initSuccess(info.getDcUrl());
             } catch (RemoteException e) {
                 Log.e("InitDcUrlAsyncTask", "e:" + e);

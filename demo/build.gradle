@@ -6,8 +6,8 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 210
-        versionName "8.2.2"
+        versionCode 302
+        versionName "8.4.2"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -43,8 +43,8 @@ dependencies {
     implementation 'net.grandcentrix.tray:tray:0.12.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
 
-//    implementation project(':sdk')
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.2.3'
+    implementation project(':sdk')
+//    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.2.3'
 
 
     //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }

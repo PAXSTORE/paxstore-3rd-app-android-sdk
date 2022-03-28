@@ -29,4 +29,5 @@
     <string name="get_all_tag">GET ALL TAG</string>
     <string name="msg_tip">Separated multiple tags by the English Delimiter ‘,’</string>
     <string name="send">Send</string>
+    <string name="label_loading">Loading</string>
 </resources>

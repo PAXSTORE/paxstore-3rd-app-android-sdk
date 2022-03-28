@@ -533,16 +533,14 @@ public class StoreSdk {
 
         final StringBuilder dcUrl = new StringBuilder();
 
-
+        Log.e("StoreSdk", "ttt 4 start get dc url");
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         BaseApiService.getInstance(context).getDcUrl(new BaseApiService.DcCallBack() {
 
             @Override
             public void initSuccess(String baseUrl) {
-                DcUrlInfo dcUrlInfo1 = new DcUrlInfo();
-                dcUrlInfo1.setDcUrl(baseUrl);
-                dcUrlInfo1.setLastAccessTime(System.currentTimeMillis());
-                PreferencesUtils.putObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, dcUrlInfo1);
+                Log.e("StoreSdk", "ttt baseUrl: " + baseUrl);
+                saveLastUrl(baseUrl, context);
                 dcUrl.append(baseUrl);
                 countDownLatch.countDown();
             }
@@ -567,6 +565,18 @@ public class StoreSdk {
             }
         }
         return dcUrl.toString();
+    }
+
+    private void saveLastUrl(final String baseUrl, final Context context) {
+        DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
+        //update last getDcUrl time if there has been more than one hour.
+        if (localDcUrlInfo == null ||
+                (System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() > CommonConstants.ONE_HOUR_INTERVAL)) {
+            DcUrlInfo dcUrlInfo1 = new DcUrlInfo();
+            dcUrlInfo1.setDcUrl(baseUrl);
+            dcUrlInfo1.setLastAccessTime(System.currentTimeMillis());
+            PreferencesUtils.putObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, dcUrlInfo1);
+        }
     }
 
 }
