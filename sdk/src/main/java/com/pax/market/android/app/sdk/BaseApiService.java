@@ -227,19 +227,14 @@ public class BaseApiService implements ProxyDelegate {
             }
 
             DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
-            Log.e("InitDcUrlAsyncTask", "ttt 0" + localDcUrlInfo);
             if (localDcUrlInfo != null && localDcUrlInfo.getDcUrl()!= null && !"null".equalsIgnoreCase(localDcUrlInfo.getDcUrl())
                     && System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
-                Log.e("InitDcUrlAsyncTask", "ttt 1");
-                Log.d("InitDcUrlAsyncTask","ttt 1 > " + localDcUrlInfo.getDcUrl());
                 dcCallBack.dcCallBack.initSuccess(localDcUrlInfo.getDcUrl());
                 return null;
             }
-            Log.e("InitDcUrlAsyncTask","ttt 1.5 > ");
 
             try {
                 DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfoByTid("");
-                Log.e("InitDcUrlAsyncTask","ttt 2 > " + info.toString());
                 if (info == null) { // if info is null, it explains that the PAXSTORE client is lower than 8.0.0
                     info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
                 }
@@ -253,7 +248,6 @@ public class BaseApiService implements ProxyDelegate {
                     info.setDcUrl(oriBaseUrl);
                     info.setLastAccessTime(System.currentTimeMillis());
                 }
-                Log.e("InitDcUrlAsyncTask","ttt 3 > " + info.getDcUrl());
                 dcCallBack.dcCallBack.initSuccess(info.getDcUrl());
             } catch (RemoteException e) {
                 Log.e("InitDcUrlAsyncTask", "e:" + e);
