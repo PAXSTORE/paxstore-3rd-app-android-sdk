@@ -227,7 +227,6 @@ public class BaseApiService implements ProxyDelegate {
             }
 
             DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
-            Log.e("InitDcUrlAsyncTask", "ttt 0" + localDcUrlInfo);
             if (localDcUrlInfo != null && localDcUrlInfo.getDcUrl()!= null && !"null".equalsIgnoreCase(localDcUrlInfo.getDcUrl())
                     && System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() < CommonConstants.ONE_HOUR_INTERVAL) {
                 dcCallBack.dcCallBack.initSuccess(localDcUrlInfo.getDcUrl());
