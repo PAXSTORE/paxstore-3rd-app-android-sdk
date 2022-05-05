@@ -38,20 +38,16 @@ dependencies {
         exclude group : 'com.fasterxml.jackson.core'
     }
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
-
-
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'commons-io:commons-io:2.7'
-    implementation 'org.dom4j:dom4j:2.1.3'
 
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:8.4.0'
 
-    //    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:8.4.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    api files('libs\\app-java-sdk-8.4.0.jar')
-    //test
-//    api files('src/libs/app-java-sdk-8.4.0.jar')
+//    test
+//    implementation 'commons-io:commons-io:2.7'
+//    implementation 'org.dom4j:dom4j:2.1.3'
+//    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+//    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+//    api files('libs\\app-java-sdk-8.4.0.jar')
 }
 
 apply from :"../publishAndroidLib.gradle"
