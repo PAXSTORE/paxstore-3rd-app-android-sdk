@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ *******************************************************************************
   ~ COPYRIGHT
@@ -10,7 +11,11 @@
   ~ *******************************************************************************
   -->
 
-<resources>
-    <string name="app_name">SDK</string>
-
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="#88000000" />
+            <corners android:radius="10dp"/>
+        </shape>
+    </item>
+</selector>

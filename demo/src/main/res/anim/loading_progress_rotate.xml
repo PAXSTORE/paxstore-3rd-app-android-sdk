@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ *******************************************************************************
   ~ COPYRIGHT
@@ -10,7 +11,9 @@
   ~ *******************************************************************************
   -->
 
-<resources>
-    <string name="app_name">SDK</string>
-
-</resources>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@mipmap/default_ptr_rotate"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:toDegrees="360" />

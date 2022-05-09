@@ -25,6 +25,7 @@ public class BaseApplication extends Application {
     //todo make sure to replace with your own app's appkey and appsecret
     private static final String appkey = "your key";
     private static final String appSecret = "your secret";
+
     //todo please make sure get the correct SN here, for pax device you can integrate NeptuneLite SDK to get the correct SN
     public static AppPreferences appPreferences;
 
@@ -64,8 +65,8 @@ public class BaseApplication extends Application {
 
 
     private void initInquirer() {
-        //todo 2. Init checking of whether app can be updated
 
+        //todo 2. Init checking of whether app can be updated
         StoreSdk.getInstance().initInquirer(new StoreSdk.Inquirer() {
             @Override
             public boolean isReadyUpdate() {

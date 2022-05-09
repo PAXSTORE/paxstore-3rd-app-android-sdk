@@ -106,6 +106,7 @@ public class StoreSdk {
 
                         @Override
                         public void initSuccess(String apiUrl, String terminalSn, String model) {
+                            clearLastUrl(context);
                             initApi(context, apiUrl, appKey, appSecret, terminalSn, model, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
@@ -120,6 +121,14 @@ public class StoreSdk {
         } else {
             logger.debug("Initialization is on process or has been done");
         }
+    }
+
+    /**
+     * We need to clear the url cache after re-init to make sure new url take effect.
+     * @param context
+     */
+    private void clearLastUrl(Context context) {
+        PreferencesUtils.remove(context, CommonConstants.SP_LAST_GET_DCURL_TIME);
     }
 
     /**
@@ -533,16 +542,12 @@ public class StoreSdk {
 
         final StringBuilder dcUrl = new StringBuilder();
 
-
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         BaseApiService.getInstance(context).getDcUrl(new BaseApiService.DcCallBack() {
 
             @Override
             public void initSuccess(String baseUrl) {
-                DcUrlInfo dcUrlInfo1 = new DcUrlInfo();
-                dcUrlInfo1.setDcUrl(baseUrl);
-                dcUrlInfo1.setLastAccessTime(System.currentTimeMillis());
-                PreferencesUtils.putObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, dcUrlInfo1);
+                saveLastUrl(baseUrl, context);
                 dcUrl.append(baseUrl);
                 countDownLatch.countDown();
             }
@@ -567,6 +572,18 @@ public class StoreSdk {
             }
         }
         return dcUrl.toString();
+    }
+
+    private void saveLastUrl(final String baseUrl, final Context context) {
+        DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
+        //update last getDcUrl time if there has been more than one hour.
+        if (localDcUrlInfo == null ||
+                (System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() > CommonConstants.ONE_HOUR_INTERVAL)) {
+            DcUrlInfo dcUrlInfo1 = new DcUrlInfo();
+            dcUrlInfo1.setDcUrl(baseUrl);
+            dcUrlInfo1.setLastAccessTime(System.currentTimeMillis());
+            PreferencesUtils.putObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, dcUrlInfo1);
+        }
     }
 
 }
