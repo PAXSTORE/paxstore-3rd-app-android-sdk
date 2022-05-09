@@ -71,4 +71,17 @@ private void syncAccessoryInfo() {
     }
 ```
 
+#### Multiple ancillary equipments
+
+If the terminal has more than one ancillary equipment, you need to submit only one ancillary equipment information at a time.
+And include the SN of all ancillary equipments, that is, you need to bring the following dto every time you submit an ancillary equipment information
+
+```
+TerminalSyncInfo item0 = new TerminalSyncInfo();
+item0.setType(SyncApi.SyncType.DEVICE);
+item0.setName("SN_LIST");
+item0.setVersion("SN123,SN456,SN789");
+infoList.add(item0);
+```
+
 For more detail, please refer to [this](SyncApi.md)
