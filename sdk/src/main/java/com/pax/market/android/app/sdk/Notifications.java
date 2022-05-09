@@ -44,6 +44,8 @@ public final class Notifications {
     private int smallIcon;
     private Bitmap largeIcon;
     private int defaults;
+    private boolean alertOnce;
+    private boolean autoCancel;
     private RemoteViews customContentView;
     public static final String CHANNEL_CLOUD_MSG = "channel_cloud_msg";
     private boolean enabled = true;
@@ -60,6 +62,8 @@ public final class Notifications {
         this.nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         this.smallIcon = R.drawable.ic_notificaiton;
         this.defaults = Notification.DEFAULT_ALL | Notification.FLAG_AUTO_CANCEL;
+        this.alertOnce = false;
+        this.autoCancel = true;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelName = "Cloud message";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -73,6 +77,13 @@ public final class Notifications {
         return context != null;
     }
 
+    /**
+     * Set the small icon to use in the notification layouts. Different classes of devices may return different sizes. See the UX guidelines for more information on how to design these icons.
+     * Params:
+     * icon – A resource ID in the application's package of the drawable to use.
+     * @param smallIcon
+     * @return
+     */
     public Notifications setSmallIcon(int smallIcon) {
         if (context != null) {
             PreferencesUtils.putInt(context, CommonConstants.SP_SMALL_LOGO_ICON, smallIcon);
@@ -81,16 +92,54 @@ public final class Notifications {
         return this;
     }
 
+    /**
+     * the icon shows in the nitification content
+     * @param largeIcon
+     * @return
+     */
     public Notifications setLargeIcon(Bitmap largeIcon) {
         this.largeIcon = largeIcon;
         return this;
     }
 
+    /**
+     * Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing.
+     * @param alertOnce
+     * @return
+     */
+    public Notifications setOnlyAlertOnce(boolean alertOnce) {
+        this.alertOnce = alertOnce;
+        return this;
+    }
+
+    /**
+     * Setting this flag will make it so the notification is automatically canceled when the user clicks it in the panel. The PendingIntent set with setDeleteIntent will be broadcast when the notification is canceled
+     * @param autoCancel
+     * @return
+     */
+    public Notifications setAutoCancel(boolean autoCancel) {
+        this.autoCancel = autoCancel;
+        return this;
+    }
+
+    /**
+     * Set the default notification options that will be used.
+     * The value should be one or more of the following fields combined with bitwise-or: Notification.DEFAULT_SOUND, Notification.DEFAULT_VIBRATE, Notification.DEFAULT_LIGHTS.
+     * For all default values, use Notification.DEFAULT_ALL.
+     *
+     * @param defaults
+     * @return
+     */
     public Notifications setDefaults(int defaults) {
         this.defaults = defaults;
         return this;
     }
 
+    /**
+     * Supply a custom RemoteViews to use instead of the standard one
+     * @param customContentView
+     * @return
+     */
     public Notifications setCustomContentView(RemoteViews customContentView) {
         this.customContentView = customContentView;
         return this;
@@ -100,14 +149,14 @@ public final class Notifications {
         if (message == null)
             return -1;
         Integer nid = message.getNid();
-        //1.如果NID不存在则新生成一个，且新生成的Id在nIds是不存在的
+        //1.if NID not exists, create a new oen that does not exist in nIds
         if (nid == null || nid <= 0) {
             do {
                 nid = nIdSeq++;
             } while (nIds.containsKey(nid));
         }
 
-        //处理总数
+        //handle total count
         Integer count = nIds.get(nid);
         if (count == null) {
             count = 0;
@@ -159,8 +208,8 @@ public final class Notifications {
                 .setTicker(ticker)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(cancelIntent)
-                .setAutoCancel(true)
-                .setOnlyAlertOnce(true)
+                .setAutoCancel(autoCancel)
+                .setOnlyAlertOnce(alertOnce)
                 .setDefaults(defaults)
                 .setWhen(when)
                 .setNumber(number)
@@ -169,7 +218,7 @@ public final class Notifications {
 
     private RemoteViews getDefaultContentView(String title, String content, long when) {
         RemoteViews defaultContentView = new RemoteViews(context.getPackageName(), R.layout.view_notificaiton);
-        //设置对应IMAGEVIEW的ID的资源图片
+        //set img id for the image resource
         if (largeIcon != null) {
             defaultContentView.setImageViewBitmap(R.id.iv_icon, largeIcon);
             defaultContentView.setViewVisibility(R.id.iv_icon, View.VISIBLE);
