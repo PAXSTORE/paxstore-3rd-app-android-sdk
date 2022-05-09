@@ -235,12 +235,11 @@ public class BaseApiService implements ProxyDelegate {
 
             try {
                 DcUrlInfo info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfoByTid("");
-                if (info == null) { // 如果info为空，说明是比较老的PAXSTORE client, 小于8.0.0
+                if (info == null) { // if info is null, it explains that the PAXSTORE client is lower than 8.0.0
                     info = IApiUrlService.Stub.asInterface(dcCallBack.service).getDcUrlInfo();
-
                 }
                 if (info == null) {
-                    if (oriBaseUrl == null) { // 当PAXSTORE client是低版本的时候，拿不到dcurl, 此时应该有默认url才对。
+                    if (oriBaseUrl == null) { // when PAXSTORE client is lower than 8.0.0，cannot get dcurl, there supposed to have a default url
                         Log.e("InitDcUrlAsyncTask", ERR_GET_DC_URL_FAILED);
                         dcCallBack.dcCallBack.initFailed(new Exception(ERR_GET_DC_URL_FAILED));
                         return null;

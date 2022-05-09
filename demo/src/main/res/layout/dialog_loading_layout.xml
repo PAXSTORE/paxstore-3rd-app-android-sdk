@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ *******************************************************************************
+  ~ COPYRIGHT
+  ~               PAX TECHNOLOGY, Inc. PROPRIETARY INFORMATION
+  ~   This software is supplied under the terms of a license agreement or
+  ~   nondisclosure agreement with PAX  Technology, Inc. and may not be copied
+  ~   or disclosed except in accordance with the terms in that agreement.
+  ~
+  ~      Copyright (C) 2017 PAX Technology, Inc. All rights reserved.
+  ~ *******************************************************************************
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="120dip"
+        android:layout_height="120dip"
+        android:background="@drawable/loading_corner"
+        android:gravity="center"
+        android:padding="10dp"
+        android:orientation="vertical">
+    <ProgressBar
+        android:id="@+id/bar"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:indeterminateDrawable="@anim/loading_progress_rotate"
+        android:indeterminateDuration="700" />
+
+    <TextView
+        android:id="@+id/message"
+        android:text="@string/label_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white" />
+
+    </LinearLayout>
+</LinearLayout>

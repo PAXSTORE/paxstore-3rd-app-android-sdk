@@ -12,6 +12,7 @@ public class DcUrlInfo implements Parcelable {
     private long lastAccessTime;
     private int businessCode;
     private String message;
+    private String staticUrl;
 
     public DcUrlInfo() {
     }
@@ -21,6 +22,8 @@ public class DcUrlInfo implements Parcelable {
         lastAccessTime = in.readLong();
         businessCode = in.readInt();
         message = in.readString();
+        staticUrl = in.readString();
+
     }
 
     @Override
@@ -29,6 +32,8 @@ public class DcUrlInfo implements Parcelable {
         dest.writeLong(lastAccessTime);
         dest.writeInt(businessCode);
         dest.writeString(message);
+        dest.writeString(staticUrl);
+
     }
 
     @Override
@@ -81,6 +86,14 @@ public class DcUrlInfo implements Parcelable {
         this.lastAccessTime = lastAccessTime;
     }
 
+    public String getStaticUrl() {
+        return staticUrl;
+    }
+
+    public void setStaticUrl(String staticUrl) {
+        this.staticUrl = staticUrl;
+    }
+
     @Override
     public String toString() {
         return "DcUrlInfo{" +
@@ -88,6 +101,7 @@ public class DcUrlInfo implements Parcelable {
                 ", lastAccessTime=" + lastAccessTime +
                 ", businessCode=" + businessCode +
                 ", message='" + message + '\'' +
+                ", staticUrl='" + staticUrl + '\'' +
                 '}';
     }
 }

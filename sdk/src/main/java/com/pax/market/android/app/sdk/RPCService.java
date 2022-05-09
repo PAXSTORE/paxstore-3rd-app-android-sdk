@@ -9,6 +9,8 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 
+import com.pax.market.android.app.sdk.util.NotificationUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +55,12 @@ public class RPCService extends Service {
                 .compact();
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        NotificationUtils.showForeGround(this, "Install Inquirer");
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     private Date generateExpirationDate() {
         return new Date(System.currentTimeMillis() + 5 * 60 * 1000);
     }
@@ -93,5 +101,11 @@ public class RPCService extends Service {
                     break;
             }
         }
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        stopSelf();
+        return super.onUnbind(intent);
     }
 }

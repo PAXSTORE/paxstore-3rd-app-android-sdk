@@ -186,7 +186,7 @@ public class APIFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // check if update available from PAXSTORE.
-
+                showProgress();
                 Thread thread =  new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -195,6 +195,7 @@ public class APIFragment extends Fragment {
                             LauncherActivity.getHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    dismissLoadingDialog();
                                     if (updateObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
                                         if (updateObject.isUpdateAvailable()) {
                                             Toast.makeText(getContext(), "Update is available", Toast.LENGTH_LONG).show();
@@ -253,18 +254,18 @@ public class APIFragment extends Fragment {
                                     try {
                                         final SdkObject sdkObject = StoreSdk.getInstance().syncMsgTabApi().attachMsgTag(Arrays.asList(tags.split(",")));
                                         Log.d(TAG, "sdkObject:" + sdkObject.toString());
-                                        LauncherActivity.getHandler().post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                String msg;
-                                                if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                                                    msg = "Operation succeed!";
-                                                } else {
-                                                    msg = "Operation failed: " + sdkObject.toString();
+                                            LauncherActivity.getHandler().post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    String msg;
+                                                    if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                                        msg = "Operation succeed!";
+                                                    } else {
+                                                        msg = "Operation failed: " + sdkObject.toString();
+                                                    }
+                                                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                                                 }
-                                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                                            });
                                     } catch (NotInitException e) {
                                         Log.e(TAG, "e:" + e);
                                     }
@@ -353,6 +354,7 @@ public class APIFragment extends Fragment {
                     Toast.makeText(getContext(), "Please input TID", Toast.LENGTH_LONG).show();
                     return;
                 }
+                showProgress();
                 Thread thread =  new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -369,6 +371,7 @@ public class APIFragment extends Fragment {
                                         msg = "Activation failed: " + sdkObject.toString();
                                     }
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                    dismissLoadingDialog();
                                 }
                             });
                         } catch (NotInitException e) {
@@ -446,6 +449,21 @@ public class APIFragment extends Fragment {
         scrollView.smoothScrollTo(0, 0);
 
         return view;
+    }
+
+    LoadingAlertDialog dialog;
+    private void showProgress() {
+        if (dialog != null && dialog.isShowing()) {
+            return;
+        }
+        dialog = new LoadingAlertDialog(getContext());
+        dialog.show(getString(R.string.label_loading));
+    }
+
+    private void dismissLoadingDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

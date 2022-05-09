@@ -31,7 +31,6 @@ public class ActivateApiStrategy extends ActivateApi {
         this.context = context;
     }
 
-    @Override
     public SdkObject initByTID(String tid) {
         //先根据tid去找一下dcurl.
         if (tid == null || tid.isEmpty()) {
@@ -50,6 +49,7 @@ public class ActivateApiStrategy extends ActivateApi {
                 dcUrlInfo.setBusinessCode(result.getBusinessCode());
                 dcUrlInfo.setDcUrl(result.getDcUrl());
                 dcUrlInfo.setLastAccessTime(result.getLastAccessTime());
+                dcUrlInfo.setStaticUrl(result.getStaticUrl());
                 countDownLatch.countDown();
             }
         }, tid);
@@ -68,7 +68,7 @@ public class ActivateApiStrategy extends ActivateApi {
             setBaseUrl(dcUrlInfo.getDcUrl());
         }
 
-        return super.initByTID(tid);
+        return super.initByTID(tid, dcUrlInfo.getDcUrl(), dcUrlInfo.getStaticUrl());
     }
 
     public interface DcCallBack {

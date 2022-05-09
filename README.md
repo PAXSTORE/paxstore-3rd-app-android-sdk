@@ -33,8 +33,10 @@ Gradle:
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.2.4'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.4.0'
 ```
+
+##### Tips: For apps that are not used in PAX terminals, you need to make sure you are using PAXSTORE client version at least V8.4.0. Otherwise you should use [V8.2.3](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/tree/v8.2.3)
 
 
 ## Permissions
@@ -132,7 +134,7 @@ You can use **exclude()** method to exclude the conflict dependencies by **group
 
 e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
 
-    implementation ('com.pax.market:paxstoresdk:x.xx.xx'){
+    implementation ('com.whatspos.sdk:paxstore-3rd-app-android-sdk:x.xx.xx'){
         exclude group: 'com.google.code.gson', module: 'gson'
     }
 
@@ -142,7 +144,7 @@ When attribute conflict occur, the error message may like below:
 
     Manifest merger failed : Attribute application@allowBackup value=(false) from 
     AndroidManifest.xml...
-    is also present at [com.pax.market:paxstore-3rd-app-android-sdk:x.xx.xx] 
+    is also present at [com.whatspos.sdk:paxstore-3rd-app-android-sdk:x.xx.xx] 
     AndroidManifest.xml...
     Suggestion: add 'tools:replace="android:allowBackup"' to <application> element
     at AndroidManifest.xml:..
