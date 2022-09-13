@@ -168,7 +168,7 @@ public class APIFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //put app 'NeptuneService' package name here for demo.
-                //if the market don't have this app, it will show app not found, else will go to detail page in PAXSTORE market
+                //if the market don't have this app, it will show app not found, else will go to detail page in STORE client market
                 openAppDetail(getActivity().getPackageName());
             }
         });
@@ -185,7 +185,7 @@ public class APIFragment extends Fragment {
         checkUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // check if update available from PAXSTORE.
+                // check if update available from app STORE.
                 showProgress();
                 Thread thread =  new Thread(new Runnable() {
                     @Override

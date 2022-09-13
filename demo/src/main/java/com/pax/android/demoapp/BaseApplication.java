@@ -34,12 +34,12 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //initial the SDK
-        initPaxStoreSdk();
+        initStoreSdk();
         appPreferences = new AppPreferences(getApplicationContext()); // this Preference comes for free from the library
 
     }
 
-    private void initPaxStoreSdk() {
+    private void initStoreSdk() {
         //todo 1. Init AppKey，AppSecret and SN, make sure the appkey and appSecret is corret.
         StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
             @Override
@@ -51,7 +51,8 @@ public class BaseApplication extends Application {
             @Override
             public void initFailed(RemoteException e) {
                 Log.i(TAG, "initFailed: "+e.getMessage());
-                Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Cannot get API URL from STORE client," +
+                        " Please install STORE client first.", Toast.LENGTH_LONG).show();
             }
         });
         //if you want to customize the notification for Cloud Message.

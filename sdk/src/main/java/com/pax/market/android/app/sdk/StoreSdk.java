@@ -350,8 +350,8 @@ public class StoreSdk {
     }
 
     /**
-     * To retrieve the base terminal info from PAXSTORE Client.
-     * Required: PAXSTORE client version 6.1 and above
+     * To retrieve the base terminal info from STORE client.
+     * Required: STORE client version 6.1 and above
      *
      * @param context
      * @param callback refer to BaseApiService.ICallBack, you need to handle onSuccess and OnError method. when onSuccess, will return a TerminalInfo DTO as result.
@@ -403,7 +403,7 @@ public class StoreSdk {
     }
 
     /**
-     * open PAXSTORE's download page
+     * open STORE client's download page
      *
      * @param packageName your app packagename
      * @param context
@@ -422,7 +422,7 @@ public class StoreSdk {
     }
 
     /**
-     * Get PAXSTORE PUSH online status.
+     * Get STORE client PUSH online status.
      *
      * @param context
      * @return
@@ -479,7 +479,7 @@ public class StoreSdk {
     }
 
     /**
-     * Get location from PAXSTORE. （from provider)
+     * Get location from STORE client. （from provider)
      * if can not get loation from provider, get location from old service.
      *
      * @param context

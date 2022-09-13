@@ -80,7 +80,7 @@ public class BaseApiService implements ProxyDelegate {
                 try {
                     StoreProxyInfo proxyInfo = IApiUrlService.Stub.asInterface(service).getStoreProxyInfo();
                     if (proxyInfo != null) {
-                        logger.info(">>> Init proxy from PAXSTORE : proxy[@{}/{}:{}], proxy authentication={}",
+                        logger.info(">>> Init proxy from STORE client : proxy[@{}/{}:{}], proxy authentication={}",
                                 proxyInfo.getType() == 1 ? "HTTP" : proxyInfo.getType() == 2 ? "SOCKS" : "DIRECT",
                                 proxyInfo.getHost(), proxyInfo.getPort(),
                                 proxyInfo.getAuthorization() != null ? "Basic" : proxyInfo.getUsername() != null ? "Password" : "NULL");
@@ -121,9 +121,9 @@ public class BaseApiService implements ProxyDelegate {
     }
 
     private String getSN() {
-        Log.w("BaseApiService", "Please update PAXSTORE client to latest version!!");
-        // When it comes to Android 8+， you may not get serialNo by Build.SERIAL. Then you should update PAXSTORE
-        // client to the latest version to get SerialNo from PAXSTORE client.
+        Log.w("BaseApiService", "Please update STORE client to latest version!!");
+        // When it comes to Android 8+， you may not get serialNo by Build.SERIAL. Then you should update STORE client
+        // client to the latest version to get SerialNo from STORE client.
         return Build.SERIAL;
     }
 
@@ -135,7 +135,7 @@ public class BaseApiService implements ProxyDelegate {
                 try {
                     StoreProxyInfo proxyInfo = IApiUrlService.Stub.asInterface(service).getStoreProxyInfo();
                     if(proxyInfo != null) {
-                        logger.info(">>> Get proxy from PAXSTORE : proxy[@{}/{}:{}], proxy authentication={}",
+                        logger.info(">>> Get proxy from STORE client : proxy[@{}/{}:{}], proxy authentication={}",
                                 proxyInfo.getType() == 1 ? "HTTP" : proxyInfo.getType() == 2 ? "SOCKS" : "DIRECT",
                                 proxyInfo.getHost(), proxyInfo.getPort(),
                                 proxyInfo.getAuthorization() != null ? "Basic" : proxyInfo.getUsername() != null ? "Password" : "NULL");

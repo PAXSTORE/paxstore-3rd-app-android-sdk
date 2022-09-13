@@ -50,9 +50,9 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'commons-io:commons-io:2.7'
 
 //    implementation project(':sdk')
-//    implementation 'commons-io:commons-io:2.7'
 //    implementation 'org.slf4j:slf4j-api:1.7.12'
 //    implementation 'org.dom4j:dom4j:2.1.3'
 //    implementation 'com.squareup.okhttp3:okhttp:3.10.0'

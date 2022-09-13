@@ -23,7 +23,6 @@ import static com.pax.market.android.app.sdk.BaseApiService.PAXSTORE_PACKAGE_NAM
 import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED;
 
 public class ActivateApiStrategy extends ActivateApi {
-    private static final String LAST_DOWNLOAD = "lastDownload";
     private Context context;
 
     public ActivateApiStrategy(Context context, String baseUrl, String appKey, String appSecret, String terminalSN, String model) {
@@ -32,14 +31,14 @@ public class ActivateApiStrategy extends ActivateApi {
     }
 
     public SdkObject initByTID(String tid) {
-        //先根据tid去找一下dcurl.
+        // try to find dcurl by tid
         if (tid == null || tid.isEmpty()) {
             SdkObject sdkObject = new SdkObject();
             sdkObject.setBusinessCode(-1);
             sdkObject.setMessage("Tid should not be empty");
             return sdkObject;
         }
-        // 把tid给PAXSTORE client， 让client去根据tid搜索dcurl
+        // pass tid to STORE client, let client to find dcurl by tid
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         final DcUrlInfo dcUrlInfo = new DcUrlInfo();
         getDcUrlByTid(new DcCallBack() {
@@ -132,7 +131,7 @@ public class ActivateApiStrategy extends ActivateApi {
                     info.setDcUrl(null);
                     info.setLastAccessTime(System.currentTimeMillis());
                     info.setBusinessCode(-1);
-                    info.setMessage("Get null from PAXSTORE client");
+                    info.setMessage("Get null from STORE client");
                 }
 
                 dcCallBack.dcCallBack.initResult(info);
@@ -149,7 +148,7 @@ public class ActivateApiStrategy extends ActivateApi {
     }
 
     /**
-     * 与PAXSTORE 通信失败
+     * aidl with STORE client failed
      * @param callback
      */
     private void aidlFailed(DcCallBack callback) {

@@ -49,7 +49,7 @@ public class CloudMessageService extends IntentService {
         if (intent != null && intent.hasExtra(PUSH_MESSAGE)) {
             String msgId = intent.getStringExtra(PUSH_MESSAGE_ID);
             int msgType = intent.getIntExtra(PUSH_MESSAGE_TYPE, 0);
-            logger.debug(">>> Received new CloudMessage form PAXSTORE. msgId=%s, msgTpye=%d", msgId, msgType);
+            logger.debug(">>> Received new CloudMessage form STORE client. msgId=%s, msgTpye=%d", msgId, msgType);
             String jsonString = decrypt(intent.getStringExtra(PUSH_MESSAGE));
             CloudMessage cloudMessage = CloudMessage.fromJson(jsonString);
             if (cloudMessage != null) {

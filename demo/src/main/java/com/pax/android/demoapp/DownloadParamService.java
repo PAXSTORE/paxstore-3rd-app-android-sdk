@@ -23,6 +23,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -197,7 +198,7 @@ public class DownloadParamService extends IntentService {
             return false;
         }
         try {
-            String jsonStr = FileUtils.readFileToString(parameterFile);
+            String jsonStr = FileUtils.readFileToString(parameterFile, StandardCharsets.UTF_8);
             JsonElement jsonElement = (new JsonParser()).parse(jsonStr);
             return true;
         } catch (JsonSyntaxException e) {

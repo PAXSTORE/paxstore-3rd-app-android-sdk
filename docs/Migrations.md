@@ -32,7 +32,7 @@ You are no longer required to get terminal serialNo by yourself to do the initia
             @Override
             public void initFailed(RemoteException e) {
                //TODO Do failed logic here
-                Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Cannot get API URL from STORE client, Please install STORE client first.", Toast.LENGTH_LONG).show();
             }
         });
 

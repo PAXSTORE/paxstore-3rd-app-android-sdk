@@ -24,7 +24,7 @@ public class LocationService extends Service {
     private static final int MSG_LOCATION_REQUEST = 0x01;
     private static final int MSG_LOCATION_RESPONSE = 0x02;
     private static final String LOCATION_ACTION = "com.pax.market.android.app.locationresponseservice";
-    private static final String BIND_SERVICE_FAILED = "Bind service failed, PAXSTORE may not running or PAXSTORE client version is below 6.3. Please check";
+    private static final String BIND_SERVICE_FAILED = "Bind service failed, STORE client may not running or STORE client version is below 6.3. Please check";
     private static final String LOCATION_RESULT_KEY = "locationResult";
     private static final String PAXSTORE_PACKAGENAME = "com.pax.market.android.app";
     private static final int GET_LOCATION_FAILED = -1;

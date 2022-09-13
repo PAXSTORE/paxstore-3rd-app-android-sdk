@@ -80,10 +80,10 @@ Initializing AppKey,AppSecret and SN
         @Override
         public void onCreate() {
             super.onCreate();
-            initPaxStoreSdk();
+            initStoreSdk();
         }
         
-        private void initPaxStoreSdk() {
+        private void initStoreSdk() {
            //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
             StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
                 @Override
@@ -94,7 +94,7 @@ Initializing AppKey,AppSecret and SN
                 @Override
                 public void initFailed(RemoteException e) {
                    //TODO Do failed logic here
-                    Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Cannot get API URL from STORE client, Please install STORE client first.", Toast.LENGTH_LONG).show();
                 }
             });
         }
