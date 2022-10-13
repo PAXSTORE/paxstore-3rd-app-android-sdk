@@ -22,6 +22,7 @@ public class CommonConstants {
     public static final String SP_LAST_GET_TERMINAL_INFO_TIME =  "sp_last_get_terminal_time";
     public static final String SP_LAST_GET_ONLINE_STATUS_TIME =  "sp_last_get_online_time";
     public static final String SP_LAST_GET_LOCATION_TIME =  "sp_last_get_location_time";
+    public static final String SP_LAST_LOCATION_SUCCESS_TIME =  "sp_last_location_success_time";
 
     public static final String SP_LAST_GET_DCURL_TIME =  "sp_last_get_dcurl_time";
 

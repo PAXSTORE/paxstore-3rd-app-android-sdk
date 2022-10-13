@@ -15,7 +15,6 @@ public class TerminalInfo implements Parcelable{
     private String serialNo;
     private String modelName;
     private String factoryName; //manufactory
-    private String merchantName;
     private int statusCode; //0:online; -1:offline
 
 
@@ -83,14 +82,6 @@ public class TerminalInfo implements Parcelable{
         this.factoryName = factoryName;
     }
 
-    public String getMerchantName() {
-        return merchantName;
-    }
-
-    public void setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
-    }
-
 
     public TerminalInfo(Parcel in) {
         tid = in.readString();
@@ -98,7 +89,6 @@ public class TerminalInfo implements Parcelable{
         serialNo = in.readString();
         modelName = in.readString();
         factoryName = in.readString();
-        merchantName = in.readString();
         statusCode = in.readInt();
         bussinessCode = in.readInt();
         message = in.readString();
@@ -133,7 +123,6 @@ public class TerminalInfo implements Parcelable{
         dest.writeString(serialNo);
         dest.writeString(modelName);
         dest.writeString(factoryName);
-        dest.writeString(merchantName);
         dest.writeInt(statusCode);
         dest.writeInt(bussinessCode);
         dest.writeString(message);
@@ -150,7 +139,6 @@ public class TerminalInfo implements Parcelable{
         serialNo = dest.readString();
         modelName = dest.readString();
         factoryName = dest.readString();
-        merchantName = dest.readString();
         statusCode = dest.readInt();
         bussinessCode = dest.readInt();
         message = dest.readString();
@@ -166,7 +154,6 @@ public class TerminalInfo implements Parcelable{
                 ", serialNo='" + serialNo + '\'' +
                 ", modelName='" + modelName + '\'' +
                 ", factoryName='" + factoryName + '\'' +
-                ", merchantName='" + merchantName + '\'' +
                 ", statusCode=" + statusCode +
                 '}';
     }
