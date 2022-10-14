@@ -12,7 +12,6 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.pax.market.android.app.sdk.dto.DcUrlInfo;
-import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
@@ -20,7 +19,6 @@ import com.pax.market.android.app.sdk.util.ActivateApiStrategy;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.check.CheckServiceApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
-import com.pax.market.api.sdk.java.api.sync.SyncApi;
 import com.pax.market.api.sdk.java.api.sync.SyncMsgTagApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
@@ -52,7 +50,7 @@ public class StoreSdk {
     private static final String URI_PREFIX = "market://detail?id=%s";
     private static volatile StoreSdk instance;
     private ParamApiStrategy paramApi;
-    private SyncApi syncApi;
+    private SyncApiStrategy syncApi;
     private GoInsightApi goInsightApi;
     private SyncMsgTagApi syncMsgTagApi;
     private UpdateApi updateApi;
@@ -173,7 +171,7 @@ public class StoreSdk {
      * @return
      * @throws NotInitException
      */
-    public SyncApi syncApi() throws NotInitException {
+    public SyncApiStrategy syncApi() throws NotInitException {
         if (syncApi == null) {
             acquireSemaphore();
             if (syncApi == null) {
@@ -341,7 +339,7 @@ public class StoreSdk {
      */
     public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, String model, ProxyDelegate proxyDelegate) {
         paramApi = new ParamApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
-        syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        syncApi = new SyncApiStrategy(context,apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         checkServiceApi = new CheckServiceApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
@@ -466,69 +464,12 @@ public class StoreSdk {
         return onlineStatusInfo;
     }
 
-    public interface LocationCallBack {
-        void onLocationRetured(LocationInfo locationInfo);
-    }
-
     /**
      * callback of update inquirer {@link #initInquirer}
      * this method will tell store app that whether your app can be updated.
      */
     public interface Inquirer {
         boolean isReadyUpdate();
-    }
-
-    /**
-     * Get location from STORE client. （from provider)
-     * if can not get loation from provider, get location from old service.
-     *
-     * @param context
-     * @param locationCallback
-     */
-    public void startLocate(Context context, LocationService.LocationCallback locationCallback) {
-        LocationInfo locationInfo = new LocationInfo();
-        long lastSdkLocateTime = PreferencesUtils.getLong(context, CommonConstants.SP_LAST_GET_LOCATION_TIME, 0L);
-        if (System.currentTimeMillis() - lastSdkLocateTime < 1000L) { //Ignore call within 1 second
-            locationInfo.setBusinessCode(QueryResult.GET_LOCATION_TOO_FAST.getCode());
-            locationInfo.setMessage(QueryResult.GET_LOCATION_TOO_FAST.getMsg());
-            locationCallback.locationResponse(locationInfo);
-            Log.w("StoreSdk", QueryResult.GET_LOCATION_TOO_FAST.getMsg());
-            return;
-        }
-
-        PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_LOCATION_TIME, System.currentTimeMillis());
-
-        Uri uri_location = Uri.parse("content://com.pax.market.android.app/location");
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(uri_location, null, null, null, null);
-        if (cursor == null) {
-            LocationService.setCallback(locationCallback);
-            Intent intent = new Intent(context, LocationService.class);
-            intent.setPackage(BuildConfig.APPLICATION_ID);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent);
-            } else {
-                context.startService(intent);
-            }
-            return;
-        } else {
-            while (cursor.moveToNext()) {
-                System.out.println("query job:" + cursor.getInt(0) + " " + cursor.getString(1)
-                        + " " + cursor.getString(2) + " " + cursor.getString(3) + " " + cursor.getString(4)
-                        + " " + cursor.getString(5));
-                locationInfo.setBusinessCode(cursor.getInt(0));
-                locationInfo.setMessage(cursor.getString(1));
-                locationInfo.setLongitude(cursor.getString(2));
-                locationInfo.setLatitude(cursor.getString(3));
-                locationInfo.setAccuracy(cursor.getString(4));
-                Long lastLocateTime = (cursor.getString(5) != null ?
-                        Long.valueOf(cursor.getString(5)) : null);
-                locationInfo.setLastLocateTime(lastLocateTime);
-            }
-            cursor.close();
-
-            locationCallback.locationResponse(locationInfo);
-        }
     }
 
     public MediaMesageInfo getMediaMessage(Context context) {
