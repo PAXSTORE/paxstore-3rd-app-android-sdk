@@ -11,6 +11,7 @@ android {
         versionCode 101
         versionName "${version}"
 
+        manifestPlaceholders = [versionName : "${version}"]
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {

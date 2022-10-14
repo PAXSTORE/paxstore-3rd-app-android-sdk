@@ -59,6 +59,11 @@
         <!-- Add below meta-data to indicate that this sdk support multi-dis env -->
         <meta-data android:name="DIS_SUPPORTED"
             android:value="true"/>
+
+
+        <!-- Add below meta-data to support GoInsight -->
+        <meta-data android:name="SDK_VERSION"
+            android:value="${versionName}"/>
     </application>
 
 </manifest>
