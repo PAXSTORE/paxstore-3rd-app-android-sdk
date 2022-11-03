@@ -3,7 +3,6 @@ package com.pax.market.android.app.sdk;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
@@ -32,31 +31,23 @@ public class SyncApiStrategy extends SyncApi {
         PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_LOCATION_TIME, System.currentTimeMillis());
 
         locationObject = getLocationInfo();
-        Gson gson = new Gson();
         if (locationObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
             locationObject.setLastLocateTime(System.currentTimeMillis());
-            PreferencesUtils.putString(context, CommonConstants.SP_LAST_GET_LOCATION, gson.toJson(locationObject));
-        } else {
-            String lastLocation = PreferencesUtils.getString(context, CommonConstants.SP_LAST_GET_LOCATION);
-            if (lastLocation != null) {
-                locationObject = gson.fromJson(lastLocation, LocationObject.class);
-            }
         }
         return locationObject;
     }
 
     @Override
     public MerchantObject getMerchantInfo() {
-        Gson gson = new Gson();
-        MerchantObject merchantObject = super.getMerchantInfo();
-        if (merchantObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-            PreferencesUtils.putString(context, CommonConstants.SP_LAST_GET_MERCHANT, gson.toJson(merchantObject));
-        } else {
-            String merchantInfo = PreferencesUtils.getString(context, CommonConstants.SP_LAST_GET_MERCHANT);
-            if (merchantInfo != null) {
-                merchantObject = gson.fromJson(merchantInfo, MerchantObject.class);
-            }
+        MerchantObject merchantObject = new MerchantObject();
+        long lastMerchantTime = PreferencesUtils.getLong(context, CommonConstants.SP_LAST_GET_MERCHANT_TIME, 0L);
+        if (System.currentTimeMillis() - lastMerchantTime < 1000L) { //Ignore call within 1 second
+            merchantObject.setBusinessCode(QueryResult.GET_MERCHANT_TOO_FAST.getCode());
+            merchantObject.setMessage(QueryResult.GET_MERCHANT_TOO_FAST.getMsg());
+            return merchantObject;
         }
+        PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_MERCHANT_TIME, System.currentTimeMillis());
+        merchantObject = super.getMerchantInfo();
         return merchantObject;
     }
 }
