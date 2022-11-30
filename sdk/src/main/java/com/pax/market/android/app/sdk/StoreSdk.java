@@ -1,12 +1,14 @@
 package com.pax.market.android.app.sdk;
 
+import static android.content.ContentValues.TAG;
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST;
+
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
@@ -15,7 +17,6 @@ import com.pax.market.android.app.sdk.dto.DcUrlInfo;
 import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
-import com.pax.market.android.app.sdk.util.ActivateApiStrategy;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.check.CheckServiceApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
@@ -32,9 +33,6 @@ import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
-import static android.content.ContentValues.TAG;
-import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST;
 
 /**
  * Created by zhangchenyang on 2018/5/23.
@@ -55,12 +53,17 @@ public class StoreSdk {
     private SyncMsgTagApi syncMsgTagApi;
     private UpdateApi updateApi;
     private CheckServiceApi checkServiceApi;
-    private ActivateApiStrategy activateApi;
-    private Context context;
 
     private Semaphore semaphore;
-    private String appKey;
-    private String appSecret;
+
+
+     public Context context;
+     public String appKey;
+     public String appSecret;
+     public String url;
+     public String terminalModel;
+     public String terminalSn;
+
 
     public StoreSdk() {
         semaphore = new Semaphore(2);
@@ -77,6 +80,24 @@ public class StoreSdk {
         return instance;
     }
 
+//    //StoreSdk.getInstance().activateApi().initByTID
+//    public static StoreSdk getInstance(String type, Context context) {
+//
+//        ClassLoader cl = context.getClassLoader();
+//        StoreSdk storeSdk = null;
+//        try {
+//            Class StroreSdkImpl = cl.loadClass("com.pax.api." + type);
+//            Method getInstance = StroreSdkImpl.getMethod("getInstance");
+//
+//            storeSdk = (StoreSdk) getInstance.invoke(StroreSdkImpl, url, appKey, appSecret, terminalSn);
+//
+//        } catch (Exception e) {
+//            Log.e(TAG, "e: " + e);
+//        }
+//
+//        return storeSdk;
+//    }
+
     /**
      * Init StoreSdk
      *
@@ -88,7 +109,7 @@ public class StoreSdk {
     public void init(final Context context, final String appKey, final String appSecret,
                      final BaseApiService.Callback callback) throws NullPointerException {
         if (paramApi == null && syncApi == null && updateApi == null && checkServiceApi == null
-                && activateApi == null && syncMsgTagApi == null && semaphore.availablePermits() != 1) {
+                 && syncMsgTagApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
             this.context = context;
             this.appKey = appKey;
@@ -103,9 +124,13 @@ public class StoreSdk {
                     new BaseApiService.ApiCallBack() {
 
                         @Override
-                        public void initSuccess(String apiUrl, String terminalSn, String model) {
+                        public void initSuccess(String apiUrl, String sn, String model) {
+                            url = apiUrl;
+                            terminalModel = model;
+                            terminalSn = sn;
+
                             clearLastUrl(context);
-                            initApi(context, apiUrl, appKey, appSecret, terminalSn, model, BaseApiService.getInstance(context));
+                            initApi(context, apiUrl, appKey, appSecret, sn, model, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -145,24 +170,6 @@ public class StoreSdk {
         paramApi.setBaseUrl(getDcUrl(context, paramApi.getBaseUrl(), false));
         paramApi.setProxyDelegate(BaseApiService.getInstance(context));
         return paramApi;
-    }
-
-    /**
-     * Get activateApi instance
-     *
-     * @return
-     * @throws NotInitException
-     */
-    public ActivateApiStrategy activateApi() throws NotInitException {
-        if (activateApi == null) {
-            acquireSemaphore();
-            if (activateApi == null) {
-                throw new NotInitException("Not initialized");
-            }
-        }
-        activateApi.setBaseUrl(getDcUrl(context, activateApi.getBaseUrl(), true));
-        activateApi.setProxyDelegate(BaseApiService.getInstance(context));
-        return activateApi;
     }
 
     /**
@@ -256,7 +263,7 @@ public class StoreSdk {
      * @return
      */
     public boolean checkInitialization() {
-        if (paramApi != null && syncApi != null && updateApi != null && activateApi != null
+        if (paramApi != null && syncApi != null && updateApi != null
             && checkServiceApi != null && syncMsgTagApi != null) {
             return true;
         }
@@ -343,7 +350,6 @@ public class StoreSdk {
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         checkServiceApi = new CheckServiceApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
-        activateApi = new ActivateApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo, model == null ? "" : model).setProxyDelegate(proxyDelegate);
         syncMsgTagApi = new SyncMsgTagApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 

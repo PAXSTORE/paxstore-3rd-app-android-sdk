@@ -1,5 +1,6 @@
 package com.pax.android.demoapp;
 
+
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
+import com.store.mylibrary.StoreSdkExtention;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -360,7 +362,10 @@ public class APIFragment extends Fragment {
                     @Override
                     public void run() {
                         try {
-                            final SdkObject sdkObject = StoreSdk.getInstance().activateApi().initByTID(etTid.getText().toString());
+
+                            final SdkObject sdkObject = StoreSdkExtention.getInstance().activateApi().initByTID(etTid.getText().toString());
+
+
                             Log.d(TAG, "sdkObject:" + sdkObject.toString());
                             LauncherActivity.getHandler().post(new Runnable() {
                                 @Override
