@@ -8,6 +8,7 @@ import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
 import com.pax.market.api.sdk.java.base.dto.LocationObject;
+import com.pax.market.api.sdk.java.base.dto.MerchantObject;
 
 public class SyncApiStrategy extends SyncApi {
     private Context context;
@@ -32,10 +33,21 @@ public class SyncApiStrategy extends SyncApi {
         locationObject = getLocationInfo();
         if (locationObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
             locationObject.setLastLocateTime(System.currentTimeMillis());
-            PreferencesUtils.putLong(context, CommonConstants.SP_LAST_LOCATION_SUCCESS_TIME, System.currentTimeMillis());
-        } else {
-            locationObject.setLastLocateTime(PreferencesUtils.getLong(context, CommonConstants.SP_LAST_LOCATION_SUCCESS_TIME, 0L));
         }
         return locationObject;
+    }
+
+    @Override
+    public MerchantObject getMerchantInfo() {
+        MerchantObject merchantObject = new MerchantObject();
+        long lastMerchantTime = PreferencesUtils.getLong(context, CommonConstants.SP_LAST_GET_MERCHANT_TIME, 0L);
+        if (System.currentTimeMillis() - lastMerchantTime < 1000L) { //Ignore call within 1 second
+            merchantObject.setBusinessCode(QueryResult.GET_MERCHANT_TOO_FAST.getCode());
+            merchantObject.setMessage(QueryResult.GET_MERCHANT_TOO_FAST.getMsg());
+            return merchantObject;
+        }
+        PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_MERCHANT_TIME, System.currentTimeMillis());
+        merchantObject = super.getMerchantInfo();
+        return merchantObject;
     }
 }
