@@ -224,6 +224,7 @@ public class APIFragment extends Fragment {
             }
         });
 
+        lvActivate.setVisibility(View.GONE);
         lvActivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
