@@ -36,7 +36,7 @@ import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
-import com.store.mylibrary.StoreSdkExtention;
+import com.pax.market.android.app.sdk.ext.StoreSdkExtention;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,7 +76,7 @@ public class APIFragment extends Fragment {
     private ListView tagListView;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvActivateHide, lvAttachTag, lvDeleteTag;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvPing, lvActivateHide, lvAttachTag, lvDeleteTag;
     private EditText etTid;
     private ImageView mImgRetrieve, mImgActivate, mImgMsgTab;
     private LinearLayout lvChildRetrieve;
@@ -133,6 +133,7 @@ public class APIFragment extends Fragment {
         openDownloadList = (LinearLayout) view.findViewById(R.id.open_downloadlist_page);
 
         lvActivate = view.findViewById(R.id.lv_activate);
+        lvPing = view.findViewById(R.id.lv_ping);
         lvActivateHide = view.findViewById(R.id.lv_activate_hide);
         lvAttachTag = view.findViewById(R.id.lv_attach_tag);
         lvDeleteTag = view.findViewById(R.id.lv_delete_tag);
@@ -224,6 +225,34 @@ public class APIFragment extends Fragment {
             }
         });
 
+        lvPing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+////                            final SdkObject sdkObject = StoreSdk.getInstance().pingApi();
+//                            LauncherActivity.getHandler().post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    String msg;
+//                                    if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+//                                        msg = "Operation succeed!";
+//                                    } else {
+//                                        msg = "Operation failed: " + sdkObject.toString();
+//                                    }
+//                                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//                        } catch (NotInitException e) {
+//                            Log.e(TAG, "e:" + e);
+//                        }
+//                    }
+//                });
+//                thread.start();
+            }
+        });
         lvActivate.setVisibility(View.GONE);
         lvActivate.setOnClickListener(new View.OnClickListener() {
             @Override
