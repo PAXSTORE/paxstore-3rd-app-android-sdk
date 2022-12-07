@@ -30,7 +30,10 @@ android {
         exclude 'META-INF/LICENSE'
     }
 }
-
+configurations.all {
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.core:core:1.0.0'

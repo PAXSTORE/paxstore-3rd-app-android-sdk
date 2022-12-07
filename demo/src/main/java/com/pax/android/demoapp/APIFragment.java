@@ -6,16 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,19 +20,19 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.pax.market.android.app.sdk.BaseApiService;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
-
 import com.pax.market.api.sdk.java.base.dto.LocationObject;
 import com.pax.market.api.sdk.java.base.dto.MerchantObject;
 import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
-import com.pax.market.android.app.sdk.ext.StoreSdkExtention;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,14 +54,6 @@ public class APIFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
-    private TextView bannerTitleTV;
-    private TextView bannerTextTV;
-    private TextView bannerSubTextTV;
     private TextView versionTV;
     private LinearLayout openClientlayout;
     private Switch tradingStateSwitch;
@@ -76,13 +64,12 @@ public class APIFragment extends Fragment {
     private ListView tagListView;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList,lvActivate, lvPing, lvActivateHide, lvAttachTag, lvDeleteTag;
-    private EditText etTid;
-    private ImageView mImgRetrieve, mImgActivate, mImgMsgTab;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag;
+    private ImageView mImgRetrieve;
     private LinearLayout lvChildRetrieve;
-    private Button getTerminalLocation, getOnlineStatus, activateTerminal, getMerchantInfo; // todo remove
+    private Button getTerminalLocation, getOnlineStatus, getMerchantInfo; // todo remove
     private OnFragmentInteractionListener mListener;
-    private boolean isDataExpanded, isActivateExpanded, isMsgTabExpanded;
+    private boolean isDataExpanded;
     public APIFragment() {
         // Required empty public constructor
     }
@@ -108,12 +95,6 @@ public class APIFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
 
     }
 
@@ -123,26 +104,17 @@ public class APIFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.api, container, false);
 
-        bannerTitleTV = (TextView) view.findViewById(R.id.banner_title);
-        bannerTextTV = (TextView) view.findViewById(R.id.banner_text);
-        bannerSubTextTV = (TextView) view.findViewById(R.id.banner_sub_text);
         tradingStateSwitch = (Switch) view.findViewById(R.id.tradingStateSwitch);
         openClientlayout = (LinearLayout) view.findViewById(R.id.openAppDetail);
         versionTV = (TextView) view.findViewById(R.id.versionText);
         versionTV.setText(getResources().getString(R.string.label_version_text) + " " + BuildConfig.VERSION_NAME);
         openDownloadList = (LinearLayout) view.findViewById(R.id.open_downloadlist_page);
 
-        lvActivate = view.findViewById(R.id.lv_activate);
-        lvPing = view.findViewById(R.id.lv_ping);
-        lvActivateHide = view.findViewById(R.id.lv_activate_hide);
         lvAttachTag = view.findViewById(R.id.lv_attach_tag);
         lvDeleteTag = view.findViewById(R.id.lv_delete_tag);
         btnGetAllTag = view.findViewById(R.id.get_tag_btn);
         btnGetAllTag = view.findViewById(R.id.get_tag_btn);
 
-        etTid = view.findViewById(R.id.et_tid);
-        activateTerminal = view.findViewById(R.id.btn_activate);
-        mImgActivate = view.findViewById(R.id.img_activate);
 
         tagListView = view.findViewById(R.id.tag_list);
         cloudMsgTagAdapter = new CloudMsgTagAdapter(getContext(), tags, R.layout.param_detail_list_item);
@@ -225,54 +197,6 @@ public class APIFragment extends Fragment {
             }
         });
 
-        lvPing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Thread thread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-////                            final SdkObject sdkObject = StoreSdk.getInstance().pingApi();
-//                            LauncherActivity.getHandler().post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    String msg;
-//                                    if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-//                                        msg = "Operation succeed!";
-//                                    } else {
-//                                        msg = "Operation failed: " + sdkObject.toString();
-//                                    }
-//                                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//                        } catch (NotInitException e) {
-//                            Log.e(TAG, "e:" + e);
-//                        }
-//                    }
-//                });
-//                thread.start();
-            }
-        });
-        lvActivate.setVisibility(View.GONE);
-        lvActivate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isActivateExpanded) {
-                    isActivateExpanded = false;
-                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).
-                            hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    mImgActivate.setImageResource(R.mipmap.list_btn_arrow);
-                    lvActivateHide.setVisibility(View.GONE);
-                } else {
-                    etTid.requestFocus();
-                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).
-                            toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
-                    isActivateExpanded = true;
-                    mImgActivate.setImageResource(R.mipmap.list_btn_arrow_down);
-                    lvActivateHide.setVisibility(View.VISIBLE);
-                }
-            }
-        });
 
         lvAttachTag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -380,45 +304,7 @@ public class APIFragment extends Fragment {
             }
         });
 
-        activateTerminal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (etTid.getText() == null || etTid.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Please input TID", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                showProgress();
-                Thread thread =  new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
 
-                            final SdkObject sdkObject = StoreSdkExtention.getInstance().activateApi().initByTID(etTid.getText().toString());
-
-
-                            Log.d(TAG, "sdkObject:" + sdkObject.toString());
-                            LauncherActivity.getHandler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String msg = "";
-                                    if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                                        msg = "Activation succeed!";
-                                    } else {
-                                        msg = "Activation failed: " + sdkObject.toString();
-                                    }
-                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-                                    dismissLoadingDialog();
-                                }
-                            });
-                        } catch (NotInitException e) {
-                            Log.e(TAG, "e:" + e);
-                        }
-                    }
-                }) ;
-
-                thread.start();
-            }
-        });
 
         lvRetrieveData.setOnClickListener(new View.OnClickListener() {
             @Override

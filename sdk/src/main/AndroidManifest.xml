@@ -9,8 +9,10 @@
     <uses-permission android:name="com.market.android.app.OPEN_DOWNLOAD_LIST" />
     <uses-permission android:name="com.market.android.app.ONLINE_LOCATION" />
     <uses-permission android:name="com.market.android.app.SN_HOST" />
-    <uses-permission android:name="com.market.android.app.OLD_LOCATION" />
-    <uses-permission android:name="com.market.android.app.TERMINAL_INFO" />
+
+
+<!--    <uses-permission android:name="com.market.android.app.OLD_LOCATION" />-->
+<!--    <uses-permission android:name="com.market.android.app.TERMINAL_INFO" />-->
     <!--    END  -->
 
 

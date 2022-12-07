@@ -22,7 +22,6 @@ import com.pax.market.api.sdk.java.api.check.CheckServiceApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.sync.SyncMsgTagApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
-import com.pax.market.api.sdk.java.api.utils.PingApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 import com.pax.market.api.sdk.java.base.util.CryptoUtils;
@@ -54,7 +53,6 @@ public class StoreSdk {
     private SyncMsgTagApi syncMsgTagApi;
     private UpdateApi updateApi;
     private CheckServiceApi checkServiceApi;
-    private PingApi pingApi;
 
     private Semaphore semaphore;
 
@@ -111,7 +109,6 @@ public class StoreSdk {
     public void init(final Context context, final String appKey, final String appSecret,
                      final BaseApiService.Callback callback) throws NullPointerException {
         if (paramApi == null && syncApi == null && updateApi == null && checkServiceApi == null
-                 && pingApi == null
                  && syncMsgTagApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
             this.context = context;
@@ -241,18 +238,6 @@ public class StoreSdk {
         return checkServiceApi;
     }
 
-    public PingApi pingApi() throws NotInitException {
-        if (pingApi == null) {
-            acquireSemaphore();
-            if (pingApi == null) {
-                throw new NotInitException("Not initialized");
-            }
-        }
-        pingApi.setBaseUrl(getDcUrl(context, pingApi.getBaseUrl(), false));
-        pingApi.setProxyDelegate(BaseApiService.getInstance(context));
-        return pingApi;
-    }
-
     /**
      * Get SyncMsgTabApi instance
      *
@@ -279,7 +264,7 @@ public class StoreSdk {
      */
     public boolean checkInitialization() {
         if (paramApi != null && syncApi != null && updateApi != null
-            && checkServiceApi != null && syncMsgTagApi != null && pingApi != null) {
+            && checkServiceApi != null && syncMsgTagApi != null) {
             return true;
         }
         return false;
@@ -364,7 +349,6 @@ public class StoreSdk {
         syncApi = new SyncApiStrategy(context,apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         checkServiceApi = new CheckServiceApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
-        pingApi = new PingApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
         syncMsgTagApi = new SyncMsgTagApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
@@ -458,7 +442,6 @@ public class StoreSdk {
         }
         PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_ONLINE_STATUS_TIME, System.currentTimeMillis());
 
-        //对location表进行操作
         // 和上述类似,只是URI需要更改,从而匹配不同的URI CODE,从而找到不同的数据资源
         Uri uri_online_status = Uri.parse("content://com.pax.market.android.app/online_status");
         // 获取ContentResolver
