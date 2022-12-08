@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <uses-permission android:name="com.market.android.app.API_LOCATION" />
-    <uses-permission android:name="com.market.android.app.API_TERMINAL_INFO" />
+    <uses-permission android:name="com.market.android.app.API_MERCHANT_INFO" />
 
     <application
         android:name=".BaseApplication"

@@ -15,6 +15,8 @@ public enum QueryResult {
     QUERY_FROM_CONTENT_PROVIDER_FAILED(-6, "Query failed"),
     GET_ONLINE_STATUS_TOO_FAST(-7, "Get online status too fast"),
     GET_MERCHANT_TOO_FAST(-8, "Get merchant too fast"),
+    PERMISSION_NOT_REQUESTED(-9, "Please request permission in Androidmanifest.xml first:"),
+
     UNKNOWN(-10, "unknown");
 
     private final String msg;

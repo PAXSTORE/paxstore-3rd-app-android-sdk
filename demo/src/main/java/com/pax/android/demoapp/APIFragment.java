@@ -171,7 +171,6 @@ public class APIFragment extends Fragment {
                             LauncherActivity.getHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    dismissLoadingDialog();
                                     if (updateObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
                                         if (updateObject.isUpdateAvailable()) {
                                             Toast.makeText(getContext(), "Update is available", Toast.LENGTH_LONG).show();
@@ -188,7 +187,9 @@ public class APIFragment extends Fragment {
 
                         } catch (NotInitException e) {
                             Log.e(TAG, "e:" + e);
+                            showNotInitToast();
                         }
+                        dismissLoadingDialog();
                     }
                 }) ;
 
@@ -225,6 +226,7 @@ public class APIFragment extends Fragment {
                                             });
                                     } catch (NotInitException e) {
                                         Log.e(TAG, "e:" + e);
+                                        showNotInitToast();
                                     }
                                 }
                             });
@@ -261,6 +263,7 @@ public class APIFragment extends Fragment {
                                         });
                                     } catch (NotInitException e) {
                                         Log.e(TAG, "e:" + e);
+                                        showNotInitToast();
                                     }
                                 }
                             });
@@ -297,6 +300,7 @@ public class APIFragment extends Fragment {
                             });
                         } catch (NotInitException e) {
                             Log.e(TAG, "e:" + e);
+                            showNotInitToast();
                         }
                     }
                 }) ;
@@ -341,12 +345,13 @@ public class APIFragment extends Fragment {
                                         msg = "Get Location Failed: " + locationObject;
                                     }
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-                                    dismissLoadingDialog();
                                 }
                             });
                         } catch (NotInitException e) {
                             Log.e(TAG, "e:" + e);
+                            showNotInitToast();
                         }
+                        dismissLoadingDialog();
                     }
                 }) ;
                 thread.start();
@@ -405,12 +410,13 @@ public class APIFragment extends Fragment {
                                         msg = "Get Merchant Failed: " + merchantObject;
                                     }
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-                                    dismissLoadingDialog();
                                 }
                             });
                         } catch (NotInitException e) {
-                            Log.e(TAG, "e:" + e);
+                            showNotInitToast();
+                            Log.e(TAG, "e: " + e);
                         }
+                        dismissLoadingDialog();
                     }
                 }) ;
                 thread.start();
@@ -493,5 +499,15 @@ public class APIFragment extends Fragment {
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showNotInitToast() {
+        LauncherActivity.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                String msg = "Not Init";
+                Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
