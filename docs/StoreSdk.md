@@ -66,13 +66,17 @@ public ParamApi paramApi() throws NotInitException {...}
 ParamApi paramApi = StoreSdk.getInstance().paramApi();
 ```
 
-### Get SyncApi instance
+### ~~Get SyncApi instance~~  
+
+SyncApi replaced by SyncApiStrategy
+
+### Get SyncApiStrategy instance 
 
 ```
-// Get SyncApi instance api
-public SyncApi syncApi() throws NotInitException {...}
+// Get SyncApiStrategy instance api
+public SyncApiStrategy syncApi() throws NotInitException {...}
 // usage
-SyncApi syncApi = StoreSdk.getInstance().syncApi();
+SyncApiStrategy syncApi = StoreSdk.getInstance().syncApi();
 ```
 
 ### Get UpdateApi instance
@@ -83,6 +87,15 @@ public UpdateApi updateApi() throws NotInitException {...}
 // usage
 UpdateApi updateApi = StoreSdk.getInstance().updateApi();
 ```
+### Get CloudMessageApi instance
+
+```java
+// Get CloudMessageApi instance api
+public CloudMessageApi cloudMessageApi() throws NotInitException {...}
+// usage
+CloudMessageApi cloudMessageApi = StoreSdk.getInstance().cloudMessageApi();
+```
+
 ### Check if initialized
 
 ```
@@ -124,7 +137,7 @@ API to get base terminal information from PAXSTORE client. (Support from PAXSTOR
 
     // Get terminal base information api
     public void getBaseTerminalInfo(Context context, BaseApiService.ICallBack callback) {...}
-
+    
     // usage
     StoreSdk.getInstance().getBaseTerminalInfo(getApplicationContext(),new BaseApiService.ICallBack() {
         @Override
@@ -132,7 +145,7 @@ API to get base terminal information from PAXSTORE client. (Support from PAXSTOR
             TerminalInfo terminalInfo = (TerminalInfo) obj;
             Log.i("onSuccess: ",terminalInfo.toString());
         }
-
+    
         @Override
         public void onError(Exception e) {
             Log.i("onError: ",e.toString());
@@ -227,12 +240,17 @@ The terminal location info, the structure shows below.
 
 The terminal info, the structure shows below
 
-| Property     | Type   | Description                                         |
-| ------------ | ------ | --------------------------------------------------- |
-| tid          | String | The tid of terminal                                 |
-| terminalName | String | The name of terminal                                |
-| serialNo     | String | The serial no of terminal                           |
-| modelName    | String | The modle name of terminal                          |
-| factory      | String | The manufactory of terminal                         |
-| merchantName | String | The merchant name of terminal                       |
-| status       | String | The online status of terminal, 0:online, -1:offline |
+| Property             | Type       | Description                                         |
+| -------------------- | ---------- | --------------------------------------------------- |
+| tid                  | String     | The tid of terminal                                 |
+| terminalName         | String     | The name of terminal                                |
+| serialNo             | String     | The serial no of terminal                           |
+| modelName            | String     | The modle name of terminal                          |
+| factory              | String     | The manufactory of terminal                         |
+| ~~merchantName~~~~~~ | ~~String~~ | ~~The merchant name of terminal~~                   |
+| status               | String     | The online status of terminal, 0:online, -1:offline |
+
+### MerchantName in TerminalInfo has been removed from version 8.7.0,  getMerchantInfo using   [SyncApiStrategy](SyncApiStrategy.md)
+
+
+

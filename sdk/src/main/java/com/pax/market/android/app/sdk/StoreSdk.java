@@ -19,8 +19,8 @@ import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.check.CheckServiceApi;
+import com.pax.market.api.sdk.java.api.sync.CloudMessageApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
-import com.pax.market.api.sdk.java.api.sync.SyncMsgTagApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
@@ -50,7 +50,7 @@ public class StoreSdk {
     private ParamApiStrategy paramApi;
     private SyncApiStrategy syncApi;
     private GoInsightApi goInsightApi;
-    private SyncMsgTagApi syncMsgTagApi;
+    private CloudMessageApi cloudMessageApi;
     private UpdateApi updateApi;
     private CheckServiceApi checkServiceApi;
 
@@ -109,7 +109,7 @@ public class StoreSdk {
     public void init(final Context context, final String appKey, final String appSecret,
                      final BaseApiService.Callback callback) throws NullPointerException {
         if (paramApi == null && syncApi == null && updateApi == null && checkServiceApi == null
-                 && syncMsgTagApi == null && semaphore.availablePermits() != 1) {
+                 && cloudMessageApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
             this.context = context;
             this.appKey = appKey;
@@ -130,7 +130,7 @@ public class StoreSdk {
                             terminalSn = sn;
 
                             clearLastUrl(context);
-                            initApi(context, apiUrl, appKey, appSecret, sn, model, BaseApiService.getInstance(context));
+                            initApi(context, apiUrl, appKey, appSecret, sn, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -239,21 +239,21 @@ public class StoreSdk {
     }
 
     /**
-     * Get SyncMsgTabApi instance
+     * Get CloudMessageApi instance
      *
      * @return
      * @throws NotInitException
      */
-    public SyncMsgTagApi syncMsgTabApi() throws NotInitException {
-        if (syncMsgTagApi == null) {
+    public CloudMessageApi cloudMessageApi() throws NotInitException {
+        if (cloudMessageApi == null) {
             acquireSemaphore();
-            if (syncMsgTagApi == null) {
+            if (cloudMessageApi == null) {
                 throw new NotInitException("Not initialized");
             }
         }
-        syncMsgTagApi.setBaseUrl(getDcUrl(context, syncMsgTagApi.getBaseUrl(), false));
-        syncMsgTagApi.setProxyDelegate(BaseApiService.getInstance(context));
-        return syncMsgTagApi;
+        cloudMessageApi.setBaseUrl(getDcUrl(context, cloudMessageApi.getBaseUrl(), false));
+        cloudMessageApi.setProxyDelegate(BaseApiService.getInstance(context));
+        return cloudMessageApi;
     }
 
     /**
@@ -264,7 +264,7 @@ public class StoreSdk {
      */
     public boolean checkInitialization() {
         if (paramApi != null && syncApi != null && updateApi != null
-            && checkServiceApi != null && syncMsgTagApi != null) {
+            && checkServiceApi != null && cloudMessageApi != null) {
             return true;
         }
         return false;
@@ -344,13 +344,13 @@ public class StoreSdk {
      * @param appSecret
      * @param terminalSerialNo
      */
-    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, String model, ProxyDelegate proxyDelegate) {
+    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
         paramApi = new ParamApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         syncApi = new SyncApiStrategy(context,apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         checkServiceApi = new CheckServiceApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
-        syncMsgTagApi = new SyncMsgTagApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        cloudMessageApi = new CloudMessageApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 
     /**

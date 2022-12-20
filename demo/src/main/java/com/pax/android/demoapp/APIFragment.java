@@ -210,7 +210,7 @@ public class APIFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     try {
-                                        final SdkObject sdkObject = StoreSdk.getInstance().syncMsgTabApi().attachMsgTag(Arrays.asList(tags.split(",")));
+                                        final SdkObject sdkObject = StoreSdk.getInstance().cloudMessageApi().attachMsgTag(Arrays.asList(tags.split(",")));
                                         Log.d(TAG, "sdkObject:" + sdkObject.toString());
                                             LauncherActivity.getHandler().post(new Runnable() {
                                                 @Override
@@ -248,7 +248,7 @@ public class APIFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     try {
-                                        final SdkObject sdkObject = StoreSdk.getInstance().syncMsgTabApi().detachMsgTag(Arrays.asList(tags.split(",")));
+                                        final SdkObject sdkObject = StoreSdk.getInstance().cloudMessageApi().detachMsgTag(Arrays.asList(tags.split(",")));
                                         LauncherActivity.getHandler().post(new Runnable() {
                                             @Override
                                             public void run() {
@@ -282,7 +282,7 @@ public class APIFragment extends Fragment {
                     @Override
                     public void run() {
                         try {
-                            final MsgTagObject msgTagObject = StoreSdk.getInstance().syncMsgTabApi().getAllTag();
+                            final MsgTagObject msgTagObject = StoreSdk.getInstance().cloudMessageApi().getAllTag();
                             LauncherActivity.getHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
