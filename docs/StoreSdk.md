@@ -192,15 +192,12 @@ The terminal online status info, the structure shows below
 
 ### Get location from PAXSTORE.
 
-    // Get location api
-    public void startLocate(Context context, LocationService.LocationCallback locationCallback) {...}
-    // usage
-    StoreSdk.getInstance().startLocate(getApplicationContext(), new LocationService.LocationCallback() {
-                        @Override
-                        public void locationResponse(LocationInfo locationInfo) {
-                            Log.d("MainActivity", "Get Location Result：" + locationInfo.toString());
-                        }
-                    });
+```java
+// Deprecated
+public void startLocate(Context context, LocationService.LocationCallback locationCallback) {...}
+// usage
+StoreSdk.getInstance().syncApi().getLocate();
+```
 
 Parse xml file. Only support when the xml is the type of HashMap.
 
@@ -222,19 +219,8 @@ Parse json file. Only support when the json is the type of HashMap.
 | -4   | Get location too fast       | Get location too fast              |
 | -5   | Push not enabled            | Push not enabled                   |
 | -6   | Query failed                | Query from content provider failed |
-| -10  | unknown                     | Unknown                            |
 
 ### Other object
-
-**com.pax.market.android.app.sdk.dto.LocationInfo**
-
-The terminal location info, the structure shows below.
-
-| Property       | Type   | Description                    |
-| -------------- | ------ | ------------------------------ |
-| longitude      | String | The longitude of location info |
-| latitude       | String | The latitude of location info  |
-| lastLocateTime | Long   | The last locate time           |
 
 **com.pax.market.android.app.sdk.dto.TerminalInfo**
 
@@ -250,7 +236,7 @@ The terminal info, the structure shows below
 | ~~merchantName~~~~~~ | ~~String~~ | ~~The merchant name of terminal~~                   |
 | status               | String     | The online status of terminal, 0:online, -1:offline |
 
-### MerchantName in TerminalInfo has been removed from version 8.7.0,  getMerchantInfo using   [SyncApiStrategy](SyncApiStrategy.md)
+### MerchantName in TerminalInfo has been removed from version 8.7.0,  getMerchantInfo using  [SyncApiStrategy](SyncApiStrategy.md)
 
 
 

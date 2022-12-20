@@ -106,7 +106,7 @@ Initializing AppKey,AppSecret and SN
 
 #### [ParamApi](docs/ParamApi.md)
 
-#### [SyncApi](docs/SyncApiStrategy.md)
+#### [SyncApiStrategy](docs/SyncApiStrategy.md)
 
 #### [UpdateApi](docs/UpdateApi.md)
 
