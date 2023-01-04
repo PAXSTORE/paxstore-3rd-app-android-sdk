@@ -70,7 +70,7 @@ Initializing AppKey,AppSecret and SN
 >Please note, make sure you have put your own app's AppKey and AppSecret correctly
 
     public class BaseApplication extends Application {
-
+    
         private static final String TAG = BaseApplication.class.getSimpleName();
         
         //todo make sure to replace with your own app's appKey and appSecret
@@ -106,13 +106,13 @@ Initializing AppKey,AppSecret and SN
 
 #### [ParamApi](docs/ParamApi.md)
 
-#### [SyncApi](docs/SyncApi.md)
+#### [SyncApiStrategy](docs/SyncApiStrategy.md)
 
 #### [UpdateApi](docs/UpdateApi.md)
 
 #### [ResultCode](docs/ResultCode.md)
 
-#### [SyncMsgTagApi](docs/SyncMsgTagApi.md)
+#### [CloudMessageApi](docs/CloudMessageApi.md)
 
 
 ## Migrating to Android 8.0
