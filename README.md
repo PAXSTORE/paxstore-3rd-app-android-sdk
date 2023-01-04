@@ -33,7 +33,7 @@ Gradle:
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.4.0'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.7.0'
 ```
 
 ##### Tips: For apps that are not used in PAX terminals, you need to make sure you are using PAXSTORE client version at least V8.4.0. Otherwise you should use [V8.2.3](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/tree/v8.2.3)
