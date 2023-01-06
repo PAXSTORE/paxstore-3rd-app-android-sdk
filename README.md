@@ -33,7 +33,7 @@ Gradle:
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.4.0'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.7.0'
 ```
 
 ##### Tips: For apps that are not used in PAX terminals, you need to make sure you are using PAXSTORE client version at least V8.4.0. Otherwise you should use [V8.2.3](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/tree/v8.2.3)
@@ -70,7 +70,7 @@ Initializing AppKey,AppSecret and SN
 >Please note, make sure you have put your own app's AppKey and AppSecret correctly
 
     public class BaseApplication extends Application {
-
+    
         private static final String TAG = BaseApplication.class.getSimpleName();
         
         //todo make sure to replace with your own app's appKey and appSecret
@@ -80,10 +80,10 @@ Initializing AppKey,AppSecret and SN
         @Override
         public void onCreate() {
             super.onCreate();
-            initPaxStoreSdk();
+            initStoreSdk();
         }
         
-        private void initPaxStoreSdk() {
+        private void initStoreSdk() {
            //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
             StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
                 @Override
@@ -94,7 +94,7 @@ Initializing AppKey,AppSecret and SN
                 @Override
                 public void initFailed(RemoteException e) {
                    //TODO Do failed logic here
-                    Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Cannot get API URL from STORE client, Please install STORE client first.", Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -106,13 +106,13 @@ Initializing AppKey,AppSecret and SN
 
 #### [ParamApi](docs/ParamApi.md)
 
-#### [SyncApi](docs/SyncApi.md)
+#### [SyncApiStrategy](docs/SyncApiStrategy.md)
 
 #### [UpdateApi](docs/UpdateApi.md)
 
 #### [ResultCode](docs/ResultCode.md)
 
-#### [SyncMsgTagApi](docs/SyncMsgTagApi.md)
+#### [CloudMessageApi](docs/CloudMessageApi.md)
 
 
 ## Migrating to Android 8.0

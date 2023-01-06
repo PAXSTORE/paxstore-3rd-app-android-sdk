@@ -188,16 +188,6 @@ public class PushFragment extends Fragment implements FragmentReceiver {
         }
     }
 
-    @Override
-    public void notifyFragment(Context context, Object object) {
-
-    }
-
-    @Override
-    public void loadDataError(String message) {
-
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

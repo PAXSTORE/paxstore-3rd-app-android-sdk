@@ -25,10 +25,10 @@ Integrate with this function only need to call initInquirer() after you init Sto
         @Override
         public void onCreate() {
             super.onCreate();
-            initPaxStoreSdk();  //Initializing AppKey，AppSecret
+            initStoreSdk();  //Initializing AppKey，AppSecret
         }
 
-         private void initPaxStoreSdk() {
+         private void initStoreSdk() {
                 //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
               StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
                   @Override
@@ -40,7 +40,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
                   @Override
                   public void initFailed(RemoteException e) {
                       Log.i(TAG, "initFailed: "+e.getMessage());
-                      Toast.makeText(getApplicationContext(), "Cannot get API URL from PAXSTORE, Please install PAXSTORE first.", Toast.LENGTH_LONG).show();
+                      Toast.makeText(getApplicationContext(), "Cannot get API URL from STORE client, Please install STORE client first.", Toast.LENGTH_LONG).show();
                   }
               });
             }

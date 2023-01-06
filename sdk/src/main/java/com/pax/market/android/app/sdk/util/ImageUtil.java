@@ -30,7 +30,7 @@ public class ImageUtil {
 
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(spath, false));
-            photo.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            photo.compress(Bitmap.CompressFormat.PNG, 100, bos);
             bos.flush();
             bos.close();
         } catch (Exception e) {
