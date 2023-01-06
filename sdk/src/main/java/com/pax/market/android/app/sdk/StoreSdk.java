@@ -1,27 +1,26 @@
 package com.pax.market.android.app.sdk;
 
+import static android.content.ContentValues.TAG;
+import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST;
+
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
 
 import com.pax.market.android.app.sdk.dto.DcUrlInfo;
-import com.pax.market.android.app.sdk.dto.LocationInfo;
 import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
-import com.pax.market.android.app.sdk.util.ActivateApiStrategy;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.check.CheckServiceApi;
+import com.pax.market.api.sdk.java.api.sync.CloudMessageApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
-import com.pax.market.api.sdk.java.api.sync.SyncApi;
-import com.pax.market.api.sdk.java.api.sync.SyncMsgTagApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
@@ -34,9 +33,6 @@ import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
-import static android.content.ContentValues.TAG;
-import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST;
 
 /**
  * Created by zhangchenyang on 2018/5/23.
@@ -52,17 +48,22 @@ public class StoreSdk {
     private static final String URI_PREFIX = "market://detail?id=%s";
     private static volatile StoreSdk instance;
     private ParamApiStrategy paramApi;
-    private SyncApi syncApi;
+    private SyncApiStrategy syncApi;
     private GoInsightApi goInsightApi;
-    private SyncMsgTagApi syncMsgTagApi;
+    private CloudMessageApi cloudMessageApi;
     private UpdateApi updateApi;
     private CheckServiceApi checkServiceApi;
-    private ActivateApiStrategy activateApi;
-    private Context context;
 
     private Semaphore semaphore;
-    private String appKey;
-    private String appSecret;
+
+
+     public Context context;
+     public String appKey;
+     public String appSecret;
+     public String url;
+     public String terminalModel;
+     public String terminalSn;
+
 
     public StoreSdk() {
         semaphore = new Semaphore(2);
@@ -79,6 +80,24 @@ public class StoreSdk {
         return instance;
     }
 
+//    //StoreSdk.getInstance().activateApi().initByTID
+//    public static StoreSdk getInstance(String type, Context context) {
+//
+//        ClassLoader cl = context.getClassLoader();
+//        StoreSdk storeSdk = null;
+//        try {
+//            Class StroreSdkImpl = cl.loadClass("com.pax.api." + type);
+//            Method getInstance = StroreSdkImpl.getMethod("getInstance");
+//
+//            storeSdk = (StoreSdk) getInstance.invoke(StroreSdkImpl, url, appKey, appSecret, terminalSn);
+//
+//        } catch (Exception e) {
+//            Log.e(TAG, "e: " + e);
+//        }
+//
+//        return storeSdk;
+//    }
+
     /**
      * Init StoreSdk
      *
@@ -90,7 +109,7 @@ public class StoreSdk {
     public void init(final Context context, final String appKey, final String appSecret,
                      final BaseApiService.Callback callback) throws NullPointerException {
         if (paramApi == null && syncApi == null && updateApi == null && checkServiceApi == null
-                && activateApi == null && syncMsgTagApi == null && semaphore.availablePermits() != 1) {
+                 && cloudMessageApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
             this.context = context;
             this.appKey = appKey;
@@ -105,9 +124,13 @@ public class StoreSdk {
                     new BaseApiService.ApiCallBack() {
 
                         @Override
-                        public void initSuccess(String apiUrl, String terminalSn, String model) {
+                        public void initSuccess(String apiUrl, String sn, String model) {
+                            url = apiUrl;
+                            terminalModel = model;
+                            terminalSn = sn;
+
                             clearLastUrl(context);
-                            initApi(context, apiUrl, appKey, appSecret, terminalSn, model, BaseApiService.getInstance(context));
+                            initApi(context, apiUrl, appKey, appSecret, sn, BaseApiService.getInstance(context));
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -150,30 +173,12 @@ public class StoreSdk {
     }
 
     /**
-     * Get activateApi instance
-     *
-     * @return
-     * @throws NotInitException
-     */
-    public ActivateApiStrategy activateApi() throws NotInitException {
-        if (activateApi == null) {
-            acquireSemaphore();
-            if (activateApi == null) {
-                throw new NotInitException("Not initialized");
-            }
-        }
-        activateApi.setBaseUrl(getDcUrl(context, activateApi.getBaseUrl(), true));
-        activateApi.setProxyDelegate(BaseApiService.getInstance(context));
-        return activateApi;
-    }
-
-    /**
      * Get SyncApi instance
      *
      * @return
      * @throws NotInitException
      */
-    public SyncApi syncApi() throws NotInitException {
+    public SyncApiStrategy syncApi() throws NotInitException {
         if (syncApi == null) {
             acquireSemaphore();
             if (syncApi == null) {
@@ -234,21 +239,21 @@ public class StoreSdk {
     }
 
     /**
-     * Get SyncMsgTabApi instance
+     * Get CloudMessageApi instance
      *
      * @return
      * @throws NotInitException
      */
-    public SyncMsgTagApi syncMsgTabApi() throws NotInitException {
-        if (syncMsgTagApi == null) {
+    public CloudMessageApi cloudMessageApi() throws NotInitException {
+        if (cloudMessageApi == null) {
             acquireSemaphore();
-            if (syncMsgTagApi == null) {
+            if (cloudMessageApi == null) {
                 throw new NotInitException("Not initialized");
             }
         }
-        syncMsgTagApi.setBaseUrl(getDcUrl(context, syncMsgTagApi.getBaseUrl(), false));
-        syncMsgTagApi.setProxyDelegate(BaseApiService.getInstance(context));
-        return syncMsgTagApi;
+        cloudMessageApi.setBaseUrl(getDcUrl(context, cloudMessageApi.getBaseUrl(), false));
+        cloudMessageApi.setProxyDelegate(BaseApiService.getInstance(context));
+        return cloudMessageApi;
     }
 
     /**
@@ -258,8 +263,8 @@ public class StoreSdk {
      * @return
      */
     public boolean checkInitialization() {
-        if (paramApi != null && syncApi != null && updateApi != null && activateApi != null
-            && checkServiceApi != null && syncMsgTagApi != null) {
+        if (paramApi != null && syncApi != null && updateApi != null
+            && checkServiceApi != null && cloudMessageApi != null) {
             return true;
         }
         return false;
@@ -339,19 +344,18 @@ public class StoreSdk {
      * @param appSecret
      * @param terminalSerialNo
      */
-    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, String model, ProxyDelegate proxyDelegate) {
+    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
         paramApi = new ParamApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
-        syncApi = new SyncApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        syncApi = new SyncApiStrategy(context,apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         checkServiceApi = new CheckServiceApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
-        activateApi = new ActivateApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo, model == null ? "" : model).setProxyDelegate(proxyDelegate);
-        syncMsgTagApi = new SyncMsgTagApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        cloudMessageApi = new CloudMessageApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 
     /**
-     * To retrieve the base terminal info from PAXSTORE Client.
-     * Required: PAXSTORE client version 6.1 and above
+     * To retrieve the base terminal info from STORE client.
+     * Required: STORE client version 6.1 and above
      *
      * @param context
      * @param callback refer to BaseApiService.ICallBack, you need to handle onSuccess and OnError method. when onSuccess, will return a TerminalInfo DTO as result.
@@ -403,7 +407,7 @@ public class StoreSdk {
     }
 
     /**
-     * open PAXSTORE's download page
+     * open STORE client's download page
      *
      * @param packageName your app packagename
      * @param context
@@ -422,7 +426,7 @@ public class StoreSdk {
     }
 
     /**
-     * Get PAXSTORE PUSH online status.
+     * Get STORE client PUSH online status.
      *
      * @param context
      * @return
@@ -438,7 +442,6 @@ public class StoreSdk {
         }
         PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_ONLINE_STATUS_TIME, System.currentTimeMillis());
 
-        //对location表进行操作
         // 和上述类似,只是URI需要更改,从而匹配不同的URI CODE,从而找到不同的数据资源
         Uri uri_online_status = Uri.parse("content://com.pax.market.android.app/online_status");
         // 获取ContentResolver
@@ -466,69 +469,12 @@ public class StoreSdk {
         return onlineStatusInfo;
     }
 
-    public interface LocationCallBack {
-        void onLocationRetured(LocationInfo locationInfo);
-    }
-
     /**
      * callback of update inquirer {@link #initInquirer}
      * this method will tell store app that whether your app can be updated.
      */
     public interface Inquirer {
         boolean isReadyUpdate();
-    }
-
-    /**
-     * Get location from PAXSTORE. （from provider)
-     * if can not get loation from provider, get location from old service.
-     *
-     * @param context
-     * @param locationCallback
-     */
-    public void startLocate(Context context, LocationService.LocationCallback locationCallback) {
-        LocationInfo locationInfo = new LocationInfo();
-        long lastSdkLocateTime = PreferencesUtils.getLong(context, CommonConstants.SP_LAST_GET_LOCATION_TIME, 0L);
-        if (System.currentTimeMillis() - lastSdkLocateTime < 1000L) { //Ignore call within 1 second
-            locationInfo.setBusinessCode(QueryResult.GET_LOCATION_TOO_FAST.getCode());
-            locationInfo.setMessage(QueryResult.GET_LOCATION_TOO_FAST.getMsg());
-            locationCallback.locationResponse(locationInfo);
-            Log.w("StoreSdk", QueryResult.GET_LOCATION_TOO_FAST.getMsg());
-            return;
-        }
-
-        PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_LOCATION_TIME, System.currentTimeMillis());
-
-        Uri uri_location = Uri.parse("content://com.pax.market.android.app/location");
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(uri_location, null, null, null, null);
-        if (cursor == null) {
-            LocationService.setCallback(locationCallback);
-            Intent intent = new Intent(context, LocationService.class);
-            intent.setPackage(BuildConfig.APPLICATION_ID);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent);
-            } else {
-                context.startService(intent);
-            }
-            return;
-        } else {
-            while (cursor.moveToNext()) {
-                System.out.println("query job:" + cursor.getInt(0) + " " + cursor.getString(1)
-                        + " " + cursor.getString(2) + " " + cursor.getString(3) + " " + cursor.getString(4)
-                        + " " + cursor.getString(5));
-                locationInfo.setBusinessCode(cursor.getInt(0));
-                locationInfo.setMessage(cursor.getString(1));
-                locationInfo.setLongitude(cursor.getString(2));
-                locationInfo.setLatitude(cursor.getString(3));
-                locationInfo.setAccuracy(cursor.getString(4));
-                Long lastLocateTime = (cursor.getString(5) != null ?
-                        Long.valueOf(cursor.getString(5)) : null);
-                locationInfo.setLastLocateTime(lastLocateTime);
-            }
-            cursor.close();
-
-            locationCallback.locationResponse(locationInfo);
-        }
     }
 
     public MediaMesageInfo getMediaMessage(Context context) {

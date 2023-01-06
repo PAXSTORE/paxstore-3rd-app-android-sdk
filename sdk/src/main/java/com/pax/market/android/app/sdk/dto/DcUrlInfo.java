@@ -13,6 +13,8 @@ public class DcUrlInfo implements Parcelable {
     private int businessCode;
     private String message;
     private String staticUrl;
+    private String terminalCert;
+    private String certSn;
 
     public DcUrlInfo() {
     }
@@ -23,7 +25,8 @@ public class DcUrlInfo implements Parcelable {
         businessCode = in.readInt();
         message = in.readString();
         staticUrl = in.readString();
-
+        terminalCert = in.readString();
+        certSn = in.readString();
     }
 
     @Override
@@ -33,7 +36,8 @@ public class DcUrlInfo implements Parcelable {
         dest.writeInt(businessCode);
         dest.writeString(message);
         dest.writeString(staticUrl);
-
+        dest.writeString(terminalCert);
+        dest.writeString(certSn);
     }
 
     @Override
@@ -94,6 +98,22 @@ public class DcUrlInfo implements Parcelable {
         this.staticUrl = staticUrl;
     }
 
+    public String getTerminalCert() {
+        return terminalCert;
+    }
+
+    public void setTerminalCert(String terminalCert) {
+        this.terminalCert = terminalCert;
+    }
+
+    public String getCertSn() {
+        return certSn;
+    }
+
+    public void setCertSn(String certSn) {
+        this.certSn = certSn;
+    }
+
     @Override
     public String toString() {
         return "DcUrlInfo{" +
@@ -102,6 +122,8 @@ public class DcUrlInfo implements Parcelable {
                 ", businessCode=" + businessCode +
                 ", message='" + message + '\'' +
                 ", staticUrl='" + staticUrl + '\'' +
+                ", terminalCert='" + (terminalCert != null ? "not null" : "null") + '\'' +
+                ", certSn='" + (certSn != null ? "not null" : "null") + '\'' +
                 '}';
     }
 }

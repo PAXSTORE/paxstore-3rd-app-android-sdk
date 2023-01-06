@@ -9,8 +9,10 @@
     <uses-permission android:name="com.market.android.app.OPEN_DOWNLOAD_LIST" />
     <uses-permission android:name="com.market.android.app.ONLINE_LOCATION" />
     <uses-permission android:name="com.market.android.app.SN_HOST" />
-    <uses-permission android:name="com.market.android.app.OLD_LOCATION" />
-    <uses-permission android:name="com.market.android.app.TERMINAL_INFO" />
+
+
+<!--    <uses-permission android:name="com.market.android.app.OLD_LOCATION" />-->
+<!--    <uses-permission android:name="com.market.android.app.TERMINAL_INFO" />-->
     <!--    END  -->
 
 
@@ -24,7 +26,6 @@
                 <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
             </intent-filter>
         </service>
-         <service android:name=".LocationService" />
 
         <receiver android:name=".DownloadParamReceiver"
             android:permission="com.market.android.app.sdk.DOWNLOAD_PARAM_BD"
@@ -60,6 +61,11 @@
         <!-- Add below meta-data to indicate that this sdk support multi-dis env -->
         <meta-data android:name="DIS_SUPPORTED"
             android:value="true"/>
+
+
+        <!-- Add below meta-data to support GoInsight -->
+        <meta-data android:name="STORE_SDK_VERSION"
+            android:value="${versionName}"/>
     </application>
 
 </manifest>

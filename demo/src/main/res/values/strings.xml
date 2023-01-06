@@ -7,15 +7,16 @@
     <string name="label_no_data">No Data</string>
     <string name="label_function">Function</string>
     <string name="label_trading_status">App ready to be updated</string>
-    <string name="label_open_paxstore_client">View app detail from PAXSTORE client</string>
+    <string name="label_open_paxstore_client">View app detail from STORE client</string>
     <string name="label_version_text">Current version: </string>
     <string name="label_copyright_text">Copyright @ 2018 PAX All Rights Reserved</string>
-    <string name="label_ready_to_update">App could be updated by PAXSTORE app now.</string>
-    <string name="label_not_ready_to_update">App is busy, can not be updated by PAXSTORE app now.</string>
+    <string name="label_ready_to_update">App could be updated by STORE app now.</string>
+    <string name="label_not_ready_to_update">App is busy, can not be updated by STORE app now.</string>
     <string name="label_retrieveTerminalInfo">Retrieve Terminal Info</string>
+    <string name="label_retrieveMerchantInfo">Retrieve Merchant Info</string>
     <string name="label_button_retrieve">Retrieve</string>
     <string name="label_check_update">Check update</string>
-    <string name="open_download_page_from_paxstore_client">Open download page from PAXSTORE client</string>
+    <string name="open_download_page_from_paxstore_client">Open download page from STORE client</string>
     <string name="get_last_success_param">Get last success parameter</string>
     <string name="get_terminal_location">Retrieve Terminal Location</string>
 

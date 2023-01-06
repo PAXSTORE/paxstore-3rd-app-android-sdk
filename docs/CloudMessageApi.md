@@ -1,11 +1,11 @@
-# SyncMsgTagApi
+# CloudMessageApi
 
-com.pax.market.api.sdk.java.api.sync.SyncMsgTagApi, extends BaseApi
+com.pax.market.api.sdk.java.api.sync.CloudMessageApi, extends BaseApi
 
-### Constructors of SyncMsgTagApi
+### Constructors of  CloudMessageApi
 
 ```java
- public SyncMsgTagApi(String baseUrl, String appKey, String appSecret, String terminalSN) {
+ public CloudMessageApi(String baseUrl, String appKey, String appSecret, String terminalSN) {
         super(baseUrl, appKey, appSecret, terminalSN);
  }
 ```

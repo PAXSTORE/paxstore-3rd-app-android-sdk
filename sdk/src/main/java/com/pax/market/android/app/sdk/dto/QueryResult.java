@@ -9,11 +9,14 @@ public enum QueryResult {
     SUCCESS(0, "success"),
     GET_LOCATION_FAILED(-1, "Get location failed"),
     INIT_LOCATIONMANAGER_FAILED(-2, "Init LocationManager failed"),
-    GET_INFO_NOT_ALLOWED(-3, "Not allowed to get terminal information from PAXSTORE"),
+    GET_INFO_NOT_ALLOWED(-3, "Not allowed to get terminal information from STORE client"),
     GET_LOCATION_TOO_FAST(-4, "Get location too fast"),
     PUSH_NOT_ENABLED(-5, "Push not enabled"),
     QUERY_FROM_CONTENT_PROVIDER_FAILED(-6, "Query failed"),
     GET_ONLINE_STATUS_TOO_FAST(-7, "Get online status too fast"),
+    GET_MERCHANT_TOO_FAST(-8, "Get merchant too fast"),
+    PERMISSION_NOT_REQUESTED(-9, "Please request permission in Androidmanifest.xml first:"),
+
     UNKNOWN(-10, "unknown");
 
     private final String msg;
