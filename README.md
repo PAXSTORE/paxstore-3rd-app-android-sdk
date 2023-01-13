@@ -36,7 +36,7 @@ Gradle:
     implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.7.0'
 ```
 
-##### Tips: For apps that are not used in PAX terminals, you need to make sure you are using PAXSTORE client version at least V8.4.0. Otherwise you should use [V8.2.3](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/tree/v8.2.3)
+##### Tips: In the near future, our platform will only support applications integrated with sdk version v8.7.0 or higher. Please upgrade the sdk to the latest version as soon as possible
 
 
 ## Permissions
