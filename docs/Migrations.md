@@ -1,5 +1,10 @@
 # Migrations
 
+### Migration to 8.7.0
+When you encounter the error "duplicate class INotificationSideChannel", or you are using "com.android.support:appcompat-xxx", then it's time for you to migrate your project to AndroidX now. AndroidX replaces the original support library APIs with packages in the androidx namespace. Only the package and Maven artifact names changed; class, method, and field names did not change.
+
+For faster and safer migration, you can refer to this [migration article](https://developer.android.com/jetpack/androidx/migrate) to get more details.
+
 ### Migration to 8.0.1
 <font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Jitpack center, please update your gradle to integrate with our latest sdk.**
 </font>
