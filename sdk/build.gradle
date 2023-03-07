@@ -13,6 +13,8 @@ android {
 
         manifestPlaceholders = [versionName : "${version}"]
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        // add sdk proguard to aar
+        consumerProguardFiles 'proguard-rules.pro'
     }
     buildTypes {
         release {

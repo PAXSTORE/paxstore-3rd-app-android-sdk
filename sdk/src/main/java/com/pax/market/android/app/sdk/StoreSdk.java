@@ -80,23 +80,6 @@ public class StoreSdk {
         return instance;
     }
 
-//    //StoreSdk.getInstance().activateApi().initByTID
-//    public static StoreSdk getInstance(String type, Context context) {
-//
-//        ClassLoader cl = context.getClassLoader();
-//        StoreSdk storeSdk = null;
-//        try {
-//            Class StroreSdkImpl = cl.loadClass("com.pax.api." + type);
-//            Method getInstance = StroreSdkImpl.getMethod("getInstance");
-//
-//            storeSdk = (StoreSdk) getInstance.invoke(StroreSdkImpl, url, appKey, appSecret, terminalSn);
-//
-//        } catch (Exception e) {
-//            Log.e(TAG, "e: " + e);
-//        }
-//
-//        return storeSdk;
-//    }
 
     /**
      * Init StoreSdk
@@ -280,7 +263,7 @@ public class StoreSdk {
      * So we add these method to hold the api call, until {@link #init} get
      * a result or timeout after 5 seconds.
      */
-    private void acquireSemaphore() {
+    public void acquireSemaphore() {
         try {
             logger.debug("acquireSemaphore api try acquire 2");
             Long startTime = System.currentTimeMillis();
