@@ -67,6 +67,9 @@
 -dontwarn com.pax.market.api.sdk.java.base.dto.**
 -keep class com.pax.market.api.sdk.java.base.dto.**{*;}
 -keep class com.pax.market.api.sdk.java.api.sync.dto.**{*;}
+-keep class com.pax.market.android.app.sdk.NotificationMessage { *; }
+-keep class com.pax.market.android.app.sdk.CloudMessage { *; }
+-keep class com.pax.market.android.app.sdk.dto.**{*;}
 
 #default
 -keep public class * extends android.app.Activity
