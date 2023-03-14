@@ -33,7 +33,7 @@ Gradle:
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.7.0'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:8.7.1'
 ```
 
 ##### Tips: In the near future, our platform will only support applications integrated with sdk version v8.7.0 or higher. Please upgrade the sdk to the latest version as soon as possible
@@ -47,9 +47,7 @@ PAXSTORE Android SDK need the following permissions, please add them in AndroidM
 `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
 
 ## ProGuard
-If you are using [ProGuard](https://www.guardsquare.com/en/products/proguard/manual) in your project add the following lines to your configuration:
-
-Please check the our [proguard-rules.pro](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/demo/proguard-rules.pro)
+The specific rules are [already bundled](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/sdk/proguard-rules.pro) into the aar, which can be interpreted automatically.
 
 ## Set Up
 
