@@ -48,7 +48,7 @@ Integrate with this function only need to call initInquirer() after you init Sto
 
          private void initInquirer() {
                 //todo Init checking of whether app can be updated
-                StoreSdk.initInquirer(new StoreSdk.Inquirer() {
+                StoreSdk.getInstance().initInquirer(new StoreSdk.Inquirer() {
                     @Override
                     public boolean isReadyUpdate() {
                         Log.i(TAG, "call business function....isReadyUpdate = " + !isTrading());

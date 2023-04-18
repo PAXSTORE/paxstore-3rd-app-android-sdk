@@ -5,6 +5,7 @@ By integrating with this function, admin can dilivery parameters to the applicat
 ### 1: Below two steps can save like 15 hours in average( Do not skip this!!!)
 1. Check the appKey and appSecret that are the same with the web, and check again, and again, three times should be fine.
 2. Check the apk you installed on the terminal matches the packageName and versionCode that you uploaded to PAXSTORE developer center,  and check again, and again.
+3. Pay attention to the versionCode to the api downloadParamToPath(), the versionCode is your app's versionCode, do not input it with the sdk's versionCode!
 
 Now you can go through below contents.
 
@@ -32,7 +33,7 @@ Download params in your IntentService. see [DownloadParamService.java](../demo/s
         //todo Call this method to download into your specific directory, you can add some log here to monitor
         DownloadResultObject downloadResult = null;
         try {
-            downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(), BuildConfig.VERSION_CODE, saveFilePath);
+            downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(), "The versionCode of your app", saveFilePath);
         } catch (NotInitException e) {
             Log.e(TAG, "e:" + e);
         }

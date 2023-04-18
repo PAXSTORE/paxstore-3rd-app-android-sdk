@@ -190,15 +190,6 @@ The terminal online status info, the structure shows below
 | -------- | ------- | -------------------------------------- |
 | online   | boolean | The PAXSTORE online push online status |
 
-### Get location from PAXSTORE.
-
-```java
-// Deprecated
-public void startLocate(Context context, LocationService.LocationCallback locationCallback) {...}
-// usage
-StoreSdk.getInstance().syncApi().getLocate();
-```
-
 Parse xml file. Only support when the xml is the type of HashMap.
 
       LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamJsonWithOrder(parameterFile);
@@ -207,18 +198,6 @@ Parse json file. Only support when the json is the type of HashMap.
 
       LinkedHashMap<String, String> resultMap = StoreSdk.getInstance().paramApi().parseDownloadParamXmlWithOrder(parameterFile);
 
-
-### QueryResult
-
-| code | message                     | Description                        |
-| ---- | --------------------------- | ---------------------------------- |
-| 0    | success                     | success                            |
-| -1   | Get location failed         | Get location failed                |
-| -2   | Init LocationManager failed | Init LocationManager failed        |
-| -3   | Not allowed                 | Get info not allowed               |
-| -4   | Get location too fast       | Get location too fast              |
-| -5   | Push not enabled            | Push not enabled                   |
-| -6   | Query failed                | Query from content provider failed |
 
 ### Other object
 
