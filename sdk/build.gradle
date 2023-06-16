@@ -46,7 +46,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
     implementation 'com.google.code.gson:gson:2.9.0'
 
-    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:8.8.0'
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:8.7.2-SNAPSHOT'
 
 //    test
     implementation 'commons-io:commons-io:2.7'
