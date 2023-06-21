@@ -18,7 +18,6 @@ new Thread(new Runnable() {
     public void run() {
     	ServiceAvailableObject serviceAvailableObject = null;
     	try {
-            
             serviceAvailableObject = 		      StoreSdk.getInstance().checkServiceApi().checkServiceAvailable(CheckServiceApi.ServiceType.LAUNCHER_UP);
             if (serviceAvailableObject.getBusinessCode() == 0) {
                 Log.d(TAG, "serviceAvailableObject.isServiceAvailable():" + serviceAvailableObject.isServiceAvailable());
