@@ -19,7 +19,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import androidx.core.app.NotificationCompat;
+
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -68,6 +70,8 @@ public final class Notifications {
             String channelName = "Cloud message";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_CLOUD_MSG, channelName, importance);
+            // 设置默认通知铃声
+            channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), null);
             nm.createNotificationChannel(channel);
         }
         return this;
@@ -201,16 +205,21 @@ public final class Notifications {
                                String ticker, String title, String content, int number) {
 
         long when = System.currentTimeMillis();
-
-        return new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(smallIcon)
-                .setContent(customContentView == null ? getDefaultContentView(title, content, when) : customContentView)
+        Notification.Builder mBuilder;
+        if (Build.VERSION.SDK_INT >= 26) {
+            mBuilder = new Notification.Builder(context, channelId);
+            mBuilder.setCustomContentView(customContentView == null ? getDefaultContentView(title, content, when) : customContentView);
+        } else {
+            mBuilder = new Notification.Builder(context);
+            mBuilder.setContent(customContentView == null ? getDefaultContentView(title, content, when) : customContentView)
+                    .setDefaults(defaults);
+        }
+        return mBuilder.setSmallIcon(smallIcon)
                 .setTicker(ticker)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(cancelIntent)
                 .setAutoCancel(autoCancel)
                 .setOnlyAlertOnce(alertOnce)
-                .setDefaults(defaults)
                 .setWhen(when)
                 .setNumber(number)
                 .build();
