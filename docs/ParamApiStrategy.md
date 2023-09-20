@@ -81,8 +81,8 @@ public DownloadResultObject downloadParamFileOnly(ParamObject paramObject, Strin
 ### Get last success param
 
 ```
- public ParamObject getLastSuccessParm()
- public ParamObject getLastSuccessParm(String paramTemplateName)
+ public ParamObject getLastSuccessParam()
+ public ParamObject getLastSuccessParam(String paramTemplateName)
 ```
 
 | Parameter    | Type        | Description                                                  |
@@ -155,3 +155,28 @@ Parse the downloaded parameter xml file, convert the xml elements to LinkedHashM
 ```
 public LinkedHashMap<String,String> parseDownloadParamXmlWithOrder(File file) throws ParseXMLException {...}
 ```
+
+### Download param files with SHA256 check
+
+Download the parameters to the directory you specified and perform SHA256 verification.
+
+```
+public DownloadResultObject downloadParamToPathWithSHA256Check(String packageName, int versionCode, String saveFilePath)
+```
+
+| Parameter    | Type   | Description                             |
+| ------------ | ------ | --------------------------------------- |
+| packageName  | String | Your app package name                        |
+| versionCode  | String | Your app version code                        |
+| savaFilePath | String | The path that param files will be saved |
+
+
+```
+public DownloadResultObject downloadLastSuccessWithShaCheck(String saveFilePath)
+public DownloadResultObject downloadLastSuccessWithShaCheck(String saveFilePath, String paramTemplateName)
+```
+
+| Parameter    | Type        | Description                                                  |
+| ------------ | ----------- | ------------------------------------------------------------ |
+| savaFilePath | String | The path that param files will be saved |
+| paramTemplateName | String | This name of param template |
