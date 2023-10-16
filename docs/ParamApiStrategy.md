@@ -172,8 +172,8 @@ public DownloadResultObject downloadParamToPathWithSHA256Check(String packageNam
 
 
 ```
-public DownloadResultObject downloadLastSuccessWithShaCheck(String saveFilePath)
-public DownloadResultObject downloadLastSuccessWithShaCheck(String saveFilePath, String paramTemplateName)
+public DownloadResultObject downloadLastSuccessWithSha256Check(String saveFilePath)
+public DownloadResultObject downloadLastSuccessWithSha256Check(String saveFilePath, String paramTemplateName)
 ```
 
 | Parameter    | Type        | Description                                                  |

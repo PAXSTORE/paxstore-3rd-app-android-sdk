@@ -19,7 +19,7 @@ public class ParamApiStrategy extends ParamApi {
         this.context = context;
     }
 
-    public DownloadResultObject downloadParamToPathWithCheck(String packageName, int versionCode, String saveFilePath) {
+    public DownloadResultObject downloadParamToPathWithSHA256Check(String packageName, int versionCode, String saveFilePath) {
         return downloadParams(packageName, versionCode, saveFilePath, true);
     }
 
