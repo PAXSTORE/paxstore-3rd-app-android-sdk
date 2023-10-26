@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ *******************************************************************************
+  ~ COPYRIGHT
+  ~               PAX TECHNOLOGY, Inc. PROPRIETARY INFORMATION
+  ~   This software is supplied under the terms of a license agreement or
+  ~   nondisclosure agreement with PAX  Technology, Inc. and may not be copied
+  ~   or disclosed except in accordance with the terms in that agreement.
+  ~
+  ~      Copyright (C) 2017 PAX Technology, Inc. All rights reserved.
+  ~ *******************************************************************************
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        tools:text="This is title"
+        android:textColor="@color/notification_text_color"
+        android:textAppearance="@android:style/TextAppearance.StatusBar.EventContent.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tv_time"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginTop="6dp"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:textColor="@color/notification_text_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_title"
+        android:layout_alignParentEnd="true"
+        tools:text="2019-12-18"
+        android:layout_marginEnd="16dp"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:textColor="@color/notification_text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="this is a very long content this is a very long content this is a very long content this is a very long content this is a very long content this is a very long content this is a very long content this is a very long content this is a very long content "
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginBottom="4dp"
+        android:textSize="12sp" />
+
+</RelativeLayout>
