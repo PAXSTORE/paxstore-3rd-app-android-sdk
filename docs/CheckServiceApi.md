@@ -10,29 +10,19 @@ public CheckServiceApi(String baseUrl, String appKey, String appSecret, String t
 }
 ```
 
+### Constructor parameters description
+
+| Parameter  | Type   | Description     |
+| ---------- | ------ | --------------- |
+| baseUrl    | String | The base url    |
+| appKey     | String | The app key     |
+| appSecret  | String | The app secret  |
+| terminalSN | String | The terminal SN |
+
 ### Check if the service is available
 
 ```
-// api
-public ServiceAvailableObject checkServiceAvailable(ServiceType serviceType) {...}
-// usage
-new Thread(new Runnable() {
-          @Override
-          public void run() {
-              ServiceAvailableObject serviceAvailableObject = null;
-              try {
-                            serviceAvailableObject = StoreSdk.getInstance().checkServiceApi().checkServiceAvailable(CheckServiceApi.ServiceType.LAUNCHER_UP);
-                           if (serviceAvailableObject.getBusinessCode() == 0) {
-                               Log.d(TAG, "serviceAvailableObject.isServiceAvailable():" + serviceAvailableObject.isServiceAvailable());
-                           } else {
-                               Log.d(TAG, "serviceAvailableObject.getBusinessCode():" + serviceAvailableObject.getBusinessCode());
-                               Log.d(TAG, "serviceAvailableObject.getMessage():" + serviceAvailableObject.getMessage());
-                           }
-                        } catch (NotInitException e) {
-                            Log.e(TAG, "e:" + e);
-                        }
-          }
-      }).start();
+public ServiceAvailableObject checkServiceAvailable(ServiceType serviceType)
 ```
 
 | Parameter   | Type   | Description             |
@@ -44,3 +34,17 @@ new Thread(new Runnable() {
 | Value | Description |
 |:---- |:----|
 |LAUNCHER_UP|the CheckUp service|
+
+### Check if the Solution App is available
+
+```
+public ServiceAvailableObject checkSolutionAppAvailable()
+```
+
+**com.pax.market.api.sdk.java.base.dto.ServiceAvailableObject**
+
+The ServiceAvailableObject extends SdkObject
+
+| Property         | Type    | Description                                                  |
+| ---------------- | ------- | ------------------------------------------------------------ |
+| serviceAvailable | Boolean | The serviceAvailable indicates whether the application is available |

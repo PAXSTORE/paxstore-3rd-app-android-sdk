@@ -12,7 +12,7 @@ Refer to the [SetUp](../README.md)
                   android:value="true"/>
 
 ### 3.Upload BizData Sample
-Attention: If you upload failed, you need to apply your own strategy to upload it again.
+_**:red_square::red_square::red_square: Attention: If the upload fails, you need to apply your own strategy to upload it again.**_
 
         // You have to create dataSet in GoInsight, and each key you uploaded should exists in dataSet.
         // You will find how to create dataSet in our GoInsight document.
@@ -32,9 +32,15 @@ Attention: If you upload failed, you need to apply your own strategy to upload i
 
                 try {
                     SdkObject sdkObject = StoreSdk.getInstance().goInsightApi().syncTerminalBizData(list);
-                    Log.e("GoInsightSample", "message: " + sdkObject.getMessage() + "  code: " + sdkObject.getBusinessCode());
+                    if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                        // handle success logic               
+                    } else {
+                        // please try uploading the data again using your own strategy.
+                        // We strongly recommend that you address the issue of data upload failure, 
+                        // which may occur due to network or other issues, to prevent you from losing important data.
+                    }          
                 } catch (NotInitException e) {
-                    Log.e("MainActivity", "e:" + e);
+                       Log.e("MainActivity", "e:" + e);
                 }
             }
         }

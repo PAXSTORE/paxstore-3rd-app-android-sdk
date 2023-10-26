@@ -31,6 +31,7 @@ import com.pax.market.api.sdk.java.base.dto.LocationObject;
 import com.pax.market.api.sdk.java.base.dto.MerchantObject;
 import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
+import com.pax.market.api.sdk.java.base.dto.ServiceAvailableObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
@@ -64,7 +65,7 @@ public class APIFragment extends Fragment {
     private ListView tagListView;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag ,lvCheckSolution;
     private ImageView mImgRetrieve;
     private LinearLayout lvChildRetrieve;
     private Button getTerminalLocation, getOnlineStatus, getMerchantInfo; // todo remove
@@ -121,6 +122,7 @@ public class APIFragment extends Fragment {
         tagListView.setAdapter(cloudMsgTagAdapter);
 
         checkUpdate = (LinearLayout) view.findViewById(R.id.check_update);
+        lvCheckSolution =  (LinearLayout) view.findViewById(R.id.lv_check_solution);
         lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
         lvChildRetrieve = (LinearLayout) view.findViewById(R.id.lv_childs_retrieve);
         mImgRetrieve = (ImageView) view.findViewById(R.id.img_retrieve_data);
@@ -322,6 +324,45 @@ public class APIFragment extends Fragment {
                     mImgRetrieve.setImageResource(R.mipmap.list_btn_arrow_down);
                     lvChildRetrieve.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        lvCheckSolution.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress();
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final ServiceAvailableObject serviceAvailableObject = StoreSdk.getInstance().checkServiceApi().checkSolutionAppAvailable();
+                            Log.d(TAG, " checkSolutionAppAvailable() Result：:" + serviceAvailableObject.toString());
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String msg = "";
+                                    if (serviceAvailableObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        msg = "Get SolutionAppAvailable Result: ServiceAvailableObject{ " +
+                                                "businessCode = " + serviceAvailableObject.getBusinessCode() +
+                                                ", serviceAvailable = " + serviceAvailableObject.isServiceAvailable() +
+                                                " }";
+                                    } else {
+                                        msg = "Get SolutionAppAvailable Result: ServiceAvailableObject{ " +
+                                                "businessCode = " + serviceAvailableObject.getBusinessCode() +
+                                                ", message = " + serviceAvailableObject.getMessage() +
+                                                " }";
+                                    }
+                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                            showNotInitToast();
+                        }
+                        dismissLoadingDialog();
+                    }
+                }) ;
+                thread.start();
             }
         });
 
