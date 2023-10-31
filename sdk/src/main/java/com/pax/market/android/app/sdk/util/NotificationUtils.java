@@ -5,7 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
-import androidx.core.app.NotificationCompat;
 
 import com.pax.market.android.app.sdk.BuildConfig;
 import com.pax.market.android.app.sdk.R;
@@ -31,8 +30,7 @@ public class NotificationUtils {
             mChannel.enableVibration(false);
             notificationManager.createNotificationChannel(mChannel);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(service.getApplicationContext(), BuildConfig.APPLICATION_ID);
-            builder.setDefaults(Notification.DEFAULT_ALL);
+            Notification.Builder builder = new Notification.Builder(service.getApplicationContext(), BuildConfig.APPLICATION_ID);
             builder.setContentText(content);
             builder.setSmallIcon(smallIcon);
             builder.setAutoCancel(true);
@@ -58,8 +56,7 @@ public class NotificationUtils {
             mChannel.enableVibration(false);
             notificationManager.createNotificationChannel(mChannel);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(service.getApplicationContext(), BuildConfig.APPLICATION_ID);
-            builder.setDefaults(Notification.DEFAULT_ALL);
+            Notification.Builder builder = new Notification.Builder(service.getApplicationContext(), BuildConfig.APPLICATION_ID);
             builder.setContentText(content);
             builder.setSmallIcon(PreferencesUtils.getInt(service, SP_SMALL_LOGO_ICON, R.drawable.ic_notificaiton));
             builder.setAutoCancel(true);

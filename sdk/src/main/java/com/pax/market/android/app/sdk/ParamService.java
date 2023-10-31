@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 
 /**
@@ -31,7 +29,7 @@ public class ParamService extends IntentService {
     }
 
     @Override
-    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         NotificationUtils.showForeGround(this, "Param Service");
         return super.onStartCommand(intent, flags, startId);
     }
