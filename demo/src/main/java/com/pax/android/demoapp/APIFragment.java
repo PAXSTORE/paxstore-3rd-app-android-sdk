@@ -344,9 +344,15 @@ public class APIFragment extends Fragment {
                                 public void run() {
                                     String msg = "";
                                     if (serviceAvailableObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                                        msg = "Get SolutionAppAvailable Result:" + serviceAvailableObject;
+                                        msg = "Get SolutionAppAvailable Result: ServiceAvailableObject{ " +
+                                                "businessCode = " + serviceAvailableObject.getBusinessCode() +
+                                                ", serviceAvailable = " + serviceAvailableObject.isServiceAvailable() +
+                                                " }";
                                     } else {
-                                        msg = "Get SolutionAppAvailable Failed: " + serviceAvailableObject;
+                                        msg = "Get SolutionAppAvailable Result: ServiceAvailableObject{ " +
+                                                "businessCode = " + serviceAvailableObject.getBusinessCode() +
+                                                ", message = " + serviceAvailableObject.getMessage() +
+                                                " }";
                                     }
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }

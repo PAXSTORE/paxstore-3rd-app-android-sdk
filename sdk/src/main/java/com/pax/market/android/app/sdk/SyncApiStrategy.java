@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.sync.SyncApi;
@@ -56,7 +54,6 @@ public class SyncApiStrategy extends SyncApi {
         return responseObject;
     }
 
-    @Nullable
     private SdkObject checkPermission(String neededPermission) {
         SdkObject checkResult = null;
         boolean permissionRequested = false;

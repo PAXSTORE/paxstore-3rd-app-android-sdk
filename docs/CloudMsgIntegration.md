@@ -64,11 +64,12 @@ See [AdvertisementDialog](AdvertisementDialog.md)
         //The sdk will show notification for Cloud Messag, you can customized it.
               Notifications.I.init(getApplicationContext())
                 .setSmallIcon(R.drawable.logo_demo_white)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo_demo))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo_demo)) // If it is Android 12 or above, this will not take effect
                 .setOnlyAlertOnce(false)  // Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing.
                 .setAutoCancel(true)      // Setting this flag will make it so the notification is automatically canceled when the user clicks it in the panel. The PendingIntent set with setDeleteIntent will be broadcast when the notification is canceled
-                .setCustomContentView(yourCustomContentView);  // Supply a custom RemoteViews to use instead of the standard one
-
+                .setCustomContentView(yourCustomContentView)  // Supply a custom RemoteViews to use instead of the standard one.If it's Android 12 or above, this is the folded notification view
+                .setCustomBigContentView(yourCustomBigContentView); // Supply a custom RemoteViews to use instead of the expanded view(This is the expansion notification view for Android 12 and above)
+    
         //Or you can disable it.
         Notifications.I.setEnabled(false);
 
