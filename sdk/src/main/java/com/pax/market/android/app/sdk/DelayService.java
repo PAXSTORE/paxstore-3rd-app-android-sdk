@@ -8,8 +8,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 
 public class DelayService extends Service {
@@ -19,7 +17,6 @@ public class DelayService extends Service {
      * Ignore tasks within 5 seconds
      */
     private static final long TIME_FILTER = 5_000L;
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;

@@ -19,7 +19,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import androidx.core.app.NotificationCompat;
+
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -47,6 +49,7 @@ public final class Notifications {
     private boolean alertOnce;
     private boolean autoCancel;
     private RemoteViews customContentView;
+    private RemoteViews customBigContentView;
     public static final String CHANNEL_CLOUD_MSG = "channel_cloud_msg";
     private boolean enabled = true;
 
@@ -68,6 +71,8 @@ public final class Notifications {
             String channelName = "Cloud message";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_CLOUD_MSG, channelName, importance);
+            // 设置默认通知铃声
+            channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), null);
             nm.createNotificationChannel(channel);
         }
         return this;
@@ -145,6 +150,16 @@ public final class Notifications {
         return this;
     }
 
+    /**
+     * Supply a custom RemoteViews to use instead of the expanded view
+     * @param customBigContentView
+     * @return
+     */
+    public Notifications setCustomBigContentView(RemoteViews customBigContentView) {
+        this.customBigContentView = customBigContentView;
+        return this;
+    }
+
     public int notify(PushMessage message, String extraData) {
         if (message == null)
             return -1;
@@ -170,10 +185,12 @@ public final class Notifications {
         if (!StringUtils.isEmpty(extraData)) {
             clickIT.putExtra(EXTRA_MESSAGE_DATA, extraData);
         }
-        PendingIntent clickPI = PendingIntent.getBroadcast(context, 0, clickIT, PendingIntent.FLAG_UPDATE_CURRENT);//处理点击
+        PendingIntent clickPI = PendingIntent.getBroadcast(context, 0, clickIT,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);//处理点击
         Intent cancelIT = new Intent(ACTION_NOTIFICATION_CANCEL);
         cancelIT.putExtra(EXTRA_MESSAGE_NID, nid);
-        PendingIntent cancelPI = PendingIntent.getBroadcast(context, 0, cancelIT, 0);//处理滑动取消
+        PendingIntent cancelPI = PendingIntent.getBroadcast(context, 0, cancelIT,
+                PendingIntent.FLAG_IMMUTABLE);//处理滑动取消
         nm.notify(nid, build(clickPI, cancelPI, CHANNEL_CLOUD_MSG,
                 message.getTitle(),
                 message.getTitle(),
@@ -201,19 +218,48 @@ public final class Notifications {
                                String ticker, String title, String content, int number) {
 
         long when = System.currentTimeMillis();
-
-        return new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(smallIcon)
-                .setContent(customContentView == null ? getDefaultContentView(title, content, when) : customContentView)
+        Notification.Builder mBuilder;
+        if (Build.VERSION.SDK_INT > 30) {
+            mBuilder = new Notification.Builder(context, channelId);
+            mBuilder.setStyle(new Notification.DecoratedCustomViewStyle());
+            mBuilder.setCustomContentView(customContentView == null ? getNotificationContentView(
+                    R.layout.view_notificaiton_small, title, content, when) : customContentView);
+            mBuilder.setCustomBigContentView(customBigContentView == null ? getNotificationContentView(
+                    R.layout.view_notificaiton_no_icon, title, content, when) : customBigContentView);
+        } else if (Build.VERSION.SDK_INT >= 26) {
+            mBuilder = new Notification.Builder(context, channelId);
+            mBuilder.setCustomContentView(customContentView == null ? getDefaultContentView(title, content, when) : customContentView);
+        } else {
+            mBuilder = new Notification.Builder(context);
+            mBuilder.setContent(customContentView == null ? getDefaultContentView(title, content, when) : customContentView)
+                    .setDefaults(defaults);
+        }
+        return mBuilder.setSmallIcon(smallIcon)
                 .setTicker(ticker)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(cancelIntent)
                 .setAutoCancel(autoCancel)
                 .setOnlyAlertOnce(alertOnce)
-                .setDefaults(defaults)
                 .setWhen(when)
                 .setNumber(number)
                 .build();
+    }
+
+    /**
+     * 适配安卓12的展开和折叠两种视图
+     * @param viewId view Id
+     * @param title title
+     * @param content content
+     * @param when time
+     * @return
+     */
+    private RemoteViews getNotificationContentView(int viewId, String title, String content, long when) {
+        RemoteViews defaultContentView = new RemoteViews(context.getPackageName(), viewId);
+        defaultContentView.setTextViewText(R.id.tv_title, title);
+        defaultContentView.setTextViewText(R.id.tv_content, content);
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm", Locale.getDefault()) ;
+        defaultContentView.setTextViewText(R.id.tv_time, df.format(new Date(when)));
+        return defaultContentView;
     }
 
     private RemoteViews getDefaultContentView(String title, String content, long when) {

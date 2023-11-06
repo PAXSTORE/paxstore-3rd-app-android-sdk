@@ -27,6 +27,7 @@ import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.dto.LocationObject;
 import com.pax.market.api.sdk.java.base.dto.MerchantObject;
 import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
@@ -65,7 +66,7 @@ public class APIFragment extends Fragment {
     private ListView tagListView;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag ,lvCheckSolution;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag ,lvCheckSolution, lvGetLastSuccess;
     private ImageView mImgRetrieve;
     private LinearLayout lvChildRetrieve;
     private Button getTerminalLocation, getOnlineStatus, getMerchantInfo; // todo remove
@@ -123,6 +124,7 @@ public class APIFragment extends Fragment {
 
         checkUpdate = (LinearLayout) view.findViewById(R.id.check_update);
         lvCheckSolution =  (LinearLayout) view.findViewById(R.id.lv_check_solution);
+        lvGetLastSuccess = (LinearLayout) view.findViewById(R.id.lv_get_last_success);
         lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
         lvChildRetrieve = (LinearLayout) view.findViewById(R.id.lv_childs_retrieve);
         mImgRetrieve = (ImageView) view.findViewById(R.id.img_retrieve_data);
@@ -351,6 +353,41 @@ public class APIFragment extends Fragment {
                                                 "businessCode = " + serviceAvailableObject.getBusinessCode() +
                                                 ", message = " + serviceAvailableObject.getMessage() +
                                                 " }";
+                                    }
+                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                            showNotInitToast();
+                        }
+                        dismissLoadingDialog();
+                    }
+                }) ;
+                thread.start();
+            }
+        });
+
+        lvGetLastSuccess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress();
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String saveFilePath = getActivity().getFilesDir() + "/YourPath/";
+                            DownloadResultObject downloadResultObject = StoreSdk.getInstance().paramApi().downloadLastSuccessParamToPath(saveFilePath);
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String msg = "";
+                                    if (downloadResultObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        msg = "download last success param  Result >> code: " + downloadResultObject.getBusinessCode()
+                                                + " >> message: " + downloadResultObject.getMessage();
+                                    } else {
+                                        msg = "download last success param  Failed >> code: " + downloadResultObject.getBusinessCode()
+                                                + " >> message: " + downloadResultObject.getMessage();
                                     }
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }
