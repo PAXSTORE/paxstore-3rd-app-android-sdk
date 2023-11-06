@@ -377,16 +377,16 @@ public class APIFragment extends Fragment {
                     public void run() {
                         try {
                             String saveFilePath = getActivity().getFilesDir() + "/YourPath/";
-                            DownloadResultObject downloadResultObject = StoreSdk.getInstance().paramApi().downloadLastSuccessWithSha256Check(saveFilePath);
+                            DownloadResultObject downloadResultObject = StoreSdk.getInstance().paramApi().downloadLastSuccessParamToPath(saveFilePath);
                             LauncherActivity.getHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
                                     String msg = "";
                                     if (downloadResultObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                                        msg = "download last success param with SHA256 check Result >> code: " + downloadResultObject.getBusinessCode()
+                                        msg = "download last success param  Result >> code: " + downloadResultObject.getBusinessCode()
                                                 + " >> message: " + downloadResultObject.getMessage();
                                     } else {
-                                        msg = "download last success param with SHA256 check Failed >> code: " + downloadResultObject.getBusinessCode()
+                                        msg = "download last success param  Failed >> code: " + downloadResultObject.getBusinessCode()
                                                 + " >> message: " + downloadResultObject.getMessage();
                                     }
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();

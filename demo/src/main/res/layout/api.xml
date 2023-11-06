@@ -310,6 +310,7 @@
                 android:background="#DDDDDD" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/lv_get_last_success"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
