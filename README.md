@@ -169,7 +169,7 @@ More questions, please refer to [FAQ](https://github.com/PAXSTORE/paxstore-3rd-a
 
 See the [Apache 2.0 license](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/LICENSE) file for details.
 
-    Copyright 2018 PAX Computer Technology(Shenzhen) CO., LTD ("PAX")
+    Copyright 2019 Zolon Technology (HK) Limited.
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
