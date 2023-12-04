@@ -33,7 +33,7 @@ Gradle:
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.0.0'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.1.0'
 ```
 
 ##### Tips: In the near future, our platform will only support applications integrated with sdk version v8.7.0 or higher. Please upgrade the sdk to the latest version as soon as possible
@@ -102,7 +102,7 @@ Initializing AppKey,AppSecret and SN
 
 #### [StoreSdk](docs/StoreSdk.md)
 
-#### [ParamApi](docs/ParamApi.md)
+#### [ParamApi](docs/ParamApiStrategy.md)
 
 #### [SyncApiStrategy](docs/SyncApiStrategy.md)
 
@@ -169,7 +169,7 @@ More questions, please refer to [FAQ](https://github.com/PAXSTORE/paxstore-3rd-a
 
 See the [Apache 2.0 license](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/LICENSE) file for details.
 
-    Copyright 2018 PAX Computer Technology(Shenzhen) CO., LTD ("PAX")
+    Copyright © 2019 Shenzhen Zolon Technology Co., Ltd. All Rights Reserved.
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

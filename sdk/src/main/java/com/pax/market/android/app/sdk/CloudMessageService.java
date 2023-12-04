@@ -2,7 +2,6 @@ package com.pax.market.android.app.sdk;
 
 import android.app.IntentService;
 import android.content.Intent;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -39,7 +38,7 @@ public class CloudMessageService extends IntentService {
     }
 
     @Override
-    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         NotificationUtils.showForeGround(this, "Cloud message");
         return super.onStartCommand(intent, flags, startId);
     }
