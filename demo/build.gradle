@@ -6,8 +6,8 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 1000
-        versionName "9.1.0"
+        versionCode 920
+        versionName "9.2.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
