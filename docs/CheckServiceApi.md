@@ -48,3 +48,30 @@ The ServiceAvailableObject extends SdkObject
 | Property         | Type    | Description                                                  |
 | ---------------- | ------- | ------------------------------------------------------------ |
 | serviceAvailable | Boolean | The serviceAvailable indicates whether the application is available |
+
+### Check the terminal status
+
+```
+public TerminalStatusObject checkTerminalStatus()
+```
+
+**com.pax.market.api.sdk.java.base.dto.TerminalStatusObject**
+
+The TerminalStatusObject extends SdkObject
+
+| Property    | Type   | Description                                                  |
+| ----------- | ------ | ------------------------------------------------------------ |
+| status      | String | The terminal Simplification status. For example "A".         |
+| description | String | The terminal status detailed description. For example "Active". |
+
+**Status  Result**
+
+```java
+PENDING("P", "Inactive"),
+ACTIVE("A", "Active"),
+SUSPEND("S", "Disabled"),
+DELETED("D", "Deleted"),
+NOT_EXIST("N", "Not Exist"),
+NO_PERM("NP", "No Permission");
+```
+
