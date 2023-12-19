@@ -70,7 +70,6 @@ The TerminalStatusObject extends SdkObject
 PENDING("P", "Inactive"),
 ACTIVE("A", "Active"),
 SUSPEND("S", "Disabled"),
-DELETED("D", "Deleted"),
 NOT_EXIST("N", "Not Exist"),
 NO_PERM("NP", "No Permission");
 ```
