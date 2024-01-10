@@ -14,7 +14,9 @@
 <!--    <uses-permission android:name="com.market.android.app.OLD_LOCATION" />-->
 <!--    <uses-permission android:name="com.market.android.app.TERMINAL_INFO" />-->
     <!--    END  -->
-
+    <queries>
+        <package android:name="com.pax.market.android.app" />
+    </queries>
 
     <application android:allowBackup="true"
                  android:label="@string/app_name">
