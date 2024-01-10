@@ -43,8 +43,7 @@ Gradle:
 PAXSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.
 
 `<uses-permission android:name="android.permission.INTERNET" />`<br>
-`<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`<br>
-`<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
+
 
 ## ProGuard
 The specific rules are [already bundled](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/sdk/proguard-rules.pro) into the aar, which can be interpreted automatically.
