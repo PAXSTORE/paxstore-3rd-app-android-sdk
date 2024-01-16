@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.pax.market.android.app.sdk.AdvertisementDialog;
+import com.pax.market.android.app.sdk.msg.utils.AdvertisementDialog;
 
 import java.util.ArrayList;
 import java.util.List;

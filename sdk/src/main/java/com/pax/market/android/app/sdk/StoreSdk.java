@@ -14,12 +14,14 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.pax.market.android.app.sdk.dto.DcUrlInfo;
-import com.pax.market.android.app.sdk.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
+import com.pax.market.android.app.sdk.msg.apis.CloudMessageApi;
+import com.pax.market.android.app.sdk.msg.dto.MediaMesageInfo;
+import com.pax.market.android.app.sdk.msg.dto.PushConstants;
+import com.pax.market.android.app.sdk.msg.utils.CloudMsgCryptoUtils;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.check.CheckServiceApi;
-import com.pax.market.api.sdk.java.api.sync.CloudMessageApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
@@ -333,7 +335,7 @@ public class StoreSdk {
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         checkServiceApi = new CheckServiceApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
-        cloudMessageApi = new CloudMessageApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+        cloudMessageApi = CloudMessageApi.getInstance(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
     }
 
     /**
@@ -372,7 +374,7 @@ public class StoreSdk {
         if (appSecret == null) {
             logger.error("Store sdk not initialized");
         }
-        return CryptoUtils.aesDecrypt(encryptedData, appSecret);
+        return CloudMsgCryptoUtils.aesDecrypt(encryptedData, appSecret);
     }
 
 

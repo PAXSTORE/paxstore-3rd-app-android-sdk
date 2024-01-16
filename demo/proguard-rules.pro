@@ -45,9 +45,6 @@
 -keepnames class com.fasterxml.jackson.** { *; }
 -keepnames interface com.fasterxml.jackson.** { *; }
 
-#dom4j
--dontwarn org.dom4j.**
--keep class org.dom4j.**{*;}
 -dontwarn org.xml.sax.**
 -keep class org.xml.sax.**{*;}
 -dontwarn com.fasterxml.jackson.**
