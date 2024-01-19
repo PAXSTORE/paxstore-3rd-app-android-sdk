@@ -6,8 +6,8 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 1016
-        versionName "9.2.1-independent-cloudmsg-SNAPSHOT"
+        versionCode 1022
+        versionName "9.2.0-independent-high-cloudmsg-SNAPSHOT"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
