@@ -48,9 +48,6 @@
 -keepnames class com.fasterxml.jackson.** { *; }
 -keepnames interface com.fasterxml.jackson.** { *; }
 
-#dom4j
--dontwarn org.dom4j.**
--keep class org.dom4j.**{*;}
 -dontwarn org.xml.sax.**
 -keep class org.xml.sax.**{*;}
 -dontwarn com.fasterxml.jackson.**
@@ -67,8 +64,7 @@
 -dontwarn com.pax.market.api.sdk.java.base.dto.**
 -keep class com.pax.market.api.sdk.java.base.dto.**{*;}
 -keep class com.pax.market.api.sdk.java.api.sync.dto.**{*;}
--keep class com.pax.market.android.app.sdk.NotificationMessage { *; }
--keep class com.pax.market.android.app.sdk.CloudMessage { *; }
+
 -keep class com.pax.market.android.app.sdk.dto.**{*;}
 
 #default

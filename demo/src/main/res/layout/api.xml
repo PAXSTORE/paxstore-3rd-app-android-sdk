@@ -272,38 +272,6 @@
 
             </LinearLayout>
 
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#DDDDDD" />
-
-            <LinearLayout
-                android:id="@+id/lv_check_solution"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="#ffffff"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:text="Check Solution App Available" />
-
-                <ImageView
-                    android:id="@+id/img_retrieve_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:background="#ffffff"
-                    android:padding="16dp"
-                    android:src="@mipmap/list_btn_arrow" />
-
-            </LinearLayout>
-
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"

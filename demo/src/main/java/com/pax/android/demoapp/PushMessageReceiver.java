@@ -8,16 +8,16 @@ import android.widget.Toast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.pax.market.android.app.sdk.PushConstants.ACTION_DATA_MESSAGE_RECEIVED;
-import static com.pax.market.android.app.sdk.PushConstants.ACTION_NOTIFICATION_CLICK;
-import static com.pax.market.android.app.sdk.PushConstants.ACTION_NOTIFICATION_MESSAGE_RECEIVED;
-import static com.pax.market.android.app.sdk.PushConstants.ACTION_NOTIFY_DATA_MESSAGE_RECEIVED;
-import static com.pax.market.android.app.sdk.PushConstants.ACTION_NOTIFY_MEDIA_MESSAGE_RECEIVED;
-import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MEIDA;
-import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MESSAGE_CONTENT;
-import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MESSAGE_DATA;
-import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MESSAGE_NID;
-import static com.pax.market.android.app.sdk.PushConstants.EXTRA_MESSAGE_TITLE;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.ACTION_DATA_MESSAGE_RECEIVED;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.ACTION_NOTIFICATION_CLICK;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.ACTION_NOTIFICATION_MESSAGE_RECEIVED;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.ACTION_NOTIFY_DATA_MESSAGE_RECEIVED;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.ACTION_NOTIFY_MEDIA_MESSAGE_RECEIVED;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.EXTRA_MEIDA;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.EXTRA_MESSAGE_CONTENT;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.EXTRA_MESSAGE_DATA;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.EXTRA_MESSAGE_NID;
+import static com.pax.market.android.app.sdk.msg.dto.PushConstants.EXTRA_MESSAGE_TITLE;
 
 /**
  * Created by fojut on 2019/5/20.
