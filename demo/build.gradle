@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 31
     defaultConfig {
-        applicationId "com.pax.android.demoapp"
+        applicationId "com.pax.android.demoapp_xtt"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 1020
-        versionName "9.2.0"
+        versionCode 1019
+        versionName "9.2.0-callupdate-low-no-permission"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.2.0'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.1.0'
 
 
      //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }

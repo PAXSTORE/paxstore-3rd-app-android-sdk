@@ -184,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
-                    android:text="@string/label_open_paxstore_client" />
+                    android:text="Call Update" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

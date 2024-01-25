@@ -12,6 +12,9 @@
     <uses-permission android:name="com.market.android.app.API_LOCATION" />
     <uses-permission android:name="com.market.android.app.API_MERCHANT_INFO" />
 
+<!--    permission for call update-->
+    <uses-permission android:name="com.market.android.app.sdk.INSTALL_INQUIRER" />
+
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"

@@ -2,9 +2,11 @@ package com.pax.android.demoapp;
 
 
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,8 +34,6 @@ import com.pax.market.api.sdk.java.base.dto.LocationObject;
 import com.pax.market.api.sdk.java.base.dto.MerchantObject;
 import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
-import com.pax.market.api.sdk.java.base.dto.ServiceAvailableObject;
-import com.pax.market.api.sdk.java.base.dto.TerminalStatusObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
@@ -149,7 +149,7 @@ public class APIFragment extends Fragment {
             public void onClick(View view) {
                 //put app 'NeptuneService' package name here for demo.
                 //if the market don't have this app, it will show app not found, else will go to detail page in STORE client market
-                openAppDetail(getActivity().getPackageName());
+               callUpdate();
             }
         });
 
@@ -548,5 +548,21 @@ public class APIFragment extends Fragment {
                 Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void callUpdate() {
+        try {
+            Intent intent = new Intent("com.market.android.app.INSTALL_UPDATES");
+            intent.setComponent(new ComponentName("com.pax.market.android.app",
+                    "com.pax.market.android.app.presentation.thirdparty.service.AppUpdateHandleService"));
+            intent.putExtra("extra_thirdparty_app_pkgName", getActivity().getPackageName());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                getActivity().startForegroundService(intent);
+            } else {
+                getActivity().startService(intent);
+            }
+        } catch (SecurityException e) {
+           Log.e(TAG, "e:" + e);
+        }
     }
 }

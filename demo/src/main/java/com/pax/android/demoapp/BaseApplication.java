@@ -23,8 +23,8 @@ public class BaseApplication extends Application {
     private boolean isReadyToUpdate = true;
 
     //todo make sure to replace with your own app's appkey and appsecret
-    private static final String appkey = "your key";
-    private static final String appSecret = "your secret";
+    private static final String appkey = "E2PYFY2Z8DP8F637Y4CM";
+    private static final String appSecret = "TI5E40BGYD9JKB66AM5RUDCDJ7TDCKHEKUBMURMO";
 
 
     //todo please make sure get the correct SN here, for pax device you can integrate NeptuneLite SDK to get the correct SN
