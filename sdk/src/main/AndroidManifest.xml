@@ -39,14 +39,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".CloudMessageService"
-            android:permission="com.market.android.app.sdk.CLOUD_MSG"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.paxstore.mpush.CLOUD_MESSAGE_RECEIVED"/>
-                <category android:name="${applicationId}"/>
-            </intent-filter>
-        </service>
+
         <service android:name=".ParamService"
             android:permission="com.market.android.app.sdk.DOWNLOAD_PARAM_SERVICE"
             android:exported="true">
@@ -57,7 +50,6 @@
         </service>
         <service android:name=".DelayService" />
 
-        <activity android:name=".MessagerActivity" />
 
 
         <!-- Add below meta-data to indicate that this sdk support multi-dis env -->

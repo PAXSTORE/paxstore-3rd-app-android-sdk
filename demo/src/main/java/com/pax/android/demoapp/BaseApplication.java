@@ -7,8 +7,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.pax.market.android.app.sdk.BaseApiService;
-import com.pax.market.android.app.sdk.Notifications;
 import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.android.app.sdk.msg.utils.Notifications;
 
 import net.grandcentrix.tray.AppPreferences;
 
@@ -25,6 +25,7 @@ public class BaseApplication extends Application {
     //todo make sure to replace with your own app's appkey and appsecret
     private static final String appkey = "your key";
     private static final String appSecret = "your secret";
+
 
 
     //todo please make sure get the correct SN here, for pax device you can integrate NeptuneLite SDK to get the correct SN
