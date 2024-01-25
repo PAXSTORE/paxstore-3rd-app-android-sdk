@@ -23,8 +23,8 @@ public class BaseApplication extends Application {
     private boolean isReadyToUpdate = true;
 
     //todo make sure to replace with your own app's appkey and appsecret
-    private static final String appkey = "DQOSMMGSBDCNIXOFZR1U";
-    private static final String appSecret = "PMKNAMTBLBGZ2ARS110YQ7LCGT7UCU0NPO74ESS4";
+    private static final String appkey = "your key";
+    private static final String appSecret = "your secret";
 
 
 
@@ -35,7 +35,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //initial the SDK`
+        //initial the SDK
         initStoreSdk();
         appPreferences = new AppPreferences(getApplicationContext()); // this Preference comes for free from the library
 
