@@ -294,7 +294,7 @@ public class APIFragment extends Fragment {
                                         if(msgTagObject.getTags()!= null && !msgTagObject.getTags().isEmpty()) {
                                             cloudMsgTagAdapter.loadData(msgTagObject.getTags());
                                         } else {
-                                            Toast.makeText(getContext(), "Tags is empty", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Tags are empty", Toast.LENGTH_SHORT).show();
                                             cloudMsgTagAdapter.loadData(new ArrayList<String>());
                                         }
                                     } else {
