@@ -33,7 +33,6 @@ import com.pax.market.api.sdk.java.base.dto.MerchantObject;
 import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 import com.pax.market.api.sdk.java.base.dto.ServiceAvailableObject;
-import com.pax.market.api.sdk.java.base.dto.TerminalStatusObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
@@ -67,7 +66,7 @@ public class APIFragment extends Fragment {
     private ListView tagListView;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag , lvGetLastSuccess;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag ,lvCheckSolution, lvGetLastSuccess;
     private ImageView mImgRetrieve;
     private LinearLayout lvChildRetrieve;
     private Button getTerminalLocation, getOnlineStatus, getMerchantInfo; // todo remove
@@ -124,6 +123,7 @@ public class APIFragment extends Fragment {
         tagListView.setAdapter(cloudMsgTagAdapter);
 
         checkUpdate = (LinearLayout) view.findViewById(R.id.check_update);
+        lvCheckSolution =  (LinearLayout) view.findViewById(R.id.lv_solution_usage);
         lvGetLastSuccess = (LinearLayout) view.findViewById(R.id.lv_get_last_success);
         lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
         lvChildRetrieve = (LinearLayout) view.findViewById(R.id.lv_childs_retrieve);
@@ -216,18 +216,18 @@ public class APIFragment extends Fragment {
                                     try {
                                         final SdkObject sdkObject = StoreSdk.getInstance().cloudMessageApi().attachMsgTag(Arrays.asList(tags.split(",")));
                                         Log.d(TAG, "sdkObject:" + sdkObject.toString());
-                                            LauncherActivity.getHandler().post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    String msg;
-                                                    if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                                                        msg = "Operation succeed!";
-                                                    } else {
-                                                        msg = "Operation failed: " + sdkObject.toString();
-                                                    }
-                                                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                        LauncherActivity.getHandler().post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                String msg;
+                                                if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                                    msg = "Operation succeed!";
+                                                } else {
+                                                    msg = "Operation failed: " + sdkObject.toString();
                                                 }
-                                            });
+                                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     } catch (NotInitException e) {
                                         Log.e(TAG, "e:" + e);
                                         showNotInitToast();
@@ -294,7 +294,7 @@ public class APIFragment extends Fragment {
                                         if(msgTagObject.getTags()!= null && !msgTagObject.getTags().isEmpty()) {
                                             cloudMsgTagAdapter.loadData(msgTagObject.getTags());
                                         } else {
-                                            Toast.makeText(getContext(), "Tags are empty", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Tags is empty", Toast.LENGTH_SHORT).show();
                                             cloudMsgTagAdapter.loadData(new ArrayList<String>());
                                         }
                                     } else {
@@ -326,6 +326,45 @@ public class APIFragment extends Fragment {
                     mImgRetrieve.setImageResource(R.mipmap.list_btn_arrow_down);
                     lvChildRetrieve.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        lvCheckSolution.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress();
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final SdkObject usage = StoreSdk.getInstance().checkServiceApi().checkSolutionUsage();
+                            Log.d(TAG, " checkSolutionUsage() Result：:" + usage.toString());
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String msg = "";
+                                    if (usage.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                                        msg = "success, SolutionUsage Result: SdkObject{ " +
+                                                "businessCode = " + usage.getBusinessCode() +
+                                                ", message = " + usage.getMessage() +
+                                                " }";
+                                    } else {
+                                        msg = "fail, SolutionUsage Result: SdkObject{ " +
+                                                "businessCode = " + usage.getBusinessCode() +
+                                                ", message = " + usage.getMessage() +
+                                                " }";
+                                    }
+                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                            showNotInitToast();
+                        }
+                        dismissLoadingDialog();
+                    }
+                }) ;
+                thread.start();
             }
         });
 
