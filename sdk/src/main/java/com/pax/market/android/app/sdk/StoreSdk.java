@@ -25,6 +25,7 @@ import com.pax.market.api.sdk.java.api.sync.CloudMessageApi;
 import com.pax.market.api.sdk.java.api.sync.GoInsightApi;
 import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
+import com.pax.market.api.sdk.java.base.constant.Constants;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
 import org.slf4j.Logger;
@@ -92,6 +93,32 @@ public class StoreSdk {
      */
     public void init(final Context context, final String appKey, final String appSecret,
                      final BaseApiService.Callback callback) throws NullPointerException {
+        initWithSignMehtod(context, appKey, appSecret, callback, null);
+    }
+
+    /**
+     * Init StoreSdk
+     *
+     * @param context
+     * @param appKey
+     * @param appSecret
+     * @param callback
+     */
+    public void initWithSHA256(final Context context, final String appKey, final String appSecret,
+                               final BaseApiService.Callback callback) throws NullPointerException {
+        initWithSignMehtod(context, appKey, appSecret, callback, Constants.SIGN_METHOD_SHA256);
+    }
+
+    /**
+     * Init StoreSdk with sign method
+     *
+     * @param context
+     * @param appKey
+     * @param appSecret
+     * @param callback
+     * @param signMethod
+     */
+    private void initWithSignMehtod(final Context context, final String appKey, final String appSecret, BaseApiService.Callback callback, final String signMethod) {
         if (paramApi == null && syncApi == null && updateApi == null && checkServiceApi == null
                  && cloudMessageApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
@@ -114,7 +141,7 @@ public class StoreSdk {
                             terminalSn = sn;
 
                             clearLastUrl(context);
-                            initApi(context, apiUrl, appKey, appSecret, sn, BaseApiService.getInstance(context));
+                            initApi(context, apiUrl, appKey, appSecret, sn, BaseApiService.getInstance(context), signMethod);
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
                         }
@@ -129,6 +156,7 @@ public class StoreSdk {
             logger.debug("Initialization is on process or has been done");
         }
     }
+
 
     /**
      * We need to clear the url cache after re-init to make sure new url take effect.
@@ -327,14 +355,24 @@ public class StoreSdk {
      * @param appKey
      * @param appSecret
      * @param terminalSerialNo
+     * @param signMethod
      */
-    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate) {
+    public void initApi(Context context, String apiUrl, String appKey, String appSecret, String terminalSerialNo, ProxyDelegate proxyDelegate, String signMethod) {
         paramApi = new ParamApiStrategy(context, apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         syncApi = new SyncApiStrategy(context,apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         updateApi = new UpdateApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         checkServiceApi = new CheckServiceApi(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
         cloudMessageApi = CloudMessageApi.getInstance(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
+
+        if (signMethod != null) {
+            paramApi.setSignMethod(signMethod);
+            syncApi.setSignMethod(signMethod);
+            updateApi.setSignMethod(signMethod);
+            checkServiceApi.setSignMethod(signMethod);
+            goInsightApi.setSignMethod(signMethod);
+            cloudMessageApi.setSignMethod(signMethod);
+        }
     }
 
     /**
