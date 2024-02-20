@@ -64,3 +64,5 @@ Integrate with this function only need to call initInquirer() after you init Sto
         }
     }
 
+### 3: Update Inquirer Flow Chart
+![InstallInquirer logic](docs/picture/InstallInquirerlogic.png)
