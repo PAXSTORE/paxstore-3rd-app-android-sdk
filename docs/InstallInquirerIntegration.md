@@ -64,3 +64,5 @@ Integrate with this function only need to call initInquirer() after you init Sto
         }
     }
 
+### 3: Update Inquirer Flow Chart
+![InstallInquirer logic](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/docs/images/InstallInquirerlogic.png)
