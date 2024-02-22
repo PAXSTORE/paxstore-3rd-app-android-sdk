@@ -365,6 +365,10 @@ public class StoreSdk {
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
         cloudMessageApi = CloudMessageApi.getInstance(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
 
+        setSignMehtod(signMethod);
+    }
+
+    private void setSignMehtod(String signMethod) {
         if (signMethod != null) {
             paramApi.setSignMethod(signMethod);
             syncApi.setSignMethod(signMethod);
