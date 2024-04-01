@@ -327,6 +327,23 @@ public class StoreSdk {
     }
 
     /**
+     * If you simply wish to utilize the InstallInquirer function without any other functions,
+     * you can directly invoke this method.
+     *
+     * @param appKey
+     * @param appSecret
+     * @param inquirer
+     */
+    public void initInquirerOnly(String appKey, String appSecret, final Inquirer inquirer) {
+        RPCService.initInquirer(appKey, appSecret, new RPCService.Inquirer() {
+            @Override
+            public boolean isReadyUpdate() {
+                return inquirer.isReadyUpdate();
+            }
+        });
+    }
+
+    /**
      * Context, appKey， appSecret， terminalSerialNo will be validated,
      * NullPointerException will be throw when any of this is null.
      *
