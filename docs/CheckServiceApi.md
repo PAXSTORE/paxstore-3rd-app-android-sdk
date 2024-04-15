@@ -74,3 +74,15 @@ NOT_EXIST("N", "Not Exist"),
 NO_PERM("NP", "No Permission");
 ```
 
+### Check Solution Usage
+
+```
+public SdkObject checkSolutionUsage()
+```
+
+**com.pax.market.api.sdk.java.base.dto.SdkObject**
+
+| Property     | Type   | Description                              |
+| ------------ | ------ | ---------------------------------------- |
+| businessCode | int    | The reuslt code, the default value is -1 |
+| message      | String | The result message                       |
