@@ -7,7 +7,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 31
         versionCode 1030
-        versionName "9.3.0-SNAPSHOT"
+        versionName "9.3.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -48,8 +48,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
-//    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.2.0'
-
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.3.0'
 
      //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
@@ -58,9 +57,9 @@ dependencies {
     implementation 'commons-io:commons-io:2.7'
 
 
-    implementation project(':sdk')
-    implementation 'org.slf4j:slf4j-api:1.7.12'
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+//    implementation project(':sdk')
+//    implementation 'org.slf4j:slf4j-api:1.7.12'
+//    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+//    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
 }
