@@ -50,9 +50,9 @@ _**:red_square::red_square::red_square: Attention: If the upload fails, you need
 
 |Business Code|Message|Description|
 |:---|:---|:---|
-|36003|The query is timeout, please try again|&nbsp;|
-|36004|Insufficient permissions|&nbsp;|
-|36009|Too many request, please try again later|&nbsp;|
+|24012|VAS is not enabled|&nbsp;|
+|24022|There is no valid data source for app in GoInsight|&nbsp;|
+|24023|Operation failed, please upgrade GoInsight to premium version.|&nbsp;|
 
 **Possible abnormal http codes**
 
