@@ -32,8 +32,6 @@ import com.pax.market.api.sdk.java.base.dto.LocationObject;
 import com.pax.market.api.sdk.java.base.dto.MerchantObject;
 import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
-import com.pax.market.api.sdk.java.base.dto.ServiceAvailableObject;
-import com.pax.market.api.sdk.java.base.dto.TerminalStatusObject;
 import com.pax.market.api.sdk.java.base.dto.UpdateObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 
@@ -294,7 +292,7 @@ public class APIFragment extends Fragment {
                                         if(msgTagObject.getTags()!= null && !msgTagObject.getTags().isEmpty()) {
                                             cloudMsgTagAdapter.loadData(msgTagObject.getTags());
                                         } else {
-                                            Toast.makeText(getContext(), "Tags is empty", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Tags are empty", Toast.LENGTH_SHORT).show();
                                             cloudMsgTagAdapter.loadData(new ArrayList<String>());
                                         }
                                     } else {
