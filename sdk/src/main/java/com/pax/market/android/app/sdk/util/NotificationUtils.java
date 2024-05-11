@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 
-import com.pax.market.android.app.sdk.BuildConfig;
 import com.pax.market.android.app.sdk.R;
 
 import static com.pax.market.android.app.sdk.CommonConstants.SP_SMALL_LOGO_ICON;
@@ -25,12 +24,12 @@ public class NotificationUtils {
         NotificationManager notificationManager = (NotificationManager) service.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            mChannel = new NotificationChannel(BuildConfig.APPLICATION_ID, service.getApplicationContext().getString(R.string.app_name), NotificationManager.IMPORTANCE_NONE);
+            mChannel = new NotificationChannel(service.getPackageName(), service.getApplicationContext().getString(R.string.app_name), NotificationManager.IMPORTANCE_NONE);
             mChannel.setSound(null, null);
             mChannel.enableVibration(false);
             notificationManager.createNotificationChannel(mChannel);
 
-            Notification.Builder builder = new Notification.Builder(service.getApplicationContext(), BuildConfig.APPLICATION_ID);
+            Notification.Builder builder = new Notification.Builder(service.getApplicationContext(), service.getPackageName());
             builder.setContentText(content);
             builder.setSmallIcon(smallIcon);
             builder.setAutoCancel(true);
@@ -51,12 +50,12 @@ public class NotificationUtils {
         NotificationManager notificationManager = (NotificationManager) service.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            mChannel = new NotificationChannel(BuildConfig.APPLICATION_ID, service.getApplicationContext().getString(R.string.app_name), NotificationManager.IMPORTANCE_NONE);
+            mChannel = new NotificationChannel(service.getPackageName(), service.getApplicationContext().getString(R.string.app_name), NotificationManager.IMPORTANCE_NONE);
             mChannel.setSound(null, null);
             mChannel.enableVibration(false);
             notificationManager.createNotificationChannel(mChannel);
 
-            Notification.Builder builder = new Notification.Builder(service.getApplicationContext(), BuildConfig.APPLICATION_ID);
+            Notification.Builder builder = new Notification.Builder(service.getApplicationContext(), service.getPackageName());
             builder.setContentText(content);
             builder.setSmallIcon(PreferencesUtils.getInt(service, SP_SMALL_LOGO_ICON, R.drawable.ic_notificaiton));
             builder.setAutoCancel(true);
