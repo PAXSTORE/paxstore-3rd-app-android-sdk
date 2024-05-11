@@ -33,7 +33,7 @@ Gradle:
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.3.1'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.3.0'
 ```
 
 ##### Tips: In the near future, our platform will only support applications integrated with sdk version v8.7.0 or higher. Please upgrade the sdk to the latest version as soon as possible
