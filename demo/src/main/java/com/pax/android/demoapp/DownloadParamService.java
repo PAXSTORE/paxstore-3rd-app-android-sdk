@@ -59,40 +59,40 @@ public class DownloadParamService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        spUtil = new SPUtil();
-        //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
-        saveFilePath = getFilesDir() + "/YourPath/";
-
-        //show downloading info in main page
-        updateUI(DemoConstants.DOWNLOAD_STATUS_START);
-
-        //todo Call SDK API to download parameter files into your specific directory,
-        DownloadResultObject downloadResult = null;
-        try {
-            Log.i(TAG, "call sdk API to download parameter");
-            downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(), com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath);
-            Log.i(TAG, downloadResult.toString());
-        } catch (NotInitException e) {
-            Log.e(TAG, "e:" + e);
-        }
-
-//                businesscode==0, means download successful, if not equal to 0, please check the return message when need.
-        if (downloadResult != null ) {
-            if (downloadResult.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                Log.i(TAG, "download successful.");
-
-                //todo start to add your own logic.
-                //below is only for demo
-                readDataToDisplay();
-            } else {
-                //todo check the Error Code and Error Message for fail reason
-                Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());
-                //update download fail info in main page for Demo
-                spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
-                spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT, "Your push parameters file task failed at " + sdf.format(new Date()) + ", please check error log.");
-                updateUI(DemoConstants.DOWNLOAD_STATUS_FAILED);
-            }
-        }
+//        spUtil = new SPUtil();
+//        //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
+//        saveFilePath = getFilesDir() + "/YourPath/";
+//
+//        //show downloading info in main page
+//        updateUI(DemoConstants.DOWNLOAD_STATUS_START);
+//
+//        //todo Call SDK API to download parameter files into your specific directory,
+//        DownloadResultObject downloadResult = null;
+//        try {
+//            Log.i(TAG, "call sdk API to download parameter");
+//            downloadResult = StoreSdk.getInstance().paramApi().downloadParam(getApplication().getPackageName(), com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath);
+//            Log.i(TAG, downloadResult.toString());
+//        } catch (NotInitException e) {
+//            Log.e(TAG, "e:" + e);
+//        }
+//
+////                businesscode==0, means download successful, if not equal to 0, please check the return message when need.
+//        if (downloadResult != null ) {
+//            if (downloadResult.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+//                Log.i(TAG, "download successful.");
+//
+//                //todo start to add your own logic.
+//                //below is only for demo
+//                readDataToDisplay();
+//            } else {
+//                //todo check the Error Code and Error Message for fail reason
+//                Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());
+//                //update download fail info in main page for Demo
+//                spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
+//                spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT, "Your push parameters file task failed at " + sdf.format(new Date()) + ", please check error log.");
+//                updateUI(DemoConstants.DOWNLOAD_STATUS_FAILED);
+//            }
+//        }
     }
 
     @Override

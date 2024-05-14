@@ -54,7 +54,7 @@ public class APIFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    List<Long> idList = new ArrayList<>();
     private TextView versionTV;
     private LinearLayout openClientlayout;
     private Switch tradingStateSwitch;
@@ -65,7 +65,7 @@ public class APIFragment extends Fragment {
     private ListView tagListView;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag , lvGetLastSuccess;
+    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag , lvGetLastSuccess, lvDownloadWaitApply, lvApplySuccessResult, lvApplyFailResult;
     private ImageView mImgRetrieve;
     private LinearLayout lvChildRetrieve;
     private Button getTerminalLocation, getOnlineStatus, getMerchantInfo; // todo remove
@@ -123,6 +123,12 @@ public class APIFragment extends Fragment {
 
         checkUpdate = (LinearLayout) view.findViewById(R.id.check_update);
         lvGetLastSuccess = (LinearLayout) view.findViewById(R.id.lv_get_last_success);
+
+
+        lvDownloadWaitApply = (LinearLayout) view.findViewById(R.id.lv_download_apply);
+        lvApplySuccessResult = (LinearLayout) view.findViewById(R.id.lv_apply_success);
+        lvApplyFailResult = (LinearLayout) view.findViewById(R.id.lv_apply_fail);
+
         lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
         lvChildRetrieve = (LinearLayout) view.findViewById(R.id.lv_childs_retrieve);
         mImgRetrieve = (ImageView) view.findViewById(R.id.img_retrieve_data);
@@ -157,6 +163,94 @@ public class APIFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 StoreSdk.getInstance().openDownloadListPage(getActivity().getPackageName(), getActivity().getApplicationContext());
+
+            }
+        });
+
+        lvApplySuccessResult.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // check if update available from app STORE.
+                        showProgress();
+                        Thread thread =  new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    SdkObject result = StoreSdk.getInstance().paramApi().syncApplySuccessResult(idList);
+
+                                    Log.w(TAG, "update id list result : " + result.toString());
+
+                                } catch (NotInitException e) {
+                                    Log.e(TAG, "e:" + e);
+                                    showNotInitToast();
+                                }
+                                dismissLoadingDialog();
+                            }
+                        }) ;
+
+                        thread.start();
+
+                    }
+                });
+                lvApplyFailResult.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // check if update available from app STORE.
+                        showProgress();
+                        Thread thread =  new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    SdkObject result = StoreSdk.getInstance().paramApi().syncApplyFailureResult(idList, "mock fail");
+
+                                    Log.w(TAG, "update id list result : " + result.toString());
+
+                                } catch (NotInitException e) {
+                                    Log.e(TAG, "e:" + e);
+                                    showNotInitToast();
+                                }
+                                dismissLoadingDialog();
+                            }
+                        }) ;
+
+                        thread.start();
+
+                    }
+                });
+        lvDownloadWaitApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // check if update available from app STORE.
+                showProgress();
+                Thread thread =  new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            DownloadResultObject downloadResultObject = StoreSdk.getInstance().paramApi()
+                                    .downloadParam(getActivity().getPackageName(), BuildConfig.VERSION_CODE,
+                                            getActivity().getFilesDir() + "/YourPath/");
+                            idList = downloadResultObject.getActionList();
+                            Log.w(TAG, "downloadResultObject : " + downloadResultObject.toString());
+                            LauncherActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), " >> download result msg: " +
+                                            downloadResultObject.getMessage() + " >> code: " + downloadResultObject.getBusinessCode() +
+                                            " >> tostring: " + downloadResultObject, Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+
+                        } catch (NotInitException e) {
+                            Log.e(TAG, "e:" + e);
+                            showNotInitToast();
+                        }
+                        dismissLoadingDialog();
+                    }
+                }) ;
+
+                thread.start();
+
             }
         });
 
