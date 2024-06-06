@@ -76,7 +76,7 @@ NO_PERM("NP", "No Permission");
 
 ### Check Solution Usage
 
-**The API is suitable for the Industry Solution enabled environements only.**
+The API is suitable for the Industry Solution enabled environements only.
 
 ```
 public SdkObject checkSolutionUsage()

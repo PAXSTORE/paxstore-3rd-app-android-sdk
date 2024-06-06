@@ -43,7 +43,7 @@ The terminal sync info, information about ancillary equipment
 
 ### Get locate info
 
-**The geolocation service is not complete accuracy. Please refrain from incorporating the API into any app business scenarios.**
+The geolocation service is not complete accuracy. Please refrain from incorporating the API into any app business scenarios.
 
 ```java
 public LocationObject getLocate() {}
