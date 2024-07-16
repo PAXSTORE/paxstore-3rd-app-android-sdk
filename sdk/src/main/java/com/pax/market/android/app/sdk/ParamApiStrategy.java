@@ -55,7 +55,6 @@ public class ParamApiStrategy extends ParamApi {
         InnerDownloadResultObject downloadResultObject = null;
 
         List<Long> downloadedList = needApplyResult ? getIdListFromPrefs() : null;
-        Log.e(TAG, "saved id list: " + downloadedList);
         if (verifySHA) {
             downloadResultObject = super.downloadParamsWithShaCheck(packageName,
                     versionCode, saveFilePath, failTask, mobileNetAvailable, needApplyResult, downloadedList);
@@ -73,8 +72,8 @@ public class ParamApiStrategy extends ParamApi {
         }
 
         if (needApplyResult) {
+            Log.i(TAG, "need apply result");
             saveIdListToPrefs(downloadResultObject.getActionList());
-            Log.e(TAG, "22saved id list: " + downloadResultObject.getActionList());
         }
         return mapToDownloadResult(saveFilePath, downloadResultObject);
     }
@@ -119,15 +118,12 @@ public class ParamApiStrategy extends ParamApi {
 
     private void removeIdList(List<Long> actionIdList) {
         ArrayList<Long> idListFromPrefs = getIdListFromPrefs();
-        Log.e(TAG, "TTT SAVED LIST removeIdList 11" + idListFromPrefs);
         if (idListFromPrefs!= null) {
             idListFromPrefs.removeAll(actionIdList);
         }
         if (idListFromPrefs != null && !idListFromPrefs.isEmpty()) {
-            Log.e(TAG, "TTT SAVED LIST removeIdList 22" + idListFromPrefs);
             saveIdListToPrefs(idListFromPrefs);
         } else {
-            Log.e(TAG, "TTT SAVED LIST removeIdList 33" + idListFromPrefs);
             PreferencesUtils.remove(context, KEY_DOWNLOADED_LIST);
         }
     }

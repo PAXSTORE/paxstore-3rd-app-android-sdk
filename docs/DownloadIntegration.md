@@ -1,6 +1,6 @@
 # PAXSTORE Downloading Parameter Integration
 
-By integrating with this function, admin can dilivery parameters to the application.
+By integrating with this function, admin can delivery parameters to the application.
 
 ### 1: Below two steps can save like 15 hours in average( Do not skip this!!!)
 1. Check the appKey and appSecret that are the same with the web, and check again, and again, three times should be fine.

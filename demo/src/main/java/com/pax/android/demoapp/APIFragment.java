@@ -217,6 +217,8 @@ public class APIFragment extends Fragment {
 
                     }
                 });
+
+
         lvDownloadWaitApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
