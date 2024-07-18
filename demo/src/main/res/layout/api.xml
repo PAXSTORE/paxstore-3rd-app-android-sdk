@@ -303,7 +303,7 @@
 
             </LinearLayout>
 
-            ///
+
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/lv_childs_retrieve"

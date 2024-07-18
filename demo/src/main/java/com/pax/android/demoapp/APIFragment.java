@@ -54,7 +54,7 @@ public class APIFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    List<Long> idList = new ArrayList<>();
     private TextView versionTV;
     private LinearLayout openClientlayout;
     private Switch tradingStateSwitch;
@@ -123,6 +123,9 @@ public class APIFragment extends Fragment {
 
         checkUpdate = (LinearLayout) view.findViewById(R.id.check_update);
         lvGetLastSuccess = (LinearLayout) view.findViewById(R.id.lv_get_last_success);
+
+
+
         lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
         lvChildRetrieve = (LinearLayout) view.findViewById(R.id.lv_childs_retrieve);
         mImgRetrieve = (ImageView) view.findViewById(R.id.img_retrieve_data);
@@ -157,8 +160,10 @@ public class APIFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 StoreSdk.getInstance().openDownloadListPage(getActivity().getPackageName(), getActivity().getApplicationContext());
+
             }
         });
+
 
         checkUpdate.setOnClickListener(new View.OnClickListener() {
             @Override

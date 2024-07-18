@@ -17,7 +17,7 @@ public class DownloadParamReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if ((intent != null && intent.getLongExtra(ParamService.TERMINAL_SEND_TIME, -1L) > 0)
                 || getVerCodeByPackageName(context, STORE_PACKAGENAME) >= 200) {
-            Log.d("DownloadParamReceiver", "Ignore this broadcast, since STORE client will send Intent to ParamService");
+            Log.w("DownloadParamReceiver", "Ignore this broadcast, since STORE client will send Intent to ParamService");
             return;
         }
 
