@@ -46,7 +46,7 @@ public class ParamService extends IntentService {
             return;
         }
         // STORE client versionCode>=200
-        Log.i("ParamService", "intent received");
+        Log.w("ParamService", "intent received");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(DelayService.getCallingIntent(getApplicationContext()));
         } else {
