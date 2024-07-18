@@ -107,12 +107,12 @@ public class ParamApiStrategy extends ParamApi {
     }
 
     public SdkObject syncApplySuccessResult(List<Long> actionIdList) {
-        removeIdList(actionIdList); // 无论更新结果这个动作是否成功， 都把本地记录删除， 如果更新失败了， 就从头到尾重新走流程。文档里告诉客户， 如果更新结果失败了， 他们要去确保更新结果成功， 不然会重复下载参数
+        removeIdList(actionIdList); // 无Regardless of whether the update result is successful or not, the local record will be deleted. If the update fails, the process will be restarted from start to finish. The document tells the customer that if the update result fails, they need to ensure that the update result is successful, otherwise they will repeatedly download the parameters
         return updateApplyResult(actionIdList, ACT_STATUS_SUCCESS, CODE_NONE_ERROR, REMARKS_CODE_PARAM_APPLIED);
     }
 
     public SdkObject syncApplyFailureResult(List<Long> actionIdList, String remarks) {
-        removeIdList(actionIdList);// 无论更新结果这个动作是否成功， 都把本地记录删除， 如果更新失败了， 就从头到尾重新走流程。
+        removeIdList(actionIdList);// Regardless of whether the update result is successful or not, the local record will be deleted. If the update fails, the process will be restarted from start to finish.
         return updateApplyResult(actionIdList, ACT_STATUS_FAILED, ERROR_CODE_PARAM_APPLY_FAILED, remarks);
     }
 

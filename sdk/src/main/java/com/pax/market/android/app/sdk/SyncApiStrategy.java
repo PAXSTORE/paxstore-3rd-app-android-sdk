@@ -66,7 +66,7 @@ public class SyncApiStrategy extends SyncApi {
                         permissionRequested = true;
                     }
                 }
-            } // 如果没有申请任何permission, 那么直接往下走, 返回checkFail
+            } // return fail  if no permission
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "e");
         }
