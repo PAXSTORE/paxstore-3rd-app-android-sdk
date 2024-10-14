@@ -18,8 +18,7 @@
         <package android:name="com.pax.market.android.app" />
     </queries>
 
-    <application android:allowBackup="true"
-                 android:label="@string/app_name">
+    <application android:label="@string/app_name">
 
         <service android:name=".RPCService"
                  android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
