@@ -3,6 +3,7 @@
     package="com.pax.market.android.app.sdk">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <!--   FOR MARKET CLIENT  -->
     <uses-permission android:name="com.market.android.app.OPEN_DETAIL_PAGE" />
