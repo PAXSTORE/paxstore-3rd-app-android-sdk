@@ -87,8 +87,8 @@ public class DownloadParamService extends IntentService {
                 //todo check the Error Code and Error Message for fail reason
                 Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());
                 //update download fail info in main page for Demo
-                spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
-                spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT, "Your push parameters file task failed at " + sdf.format(new Date()) + ", please check error log.");
+                spUtil.setString(getApplicationContext(), DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_FAILED);
+                spUtil.setString(getApplicationContext(), DemoConstants.PUSH_RESULT_BANNER_TEXT, "Your push parameters file task failed at " + sdf.format(new Date()) + ", please check error log.");
                 updateUI(DemoConstants.DOWNLOAD_STATUS_FAILED);
             }
         }
@@ -101,7 +101,7 @@ public class DownloadParamService extends IntentService {
     }
 
     private void readDataToDisplay() {
-        spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_SUCCESS);
+        spUtil.setString(getApplicationContext(), DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_SUCCESS);
 
         // get specific display data resource <File>sys_cap.p</File>
         File parameterFile = getDisplayFile();
@@ -125,15 +125,15 @@ public class DownloadParamService extends IntentService {
             String bannerSubTextValue = "Files are stored in " + parameterFile.getPath();
             Log.i(TAG, "run=====: " + bannerTextValue);
             //save result for demo display
-            spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT, bannerTextValue);
-            spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT, bannerSubTextValue);
+            spUtil.setString(getApplicationContext(), DemoConstants.PUSH_RESULT_BANNER_TEXT, bannerTextValue);
+            spUtil.setString(getApplicationContext(), DemoConstants.PUSH_RESULT_BANNER_SUBTEXT, bannerSubTextValue);
             List<Map<String, Object>> datalist = getParameters(parameterFile);
 
             //save result for demo display
-            spUtil.setDataList(DemoConstants.PUSH_RESULT_DETAIL, datalist);
+            spUtil.setDataList(getApplicationContext(), DemoConstants.PUSH_RESULT_DETAIL, datalist);
         } else {
             Log.i(TAG, "parameterFile is null ");
-            spUtil.setString(DemoConstants.PUSH_RESULT_BANNER_TEXT, "Download file not found. This demo only accept parameter file with name 'sys_cap.p'");
+            spUtil.setString(getApplicationContext(), DemoConstants.PUSH_RESULT_BANNER_TEXT, "Download file not found. This demo only accept parameter file with name 'sys_cap.p'");
         }
     }
 

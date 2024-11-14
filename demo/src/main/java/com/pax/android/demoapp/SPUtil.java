@@ -1,7 +1,10 @@
 package com.pax.android.demoapp;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pax.market.android.app.sdk.util.PreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +13,12 @@ import java.util.List;
 public class SPUtil {
 
 
-    public void setString(String tag, String value) {
-        BaseApplication.appPreferences.put(tag, value);
+    public void setString(Context context, String tag, String value) {
+       PreferencesUtils.putString(context, tag, value);
     }
 
-    public String getString(String tag) {
-        String value = BaseApplication.appPreferences.getString(tag,null);
+    public String getString(Context context, String tag) {
+        String value = PreferencesUtils.getString(context, tag,null);
         return value;
 
     }
@@ -25,13 +28,13 @@ public class SPUtil {
      * @param tag
      * @param datalist
      */
-    public <T> void setDataList(String tag, List<T> datalist) {
+    public <T> void setDataList(Context context, String tag, List<T> datalist) {
         if (null == datalist || datalist.size() <= 0)
             return;
         Gson gson = new Gson();
         //转换成json数据，再保存
         String strJson = gson.toJson(datalist);
-        BaseApplication.appPreferences.put(tag, strJson);
+        PreferencesUtils.putString(context, tag, strJson);
 
     }
 
@@ -40,9 +43,9 @@ public class SPUtil {
      * @param tag
      * @return
      */
-    public <T> List<T> getDataList(String tag) {
+    public <T> List<T> getDataList(Context context, String tag) {
         List<T> datalist=new ArrayList<T>();
-        String strJson = BaseApplication.appPreferences.getString(tag, null);
+        String strJson = PreferencesUtils.getString(context, tag, null);
         if (null == strJson) {
             return datalist;
         }
