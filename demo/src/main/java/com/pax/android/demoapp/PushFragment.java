@@ -93,13 +93,13 @@ public class PushFragment extends Fragment implements FragmentReceiver {
         nodataLayout = view.findViewById(R.id.nodata);
 
 
-        String pushResultBannerTitle = spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE);
+        String pushResultBannerTitle = spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_TITLE);
         if(DemoConstants.DOWNLOAD_SUCCESS.equals(pushResultBannerTitle)){
-            bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
-            bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
-            bannerSubTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
+            bannerTitleTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_TITLE));
+            bannerTextTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_TEXT));
+            bannerSubTextTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
 
-            datalist = spUtil.getDataList(DemoConstants.PUSH_RESULT_DETAIL);
+            datalist = spUtil.getDataList(getContext(), DemoConstants.PUSH_RESULT_DETAIL);
             //if have push history, display it. the demo will only store the latest push record.
             if(datalist!=null && datalist.size() >0) {
                 //display push history detail
@@ -116,8 +116,8 @@ public class PushFragment extends Fragment implements FragmentReceiver {
             }
         }else {
             if(DemoConstants.DOWNLOAD_FAILED.equals(pushResultBannerTitle)) {
-                bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
-                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
+                bannerTitleTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_TITLE));
+                bannerTextTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_TEXT));
             }
             //display as no data
             detailListView.setVisibility(View.GONE);
@@ -158,10 +158,10 @@ public class PushFragment extends Fragment implements FragmentReceiver {
         int resultCode = intent.getIntExtra(DemoConstants.DOWNLOAD_RESULT_CODE, 0);
         switch (resultCode) {
             case DemoConstants.DOWNLOAD_STATUS_SUCCESS:
-                bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
-                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
-                bannerSubTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
-                datalist = spUtil.getDataList(DemoConstants.PUSH_RESULT_DETAIL);
+                bannerTitleTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_TITLE));
+                bannerTextTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_TEXT));
+                bannerSubTextTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
+                datalist = spUtil.getDataList(getContext(), DemoConstants.PUSH_RESULT_DETAIL);
                 if (datalist != null && datalist.size() > 0) {
                     //display push history detail
                     detailListView.setVisibility(View.VISIBLE);
@@ -180,7 +180,7 @@ public class PushFragment extends Fragment implements FragmentReceiver {
                 break;
             case DemoConstants.DOWNLOAD_STATUS_FAILED:
                 bannerTitleTV.setText(DemoConstants.DOWNLOAD_FAILED);
-                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
+                bannerTextTV.setText(spUtil.getString(getContext(), DemoConstants.PUSH_RESULT_BANNER_TEXT));
                 //display as no data
                 detailListView.setVisibility(View.GONE);
                 nodataLayout.setVisibility(View.VISIBLE);
