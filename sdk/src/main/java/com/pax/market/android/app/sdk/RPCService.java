@@ -8,16 +8,21 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  * Created by fojut on 2017/8/16.
@@ -47,13 +52,28 @@ public class RPCService extends Service {
         return messenger.getBinder();
     }
 
+
     private String generateToken(String appKey, String appSecret) {
-        return Jwts.builder()
-                .setSubject(appKey)
-                .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, appSecret)
+        byte[] secretBytes = appSecret.getBytes();
+
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("RPCService", "generateToken NoSuchAlgorithmException: " + e);
+            return null;
+        }
+        byte[] hashedBytes = digest.digest(secretBytes);
+
+        SecretKey secretKey = new SecretKeySpec(hashedBytes, 0, hashedBytes.length, "HmacSHA512");
+        String token = Jwts.builder()
+                .subject(appKey)
+                .expiration(generateExpirationDate())
+                .signWith(secretKey, Jwts.SIG.HS512)
                 .compact();
+        return token;
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
