@@ -37,14 +37,10 @@ configurations.all {
 }
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+
     implementation 'org.slf4j:slf4j-android:1.7.25'
-    implementation ('io.jsonwebtoken:jjwt:0.12.6') {
-        exclude group : 'com.fasterxml.jackson.core'
-    }
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
+    implementation 'io.jsonwebtoken:jjwt:0.12.6'
     implementation 'com.google.code.gson:gson:2.9.0'
-
-
     api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:9.4.1'
     api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:9.2.0'
 
