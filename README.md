@@ -29,6 +29,8 @@ Gradle:
 
 <font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Maven center, please update your gradle to integrate with our latest sdk.**
 </font>
+<font color=#ff8c00>**Notice: Please make sure the platform server version is v9.6.0 or higher, otherwise it will make the install inquirer function ineffective.**
+</font>
 
  Add the dependency
 
