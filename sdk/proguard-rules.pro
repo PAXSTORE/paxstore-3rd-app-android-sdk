@@ -29,6 +29,9 @@
 -keep class com.google.gson.** { *; }
 -keep class com.google.gson.examples.android.model.** { *; }
 
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken { *; }
+
 #JJWT
 -keepnames class com.fasterxml.jackson.databind.** { *; }
 -dontwarn com.fasterxml.jackson.databind.*
