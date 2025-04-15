@@ -21,9 +21,10 @@
 
     <application android:label="@string/app_name">
 
-        <service android:name=".RPCService"
-                 android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
-                 android:exported="true">
+        <service
+            android:name=".RPCService"
+            android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
+            android:exported="true">
             <intent-filter>
                 <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
             </intent-filter>
