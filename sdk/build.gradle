@@ -46,7 +46,7 @@ dependencies {
 
 
     api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:9.7.1'
-    api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:9.5.2'
+    api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:9.5.3'
 
 
 
