@@ -93,7 +93,7 @@ public class StoreSdk {
      */
     public void init(final Context context, final String appKey, final String appSecret,
                      final BaseApiService.Callback callback) throws NullPointerException {
-        initWithSignMehtod(context, appKey, appSecret, callback, null);
+        initWithSignMethod(context, appKey, appSecret, callback, null);
     }
 
     /**
@@ -106,7 +106,7 @@ public class StoreSdk {
      */
     public void initWithSHA256(final Context context, final String appKey, final String appSecret,
                                final BaseApiService.Callback callback) throws NullPointerException {
-        initWithSignMehtod(context, appKey, appSecret, callback, Constants.SIGN_METHOD_SHA256);
+        initWithSignMethod(context, appKey, appSecret, callback, Constants.SIGN_METHOD_SHA256);
     }
 
     /**
@@ -118,7 +118,7 @@ public class StoreSdk {
      * @param callback
      * @param signMethod
      */
-    private void initWithSignMehtod(final Context context, final String appKey, final String appSecret, BaseApiService.Callback callback, final String signMethod) {
+    private void initWithSignMethod(final Context context, final String appKey, final String appSecret, BaseApiService.Callback callback, final String signMethod) {
         if (paramApi == null && syncApi == null && updateApi == null && checkServiceApi == null
                  && cloudMessageApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
@@ -382,10 +382,10 @@ public class StoreSdk {
         goInsightApi = new GoInsightApi(apiUrl, appKey, appSecret, terminalSerialNo, TimeZone.getDefault()).setProxyDelegate(proxyDelegate);
         cloudMessageApi = CloudMessageApi.getInstance(apiUrl, appKey, appSecret, terminalSerialNo).setProxyDelegate(proxyDelegate);
 
-        setSignMehtod(signMethod);
+        setSignMethod(signMethod);
     }
 
-    private void setSignMehtod(String signMethod) {
+    private void setSignMethod(String signMethod) {
         if (signMethod != null) {
             paramApi.setSignMethod(signMethod);
             syncApi.setSignMethod(signMethod);
