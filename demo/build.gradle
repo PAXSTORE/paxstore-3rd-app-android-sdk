@@ -6,8 +6,8 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 1072
-        versionName "9.7.2"
+        versionCode 1080
+        versionName "9.8.0-SNAPSHOT"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -27,15 +27,6 @@ android {
     }
     namespace 'com.pax.android.demoapp'
 
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            if (outputFileName.endsWith('.apk') && 'release'.equals(variant.buildType.name)) {
-                variant.getPackageApplicationProvider().get().outputDirectory = new File(buildDir, "outputs/apk")
-                outputFileName = "PAXSTORE SDK Demo-${buildType.name}-v${defaultConfig.versionName}.apk"
-            }
-        }
-    }
-
 }
 configurations.all {
     // check for updates every build
@@ -48,7 +39,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.7.307101337-SNAPSHOT'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:9.8.0-SNAPSHOT'
 
      //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
