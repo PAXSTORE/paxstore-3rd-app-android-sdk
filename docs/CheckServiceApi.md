@@ -76,7 +76,7 @@ NO_PERM("NP", "No Permission");
 
 ### Check Solution Usage
 
-The API is suitable for the Industry Solution enabled environements only.
+This API is exclusively designed for Industry Solution-enabled ecosystems to synchronize and manage usage count data of industry solution.
 
 ```
 public SdkObject checkSolutionUsage()
@@ -88,3 +88,23 @@ public SdkObject checkSolutionUsage()
 | ------------ | ------ | ---------------------------------------- |
 | businessCode | int    | The reuslt code, the default value is -1 |
 | message      | String | The result message                       |
+
+### Upload Solution Subscription Status
+
+This API is exclusively designed for Industry Solution-enabled ecosystems to synchronize subscription status data of industry solution.
+
+```
+public SdkObject uploadSolutionSubStatus(boolean isSubscribe)
+```
+
+| Parameter   | Type    | Description                                                  |
+| ----------- | ------- | ------------------------------------------------------------ |
+| isSubscribe | boolean | It is used to synchronize subscription status of whether to subscribe(true) or not(false). |
+
+**com.pax.market.api.sdk.java.base.dto.SdkObject**
+
+| Property     | Type   | Description                              |
+| ------------ | ------ | ---------------------------------------- |
+| businessCode | int    | The reuslt code, the default value is -1 |
+| message      | String | The result message                       |
+

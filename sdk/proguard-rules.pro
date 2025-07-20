@@ -69,6 +69,7 @@
 -keep class com.pax.market.api.sdk.java.api.sync.dto.**{*;}
 
 -keep class com.pax.market.android.app.sdk.dto.**{*;}
+-keep class com.pax.market.api.sdk.java.api.param.dto.**{*;}
 
 #default
 -keep public class * extends android.app.Activity
