@@ -46,7 +46,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
 
 
-    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:9.8.7281529-SNAPSHOT'
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:9.8.1'
     api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:9.5.3'
 
 
