@@ -40,7 +40,7 @@ public class PushFragment extends Fragment implements FragmentReceiver {
     private DemoListViewAdapter demoListViewAdapter;
 
 
-    private SPUtil spUtil;
+//    private SPUtil spUtil;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -78,7 +78,7 @@ public class PushFragment extends Fragment implements FragmentReceiver {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        spUtil = new SPUtil();
+//        spUtil = new SPUtil();
     }
 
     @Override
@@ -93,36 +93,36 @@ public class PushFragment extends Fragment implements FragmentReceiver {
         nodataLayout = view.findViewById(R.id.nodata);
 
 
-        String pushResultBannerTitle = spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE);
-        if(DemoConstants.DOWNLOAD_SUCCESS.equals(pushResultBannerTitle)){
-            bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
-            bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
-            bannerSubTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
+//        String pushResultBannerTitle = spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE);
+//        if(DemoConstants.DOWNLOAD_SUCCESS.equals(pushResultBannerTitle)){
+//            bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
+//            bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
+//            bannerSubTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
+//
+//            datalist = spUtil.getDataList(DemoConstants.PUSH_RESULT_DETAIL);
+//            if have push history, display it. the demo will only store the latest push record.
+//            if(datalist!=null && datalist.size() >0) {
+//                display push history detail
+//                detailListView.setVisibility(View.VISIBLE);
+//                nodataLayout.setVisibility(View.GONE);
+//                demoListViewAdapter = new DemoListViewAdapter(getContext(), datalist, R.layout.param_detail_list_item);
+//                detailListView.setAdapter(demoListViewAdapter);
+//            }else{
+//                no data. check log for is a correct xml downloaded.
+//                detailListView.setVisibility(View.GONE);
+//                nodataLayout.setVisibility(View.VISIBLE);
+//                Toast.makeText(getContext(), "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
 
-            datalist = spUtil.getDataList(DemoConstants.PUSH_RESULT_DETAIL);
-            //if have push history, display it. the demo will only store the latest push record.
-            if(datalist!=null && datalist.size() >0) {
-                //display push history detail
-                detailListView.setVisibility(View.VISIBLE);
-                nodataLayout.setVisibility(View.GONE);
-                demoListViewAdapter = new DemoListViewAdapter(getContext(), datalist, R.layout.param_detail_list_item);
-                detailListView.setAdapter(demoListViewAdapter);
-            }else{
-                //no data. check log for is a correct xml downloaded.
-                detailListView.setVisibility(View.GONE);
-                nodataLayout.setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
-
-            }
-        }else {
-            if(DemoConstants.DOWNLOAD_FAILED.equals(pushResultBannerTitle)) {
-                bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
-                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
-            }
-            //display as no data
-            detailListView.setVisibility(View.GONE);
-            nodataLayout.setVisibility(View.VISIBLE);
-        }
+//            }
+//        }else {
+//            if(DemoConstants.DOWNLOAD_FAILED.equals(pushResultBannerTitle)) {
+//                bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
+//                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
+//            }
+//            //display as no data
+//            detailListView.setVisibility(View.GONE);
+//            nodataLayout.setVisibility(View.VISIBLE);
+//        }
 
 
         return view;
@@ -155,37 +155,37 @@ public class PushFragment extends Fragment implements FragmentReceiver {
     @Override
     public void onRecive(Context context, Intent intent) {
         //update main page UI for push status
-        int resultCode = intent.getIntExtra(DemoConstants.DOWNLOAD_RESULT_CODE, 0);
-        switch (resultCode) {
-            case DemoConstants.DOWNLOAD_STATUS_SUCCESS:
-                bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
-                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
-                bannerSubTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
-                datalist = spUtil.getDataList(DemoConstants.PUSH_RESULT_DETAIL);
-                if (datalist != null && datalist.size() > 0) {
-                    //display push history detail
-                    detailListView.setVisibility(View.VISIBLE);
-                    nodataLayout.setVisibility(View.GONE);
-                    demoListViewAdapter = new DemoListViewAdapter(getContext(), datalist, R.layout.param_detail_list_item);
-                    detailListView.setAdapter(demoListViewAdapter);
-                } else {
-                    detailListView.setVisibility(View.GONE);
-                    nodataLayout.setVisibility(View.VISIBLE);
-                    Toast.makeText(context, "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case DemoConstants.DOWNLOAD_STATUS_START:
-                bannerTitleTV.setText(DemoConstants.DOWNLOAD_START);
-                bannerTextTV.setText("Your push parameters are downloading");
-                break;
-            case DemoConstants.DOWNLOAD_STATUS_FAILED:
-                bannerTitleTV.setText(DemoConstants.DOWNLOAD_FAILED);
-                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
-                //display as no data
-                detailListView.setVisibility(View.GONE);
-                nodataLayout.setVisibility(View.VISIBLE);
-                break;
-        }
+//        int resultCode = intent.getIntExtra(DemoConstants.DOWNLOAD_RESULT_CODE, 0);
+//        switch (resultCode) {
+//            case DemoConstants.DOWNLOAD_STATUS_SUCCESS:
+//                bannerTitleTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TITLE));
+//                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
+//                bannerSubTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_SUBTEXT));
+//                datalist = spUtil.getDataList(DemoConstants.PUSH_RESULT_DETAIL);
+//                if (datalist != null && datalist.size() > 0) {
+//                    //display push history detail
+//                    detailListView.setVisibility(View.VISIBLE);
+//                    nodataLayout.setVisibility(View.GONE);
+//                    demoListViewAdapter = new DemoListViewAdapter(getContext(), datalist, R.layout.param_detail_list_item);
+//                    detailListView.setAdapter(demoListViewAdapter);
+//                } else {
+//                    detailListView.setVisibility(View.GONE);
+//                    nodataLayout.setVisibility(View.VISIBLE);
+//                    Toast.makeText(context, "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//            case DemoConstants.DOWNLOAD_STATUS_START:
+//                bannerTitleTV.setText(DemoConstants.DOWNLOAD_START);
+//                bannerTextTV.setText("Your push parameters are downloading");
+//                break;
+//            case DemoConstants.DOWNLOAD_STATUS_FAILED:
+//                bannerTitleTV.setText(DemoConstants.DOWNLOAD_FAILED);
+//                bannerTextTV.setText(spUtil.getString(DemoConstants.PUSH_RESULT_BANNER_TEXT));
+//                //display as no data
+//                detailListView.setVisibility(View.GONE);
+//                nodataLayout.setVisibility(View.VISIBLE);
+//                break;
+//        }
     }
 
     /**

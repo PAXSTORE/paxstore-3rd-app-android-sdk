@@ -58,7 +58,7 @@ uploadArchives {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
-            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+            snapshotRepository(url: "https://central.sonatype.com/repository/maven-snapshots/") {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 

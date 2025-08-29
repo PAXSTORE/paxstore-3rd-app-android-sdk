@@ -385,6 +385,7 @@ public class StoreSdk {
         BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
     }
 
+    //
     public String aesDecrypt(String encryptedData) {
         if (appSecret == null) {
             logger.error("Store sdk not initialized");

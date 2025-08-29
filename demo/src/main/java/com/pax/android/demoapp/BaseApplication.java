@@ -10,7 +10,6 @@ import com.pax.market.android.app.sdk.BaseApiService;
 import com.pax.market.android.app.sdk.Notifications;
 import com.pax.market.android.app.sdk.StoreSdk;
 
-import net.grandcentrix.tray.AppPreferences;
 
 /**
  * Created by fojut on 2017/8/24.
@@ -23,11 +22,12 @@ public class BaseApplication extends Application {
     private boolean isReadyToUpdate = true;
 
     //todo make sure to replace with your own app's appkey and appsecret
-    private static final String appkey = "your key";
-    private static final String appSecret = "your secret";
+    private static final String appkey = "DQOSMMGSBDCNIXOFZR1U";
+    private static final String appSecret = "PMKNAMTBLBGZ2ARS110YQ7LCGT7UCU0NPO74ESS4";
+
 
     //todo please make sure get the correct SN here, for pax device you can integrate NeptuneLite SDK to get the correct SN
-    public static AppPreferences appPreferences;
+//    public static AppPreferences appPreferences;
 
 
     @Override
@@ -35,7 +35,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         //initial the SDK
         initStoreSdk();
-        appPreferences = new AppPreferences(getApplicationContext()); // this Preference comes for free from the library
+//        appPreferences = new AppPreferences(getApplicationContext()); // this Preference comes for free from the library
 
     }
 
