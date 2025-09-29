@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.pax.android.demoapp.base.DemoConstants;
+import com.pax.android.demoapp.R;
+import com.pax.android.demoapp.utils.SPUtil;
+import com.pax.android.demoapp.adapter.DemoListViewAdapter;
 
 import java.util.List;
 import java.util.Map;

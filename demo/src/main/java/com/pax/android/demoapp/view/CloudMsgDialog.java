@@ -10,7 +10,7 @@
  * ******************************************************************************
  */
 
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.view;
 
 /**
  * Created by zcy on 2016/8/3 0003.
@@ -23,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.pax.android.demoapp.R;
 
 public class CloudMsgDialog extends Dialog {
     private Context context;

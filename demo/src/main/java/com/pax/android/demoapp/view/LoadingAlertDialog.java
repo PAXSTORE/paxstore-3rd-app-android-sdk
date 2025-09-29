@@ -10,13 +10,15 @@
  * ******************************************************************************
  */
 
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.view;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.pax.android.demoapp.R;
 
 public class LoadingAlertDialog extends AlertDialog {
 

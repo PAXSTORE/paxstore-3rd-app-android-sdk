@@ -11,12 +11,13 @@
     <uses-permission android:name="com.market.android.app.API_MERCHANT_INFO" />
 
     <application
-        android:name=".BaseApplication"
+        android:name=".base.BaseApplication"
         android:icon="@mipmap/logo_demo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LauncherActivity"
+        <activity
+            android:name=".view.LauncherActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,10 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.pax.android.demoapp.view.GoInsightActivity" />
 
 
-
-        <service android:name=".DownloadParamService"
+        <service
+            android:name=".service.DownloadParamService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS"/>
@@ -35,7 +37,8 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".PushMessageReceiver"
+        <receiver
+            android:name=".receiver.PushMessageReceiver"
                   android:enabled="true"
                   android:exported="false">
             <intent-filter>

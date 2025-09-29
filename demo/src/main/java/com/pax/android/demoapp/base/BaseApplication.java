@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.base;
 
 import android.app.Application;
 import android.graphics.BitmapFactory;
@@ -6,6 +6,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.pax.android.demoapp.R;
 import com.pax.market.android.app.sdk.BaseApiService;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.msg.utils.Notifications;

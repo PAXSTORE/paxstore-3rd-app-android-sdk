@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.service;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.pax.android.demoapp.base.DemoConstants;
+import com.pax.android.demoapp.R;
+import com.pax.android.demoapp.utils.SPUtil;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
