@@ -55,11 +55,7 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
         msgReceiver = new MsgReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DemoConstants.UPDATE_VIEW_ACTION);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(msgReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
-        } else {
-            registerReceiver(msgReceiver, intentFilter);
-        }
+        registerReceiver(msgReceiver, intentFilter);
 
         viewPager = findViewById(R.id.viewpager);
         mGroup = findViewById(R.id.r_group);

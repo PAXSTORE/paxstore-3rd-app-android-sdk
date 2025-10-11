@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 34
+        targetSdkVersion 29
 
         manifestPlaceholders = [versionName : "${version}"]
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
