@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.9.0'
+        classpath 'com.android.tools.build:gradle:8.3.0'
         //https://github.com/novoda/bintray-release check latest version of novoda
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
 

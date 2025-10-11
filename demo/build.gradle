@@ -40,7 +40,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
 
-//    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:10.0.092502-SNAPSHOT'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:10.0.101102-SNAPSHOT'
 
      //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -49,9 +49,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
 
-    implementation project(':sdk')
-    implementation 'org.slf4j:slf4j-api:1.7.12'
-    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+//    implementation project(':sdk')
+//    implementation 'org.slf4j:slf4j-api:1.7.12'
+//    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+//    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 
 }
