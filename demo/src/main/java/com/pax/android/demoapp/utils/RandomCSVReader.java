@@ -10,10 +10,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 public class RandomCSVReader {
@@ -25,13 +25,13 @@ public class RandomCSVReader {
     private final String fileName;
     private List<SalesRecord> allRecords;
     private final Set<Integer> readIndexes;
-    private final Random random;
+    private final SecureRandom random;
     private int totalRecords;
 
     public RandomCSVReader(Context context, String fileName) {
         this.context = context;
         this.fileName = fileName;
-        this.random = new Random();
+        this.random = new SecureRandom();
         this.readIndexes = new HashSet<>();
 
         loadAllRecords();

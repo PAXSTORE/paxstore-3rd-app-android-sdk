@@ -27,6 +27,15 @@ android {
     }
     namespace 'com.pax.android.demoapp'
 
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            // 定义一个时间戳，格式为年月日时分，用于区分不同时间的构建
+            def buildTime = new Date().format("yyyyMMdd-HHmm", TimeZone.getTimeZone("GMT+08:00"))
+
+            // 自定义文件名规则
+            outputFileName = "Android sdk demo-${variant.versionName}-${buildTime}.apk"
+        }
+    }
 }
 configurations.all {
     // check for updates every build
