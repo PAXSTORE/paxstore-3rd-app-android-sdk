@@ -9,6 +9,7 @@ import com.pax.market.android.app.sdk.util.NetWorkUtils;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.param.ParamApi;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.DownloadConfig;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.dto.InnerDownloadResultObject;
 import com.pax.market.api.sdk.java.base.dto.LastFailObject;
@@ -32,23 +33,42 @@ public class ParamApiStrategy extends ParamApi {
     }
 
     public DownloadResultObject downloadParamToPathWithSHA256Check(String packageName, int versionCode, String saveFilePath) {
-        return downloadParams(packageName, versionCode, saveFilePath, true, false);
+        return downloadParams(packageName, versionCode, saveFilePath, true, false, false);
     }
 
     public DownloadResultObject downloadParamToPath(String packageName, int versionCode, String saveFilePath) {
-        return downloadParams(packageName, versionCode, saveFilePath, false, false);
+        return downloadParams(packageName, versionCode, saveFilePath, false, false, false);
     }
 
     public DownloadResultObject downloadParamsSHA256(String packageName, int versionCode, String saveFilePath) {
-        return downloadParams(packageName, versionCode, saveFilePath, true, true);
+        return downloadParams(packageName, versionCode, saveFilePath, true, true, false);
     }
 
     public DownloadResultObject downloadParam(String packageName, int versionCode, String saveFilePath) {
-        return downloadParams(packageName, versionCode, saveFilePath, false, true);
+        return downloadParams(packageName, versionCode, saveFilePath, false, true, false);
     }
 
+
+    /**
+     * for partial download, backend should support sha256, then
+     * @param packageName
+     * @param versionCode
+     * @param saveFilePath
+     * @return
+     */
+    public DownloadResultObject executeDownload(String packageName, int versionCode, String saveFilePath, DownloadConfig config) {
+        if(config == null) {
+            config = new DownloadConfig.Builder().build();
+        }
+        return downloadParams(packageName, versionCode, saveFilePath, config.isVerifySha256(),
+                config.isApplyResultNeeded(), config.isSeparateFolder());
+    }
+
+
+
+
     public DownloadResultObject downloadParams(String packageName, int versionCode, String saveFilePath, 
-                                                boolean verifySHA, boolean needApplyResult) {
+                                                boolean verifySHA, boolean needApplyResult, boolean separateFolder) {
 
         Log.w("StoreSdk", "StoreSdk start");
         boolean mobileNetAvailable = NetWorkUtils.isMobileNetAvailable(context);
@@ -56,12 +76,12 @@ public class ParamApiStrategy extends ParamApi {
         InnerDownloadResultObject downloadResultObject = null;
 
         List<Long> downloadedList = needApplyResult ? getIdListFromPrefs() : null;
-        if (verifySHA) {
-            downloadResultObject = super.downloadParamsWithShaCheck(packageName,
-                    versionCode, saveFilePath, failTask, mobileNetAvailable, needApplyResult, downloadedList);
+        if (separateFolder) {
+            downloadResultObject = super.executeDownload(packageName,
+                    versionCode, saveFilePath, failTask, mobileNetAvailable, verifySHA, needApplyResult, downloadedList);
         } else {
-            downloadResultObject = super.downloadParamToPath(packageName,
-                    versionCode, saveFilePath, failTask, mobileNetAvailable, needApplyResult, downloadedList);
+            downloadResultObject = super.downloadParams(packageName,
+                    versionCode, saveFilePath, failTask, mobileNetAvailable, verifySHA, needApplyResult, downloadedList);
         }
 
 

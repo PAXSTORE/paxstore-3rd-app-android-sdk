@@ -1,53 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="15dp">
+    app:cardCornerRadius="2dp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/acquirer"
-        android:layout_width="100dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" />
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/amount"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+        <!-- 第一行：商品名称和日期 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-    <TextView
-        android:id="@+id/purchase_time"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Binders"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2025/09/28"
+                android:gravity="end"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- 第二行：销售额和利润 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_total_sale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2196F3"
+                    android:text="6.86$"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Sales"
+                    android:textColor="#666666"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:orientation="vertical"
+                android:gravity="start">
+
+                <TextView
+                    android:id="@+id/tv_profit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2196F3"
+                    android:text="3.77$"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profit"
+                    android:textColor="#666666"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/purchase_id"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.3"
+                android:orientation="vertical"
+                android:gravity="end">
 
-    <TextView
-        android:id="@+id/merchant"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Office Supplies"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/reseller"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category"
+                    android:textColor="#666666"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
 
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/op_number"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+        </LinearLayout>
 
+    </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

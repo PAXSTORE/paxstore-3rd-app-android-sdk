@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.service;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -12,9 +12,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.pax.android.demoapp.base.DemoConstants;
+import com.pax.android.demoapp.R;
+import com.pax.android.demoapp.utils.SPUtil;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
+import com.pax.market.api.sdk.java.base.dto.DownloadConfig;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 import com.pax.market.api.sdk.java.base.exception.ParseXMLException;
@@ -59,7 +63,7 @@ public class DownloadParamService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         spUtil = new SPUtil();
         //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
-        saveFilePath = getFilesDir() + "/YourPath/";
+        saveFilePath = getFilesDir() + "/YourPath";
 
         //show downloading info in main page
         updateUI(DemoConstants.DOWNLOAD_STATUS_START);
@@ -68,11 +72,20 @@ public class DownloadParamService extends IntentService {
         DownloadResultObject downloadResult = null;
         try {
             Log.i(TAG, "call sdk API to download parameter");
-            downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(), com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath);
+            DownloadConfig downloadConfig = new DownloadConfig.Builder()
+                    .enableNeedApplyResult(false)
+                    .enableVerifySha256(true)
+                    .enableSeparateFolder(true)
+                    .build();
+
+            downloadResult = StoreSdk.getInstance().paramApi().executeDownload(getApplication().getPackageName(),
+                    com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath,downloadConfig);
+            Log.e("ttt", "partial downloadResult> " + downloadResult  + " partial： " + downloadResult.getDownloadedParamList().get(0).toString());
+
+
         } catch (NotInitException e) {
             Log.e(TAG, "e:" + e);
         }
-
 //                businesscode==0, means download successful, if not equal to 0, please check the return message when need.
         if (downloadResult != null ) {
             if (downloadResult.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
@@ -80,7 +93,7 @@ public class DownloadParamService extends IntentService {
 
                 //todo start to add your own logic.
                 //below is only for demo
-                readDataToDisplay();
+                readDataToDisplay(downloadResult.getDownloadedParamList().getLast().getPath());
             } else {
                 //todo check the Error Code and Error Message for fail reason
                 Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());
@@ -98,11 +111,11 @@ public class DownloadParamService extends IntentService {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void readDataToDisplay() {
+    private void readDataToDisplay(String filePath) {
         spUtil.setString(getApplicationContext(), DemoConstants.PUSH_RESULT_BANNER_TITLE, DemoConstants.DOWNLOAD_SUCCESS);
 
         // get specific display data resource <File>sys_cap.p</File>
-        File parameterFile = getDisplayFile();
+        File parameterFile = getDisplayFile(filePath);
 
         //save data for display in main page for demo
         saveDisplayFileDataToSp(parameterFile);
@@ -141,9 +154,9 @@ public class DownloadParamService extends IntentService {
      * @return specific file, return null if not exists
      */
     @Nullable
-    private File getDisplayFile() {
+    private File getDisplayFile(String filePath) {
         File parameterFile = null;
-        File[] filelist = new File(saveFilePath).listFiles();
+        File[] filelist = new File(filePath).listFiles();
         if (filelist != null && filelist.length > 0) {
             for (File f : filelist) {
                 //todo Noted. this is for demo only, here hard code the xml name to "sys_cap.p". this demo will only parse with the specified file name

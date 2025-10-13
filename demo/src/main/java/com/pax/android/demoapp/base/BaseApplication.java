@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.base;
 
 import android.app.Application;
 import android.graphics.BitmapFactory;
@@ -6,6 +6,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.pax.android.demoapp.R;
 import com.pax.market.android.app.sdk.BaseApiService;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.msg.utils.Notifications;
@@ -22,8 +23,8 @@ public class BaseApplication extends Application {
     private boolean isReadyToUpdate = true;
 
     //todo make sure to replace with your own app's appkey and appsecret
-    private static final String appkey = "your key";
-    private static final String appSecret = "your secret";
+    private static final String appkey = "DQOSMMGSBDCNIXOFZR1U";
+    private static final String appSecret = "PMKNAMTBLBGZ2ARS110YQ7LCGT7UCU0NPO74ESS4";
 
 
 

@@ -103,11 +103,11 @@
                 android:textSize="12sp"
                 android:textStyle="normal" />
 
-            <com.pax.android.demoapp.ListViewForScrollView
+            <com.pax.android.demoapp.view.ListViewForScrollView
                 android:id="@+id/parameter_detail_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"></com.pax.android.demoapp.ListViewForScrollView>
+                android:layout_weight="1"></com.pax.android.demoapp.view.ListViewForScrollView>
 
             <LinearLayout
                 android:id="@+id/nodata"

@@ -6,8 +6,8 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 1071
-        versionName "9.7.1-j"
+        versionCode 1090
+        versionName "10.0.0-j-SNAPSHOT"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -27,6 +27,15 @@ android {
     }
     namespace 'com.pax.android.demoapp'
 
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            // 定义一个时间戳，格式为年月日时分，用于区分不同时间的构建
+            def buildTime = new Date().format("yyyyMMdd-HHmm", TimeZone.getTimeZone("GMT+08:00"))
+
+            // 自定义文件名规则
+            outputFileName = "Android sdk demo-${variant.versionName}-${buildTime}.apk"
+        }
+    }
 }
 configurations.all {
     // check for updates every build
@@ -44,6 +53,8 @@ dependencies {
      //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
 
 //    implementation project(':sdk')

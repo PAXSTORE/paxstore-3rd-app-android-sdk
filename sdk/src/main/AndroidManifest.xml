@@ -59,7 +59,7 @@
 
         <!-- Add below meta-data to support GoInsight -->
         <meta-data android:name="STORE_SDK_VERSION"
-            android:value="${versionName}"/>
+            android:value="V${versionName}" />
     </application>
 
 </manifest>

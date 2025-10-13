@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.view;
 
 
 import android.content.ActivityNotFoundException;
@@ -22,6 +22,10 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.pax.android.demoapp.base.BaseApplication;
+import com.pax.android.demoapp.BuildConfig;
+import com.pax.android.demoapp.adapter.CloudMsgTagAdapter;
+import com.pax.android.demoapp.R;
 import com.pax.market.android.app.sdk.BaseApiService;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
@@ -64,7 +68,7 @@ public class APIFragment extends Fragment {
     private ListView tagListView;
 
     private ScrollView scrollView;
-    private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag , lvGetLastSuccess;
+    private LinearLayout lvRetrieveData, checkUpdate, openDownloadList, lvAttachTag, lvDeleteTag, lvGetLastSuccess, lvGoInsight;
     private ImageView mImgRetrieve;
     private LinearLayout lvChildRetrieve;
     private Button getOnlineStatus, getMerchantInfo; // todo remove
@@ -365,8 +369,16 @@ public class APIFragment extends Fragment {
             }
         });
 
+        lvGoInsight = view.findViewById(R.id.lv_goinsight);
+        lvGoInsight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), GoInsightActivity.class));
+            }
+        });
 
         getOnlineStatus = (Button) view.findViewById(R.id.get_online_status);
+
         getOnlineStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
