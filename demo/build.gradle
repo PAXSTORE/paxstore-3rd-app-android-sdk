@@ -25,15 +25,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            if (outputFileName.endsWith('.apk') && 'release'.equals(variant.buildType.name)) {
-                variant.getPackageApplicationProvider().get().outputDirectory = new File(buildDir, "outputs/apk")
-                outputFileName = "PAXSTORE SDK Demo-${buildType.name}-v${defaultConfig.versionName}.apk"
-            }
-        }
-    }
+    namespace 'com.pax.android.demoapp'
 
 }
 configurations.all {

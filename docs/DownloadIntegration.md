@@ -6,6 +6,8 @@ By integrating with this function, admin can delivery parameters to the applicat
 1. Check the appKey and appSecret that are the same with the web, and check again, and again, three times should be fine.
 2. Check the apk you installed on the terminal matches the packageName and versionCode that you uploaded to PAXSTORE developer center,  and check again, and again.
 3. Pay attention to the versionCode to the api downloadParamToPath(), the versionCode is your app's versionCode, do not input it with the sdk's versionCode!
+4. Parameter download is not mandatory for immediate execution; it can be deferred as needed.
+5. We recommend saving the parameter files to a temporary directory first. Then, copy them to a different directory before use.
 
 Now you can go through below contents.
 

@@ -180,3 +180,23 @@ public DownloadResultObject downloadLastSuccessWithSha256Check(String saveFilePa
 | ------------ | ----------- | ------------------------------------------------------------ |
 | savaFilePath | String | The path that param files will be saved |
 | paramTemplateName | String | This name of param template |
+
+### Upload local param list
+
+Upload the modified local parameter list.
+
+```
+public SdkObject uploadLocalParamList(UploadLocalParamDto uploadLocalParamDto)
+```
+
+| Parameter           | Type                | Description                     |
+| ------------------- | ------------------- | ------------------------------- |
+| uploadLocalParamDto | UploadLocalParamDto | The dto of uploadLocalParamList |
+
+**com.pax.market.api.sdk.java.api.param.dto.UploadLocalParamDto**
+
+| Property          | Type               | Description                                                                                                                                               |
+| ----------------- | ------------------ |-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| versionCode       | Long               | The app version code                                                                                                                                      |
+| paramTemplateName | String             | The param template name                                                                                                                                   |
+| paramChangedList  | Map<String,String> | The modified local parameter list.<br/>Map: key - paramFile key,value -modified param content.<br/> **(suggest that you send the changed key and value)** |
