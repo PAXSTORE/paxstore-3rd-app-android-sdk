@@ -2,13 +2,10 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.3'
 
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 101
-        versionName "${version}"
 
         manifestPlaceholders = [versionName : "${version}"]
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -30,6 +27,10 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
     }
+    buildFeatures {
+        aidl true
+    }
+    namespace 'com.pax.market.android.app.sdk'
 }
 configurations.all {
     // check for updates every build
@@ -45,7 +46,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
 
 
-    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:9.7.1'
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:9.8.1'
     api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:9.5.3'
 
 
@@ -58,3 +59,7 @@ dependencies {
 }
 
 apply from :"../publishAndroidLib.gradle"
+
+tasks.named('publish') {
+    dependsOn 'clean'
+}

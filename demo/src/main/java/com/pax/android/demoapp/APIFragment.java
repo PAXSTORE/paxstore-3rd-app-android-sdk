@@ -28,7 +28,6 @@ import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.TerminalInfo;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
-import com.pax.market.api.sdk.java.base.dto.LocationObject;
 import com.pax.market.api.sdk.java.base.dto.MerchantObject;
 import com.pax.market.api.sdk.java.base.dto.MsgTagObject;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
@@ -68,7 +67,7 @@ public class APIFragment extends Fragment {
     private LinearLayout lvRetrieveData,checkUpdate,openDownloadList, lvAttachTag, lvDeleteTag , lvGetLastSuccess;
     private ImageView mImgRetrieve;
     private LinearLayout lvChildRetrieve;
-    private Button getTerminalLocation, getOnlineStatus, getMerchantInfo; // todo remove
+    private Button getOnlineStatus, getMerchantInfo; // todo remove
     private OnFragmentInteractionListener mListener;
     private boolean isDataExpanded;
     public APIFragment() {
@@ -129,7 +128,6 @@ public class APIFragment extends Fragment {
         lvRetrieveData = (LinearLayout) view.findViewById(R.id.lv_retrieve_data);
         lvChildRetrieve = (LinearLayout) view.findViewById(R.id.lv_childs_retrieve);
         mImgRetrieve = (ImageView) view.findViewById(R.id.img_retrieve_data);
-        getTerminalLocation = (Button) view.findViewById(R.id.get_location);
         getMerchantInfo = (Button) view.findViewById(R.id.get_merchant_info);
         //switch to set trading status.
         tradingStateSwitch.setChecked(((BaseApplication) getContext().getApplicationContext()).isReadyToUpdate());
@@ -352,39 +350,6 @@ public class APIFragment extends Fragment {
                                     } else {
                                         msg = "download last success param  Failed >> code: " + downloadResultObject.getBusinessCode()
                                                 + " >> message: " + downloadResultObject.getMessage();
-                                    }
-                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        } catch (NotInitException e) {
-                            Log.e(TAG, "e:" + e);
-                            showNotInitToast();
-                        }
-                        dismissLoadingDialog();
-                    }
-                }) ;
-                thread.start();
-            }
-        });
-
-        getTerminalLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProgress();
-                Thread thread =  new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            final LocationObject locationObject = StoreSdk.getInstance().syncApi().getLocate();
-                            Log.d(TAG, "Get Location Result：:" + locationObject.toString());
-                            LauncherActivity.getHandler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String msg = "";
-                                    if (locationObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
-                                        msg = "Get Location Result:" + locationObject;
-                                    } else {
-                                        msg = "Get Location Failed: " + locationObject;
                                     }
                                     Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }

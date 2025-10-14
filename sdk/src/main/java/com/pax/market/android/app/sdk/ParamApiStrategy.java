@@ -50,6 +50,7 @@ public class ParamApiStrategy extends ParamApi {
     public DownloadResultObject downloadParams(String packageName, int versionCode, String saveFilePath, 
                                                 boolean verifySHA, boolean needApplyResult) {
 
+        Log.w("StoreSdk", "StoreSdk start");
         boolean mobileNetAvailable = NetWorkUtils.isMobileNetAvailable(context);
         LastFailObject failTask = PreferencesUtils.getObject(context, LAST_DOWNLOAD, LastFailObject.class);
         InnerDownloadResultObject downloadResultObject = null;
