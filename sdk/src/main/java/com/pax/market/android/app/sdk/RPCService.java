@@ -10,6 +10,8 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.nimbusds.jose.JOSEException;
+import com.pax.market.android.app.sdk.util.NimbusJwtHelper;
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 
 import org.slf4j.Logger;
@@ -22,7 +24,6 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import io.jsonwebtoken.Jwts;
 
 /**
  * Created by fojut on 2017/8/16.
@@ -66,11 +67,13 @@ public class RPCService extends Service {
         byte[] hashedBytes = digest.digest(secretBytes);
 
         SecretKey secretKey = new SecretKeySpec(hashedBytes, 0, hashedBytes.length, "HmacSHA512");
-        String token = Jwts.builder()
-                .subject(appKey)
-                .expiration(generateExpirationDate())
-                .signWith(secretKey, Jwts.SIG.HS512)
-                .compact();
+
+        String token = null;
+        try {
+            token = NimbusJwtHelper.generateHs512Token(appKey, generateExpirationDate(), secretKey);
+        } catch (JOSEException e) {
+            Log.e("ttt", "generateHs512Token failed: " + e);
+        }
         return token;
     }
 

@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk-j:9.7.1'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk-j:10.0.101402-SNAPSHOT'
 
      //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
