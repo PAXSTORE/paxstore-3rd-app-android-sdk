@@ -5,6 +5,9 @@ By integrating with this function, you application can delay the upgrade.
 When your application returns false to isReadyUpdate(), PAXSTORE client will try to upgrade your application next time.
 
 :red_square: :red_square: :red_square: Please note: If your application does not initialize InstallInquirer successfully(especially when your app does not start before the upgrade), then InstallInquirer will not take effect, so your app will be upgraded directly.
+:red_square: :red_square: :red_square: Please note: Please make sure the platform server version is v9.6.0 or higher, otherwise it will make the install inquirer function ineffective.
+
+
 
 ### 1：Initialization of Sdk
 Refer to the [SetUp](../README.md)
