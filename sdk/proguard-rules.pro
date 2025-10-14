@@ -77,3 +77,4 @@
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.preference.Preference
 
+-dontwarn com.google.errorprone.annotations.CanIgnoreReturnValue
