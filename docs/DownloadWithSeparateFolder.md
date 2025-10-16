@@ -17,7 +17,8 @@ preventing later background tasks from overwriting the files of earlier ones.
         DownloadResultObject downloadResult = StoreSdk. getInstance(). paramApi(). 
                                 executeDownload(getApplication().getPackageName(), Your app’s versionCode, saveFilePath, downloadConfig);
 
-You should be aware that the downloadLastSuccess function does not support partial parameter pushes and only retrieves the most recent full parameter
+You should be aware that the **downloadLastSuccess** function **does not support** partial parameter pushes and only retrieves the most recent full
+parameter
 push.
 
 ### 4.Get the task list for this download
