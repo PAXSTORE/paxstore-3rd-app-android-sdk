@@ -1,14 +1,14 @@
 ### You can do partial download task with following new download api
 
-### 1.sdk implementation
+### 1.SDK implementation
 
     implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:10.0.081501-SNAPSHOT'
 
-### 2.init sdk
+### 2.Init sdk
 
 https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk#step-1-get-application-key-and-secret
 
-### 3.use new download api
+### 3.Use new download api
 
 Using the new API in the following way ensures that each background task downloads to its own separate folder,
 preventing later background tasks from overwriting the files of earlier ones.
@@ -20,6 +20,9 @@ preventing later background tasks from overwriting the files of earlier ones.
 ### 4.Get the task list for this download
 
 DownloadResultObject .getDownloadedParamList()
+
+The tasks are sorted according to their activation order, and you can process the downloaded files in that sequence.
+Each task detail includes the actionId, whether it is a partial parameter task, and the path to the folder where the files are stored.
 
 ### 5.The specific field description of this download task
 
