@@ -18,7 +18,6 @@ import com.pax.android.demoapp.utils.SPUtil;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
-import com.pax.market.api.sdk.java.base.dto.DownloadConfig;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 import com.pax.market.api.sdk.java.base.exception.ParseXMLException;
@@ -72,16 +71,9 @@ public class DownloadParamService extends IntentService {
         DownloadResultObject downloadResult = null;
         try {
             Log.i(TAG, "call sdk API to download parameter");
-            DownloadConfig downloadConfig = new DownloadConfig.Builder()
-                    .enableNeedApplyResult(false)
-                    .enableVerifySha256(true)
-                    .enableSeparateFolder(true)
-                    .build();
 
-            downloadResult = StoreSdk.getInstance().paramApi().executeDownload(getApplication().getPackageName(),
-                    com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath,downloadConfig);
-            Log.e("ttt", "partial downloadResult> " + downloadResult  + " partial： " + downloadResult.getDownloadedParamList().get(0).toString());
-
+            downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(),
+                    com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath);
 
         } catch (NotInitException e) {
             Log.e(TAG, "e:" + e);
