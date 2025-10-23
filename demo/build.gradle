@@ -33,7 +33,7 @@ android {
             def buildTime = new Date().format("yyyyMMdd-HHmm", TimeZone.getTimeZone("GMT+08:00"))
 
             // 自定义文件名规则
-            outputFileName = "Android sdk demo-${variant.versionName}-${buildTime}.apk"
+            outputFileName = "Android-sdk-demo-${variant.versionName}-${buildTime}.apk"
         }
     }
 }

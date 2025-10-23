@@ -85,7 +85,7 @@ public class DownloadParamService extends IntentService {
 
                 //todo start to add your own logic.
                 //below is only for demo
-                readDataToDisplay(downloadResult.getDownloadedParamList().getLast().getPath());
+                readDataToDisplay(downloadResult.getParamSavePath());
             } else {
                 //todo check the Error Code and Error Message for fail reason
                 Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());
