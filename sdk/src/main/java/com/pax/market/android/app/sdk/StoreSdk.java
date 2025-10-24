@@ -18,7 +18,6 @@ import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.msg.dto.MediaMesageInfo;
 import com.pax.market.android.app.sdk.msg.dto.PushConstants;
-import com.pax.market.android.app.sdk.msg.utils.CloudMsgCryptoUtils;
 import com.pax.market.android.app.sdk.util.PreferencesUtils;
 import com.pax.market.api.sdk.java.api.check.CheckServiceApi;
 import com.pax.market.api.sdk.java.api.sync.CloudMessageApi;
@@ -27,6 +26,7 @@ import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.constant.Constants;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
+import com.pax.market.cloudmsg.crypto.CloudmsgCrypto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -432,9 +432,8 @@ public class StoreSdk {
         if (appSecret == null) {
             logger.error("Store sdk not initialized");
         }
-        return CloudMsgCryptoUtils.aesDecrypt(encryptedData, appSecret);
+        return CloudmsgCrypto.decryptCloudmsg(encryptedData, appSecret);
     }
-
 
     public void openAppDetailPage(String packageName, Context context) {
         String url = String.format(URI_PREFIX, packageName);

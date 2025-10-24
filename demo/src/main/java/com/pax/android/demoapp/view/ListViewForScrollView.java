@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.adapter;
 
 import android.widget.TextView;
 

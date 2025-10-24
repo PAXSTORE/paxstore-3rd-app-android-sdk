@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.utils;
 
 import android.content.Context;
 
@@ -53,6 +53,22 @@ public class SPUtil {
         datalist = gson.fromJson(strJson, new TypeToken<List<T>>() {
         }.getType());
         return datalist;
+
+    }
+
+    /**
+     * get List
+     *
+     * @param tag
+     * @return
+     */
+    public <T> T getDataListByType(Context context, String tag, TypeToken<T> typeToken) {
+        String strJson = PreferencesUtils.getString(context, tag, null);
+        if (null == strJson) {
+            return null;
+        }
+        Gson gson = new Gson();
+        return gson.fromJson(strJson, typeToken.getType());
 
     }
 }
