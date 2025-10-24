@@ -35,10 +35,7 @@ android {
         }
     }
 }
-configurations.all {
-    // check for updates every build
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

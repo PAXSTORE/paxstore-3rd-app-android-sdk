@@ -32,10 +32,7 @@ android {
     }
     namespace 'com.pax.market.android.app.sdk'
 }
-configurations.all {
-    // check for updates every build
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
+
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'org.slf4j:slf4j-android:1.7.25'
