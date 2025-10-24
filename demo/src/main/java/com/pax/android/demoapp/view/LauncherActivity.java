@@ -1,4 +1,4 @@
-package com.pax.android.demoapp;
+package com.pax.android.demoapp.view;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -19,13 +19,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.pax.android.demoapp.base.DemoConstants;
+import com.pax.android.demoapp.R;
+import com.pax.android.demoapp.adapter.FragAdapter;
 import com.pax.market.android.app.sdk.msg.utils.AdvertisementDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LauncherActivity extends FragmentActivity implements com.pax.android.demoapp.APIFragment.OnFragmentInteractionListener, com.pax.android.demoapp.PushFragment.OnFragmentInteractionListener {
+public class LauncherActivity extends FragmentActivity implements APIFragment.OnFragmentInteractionListener, PushFragment.OnFragmentInteractionListener {
     private static final String TAG = LauncherActivity.class.getSimpleName();
     private ViewPager viewPager;
     private RadioGroup mGroup;
@@ -53,7 +56,6 @@ public class LauncherActivity extends FragmentActivity implements com.pax.androi
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DemoConstants.UPDATE_VIEW_ACTION);
         registerReceiver(msgReceiver, intentFilter);
-
 
         viewPager = findViewById(R.id.viewpager);
         mGroup = findViewById(R.id.r_group);

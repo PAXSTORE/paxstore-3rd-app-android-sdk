@@ -59,5 +59,10 @@ Below codes are needed when your application target devices include Android8+.
         return super.onStartCommand(intent, flags, startId);
     }
 
+| Code | Description                                                              |
+|------|--------------------------------------------------------------------------|
+| 0    | Download success                                                         |
+| -10  | No params to download , means there are no param tasks exist in backend. |
+
 ## Template
 See [Template](../demo/src/main/assets/param_template.xml)
