@@ -18,7 +18,6 @@ import com.pax.android.demoapp.utils.SPUtil;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.util.NotificationUtils;
 import com.pax.market.api.sdk.java.base.constant.ResultCode;
-import com.pax.market.api.sdk.java.base.dto.DownloadConfig;
 import com.pax.market.api.sdk.java.base.dto.DownloadResultObject;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
 import com.pax.market.api.sdk.java.base.exception.ParseXMLException;
@@ -63,7 +62,7 @@ public class DownloadParamService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         spUtil = new SPUtil();
         //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
-        saveFilePath = getFilesDir() + "/YourPath";
+        saveFilePath = getFilesDir() + "/YourPath/";
 
         //show downloading info in main page
         updateUI(DemoConstants.DOWNLOAD_STATUS_START);
@@ -72,16 +71,9 @@ public class DownloadParamService extends IntentService {
         DownloadResultObject downloadResult = null;
         try {
             Log.i(TAG, "call sdk API to download parameter");
-            DownloadConfig downloadConfig = new DownloadConfig.Builder()
-                    .enableNeedApplyResult(false)
-                    .enableVerifySha256(true)
-                    .enableSeparateFolder(true)
-                    .build();
 
-            downloadResult = StoreSdk.getInstance().paramApi().executeDownload(getApplication().getPackageName(),
-                    com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath,downloadConfig);
-            Log.e("ttt", "partial downloadResult> " + downloadResult  + " partial： " + downloadResult.getDownloadedParamList().get(0).toString());
-
+            downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(),
+                    com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath);
 
         } catch (NotInitException e) {
             Log.e(TAG, "e:" + e);
@@ -93,7 +85,7 @@ public class DownloadParamService extends IntentService {
 
                 //todo start to add your own logic.
                 //below is only for demo
-                readDataToDisplay(downloadResult.getDownloadedParamList().getLast().getPath());
+                readDataToDisplay(downloadResult.getParamSavePath());
             } else {
                 //todo check the Error Code and Error Message for fail reason
                 Log.e(TAG, "ErrorCode: " + downloadResult.getBusinessCode() + "ErrorMessage: " + downloadResult.getMessage());

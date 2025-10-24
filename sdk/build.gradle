@@ -32,10 +32,7 @@ android {
     }
     namespace 'com.pax.market.android.app.sdk'
 }
-configurations.all {
-    // check for updates every build
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
+
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'org.slf4j:slf4j-android:1.7.25'
@@ -44,8 +41,8 @@ dependencies {
     implementation 'com.nimbusds:nimbus-jose-jwt:10.5'
 
 
-    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:10.0.101102-SNAPSHOT'
-    api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:10.0.0-092703-SNAPSHOT'
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:10.0.0'
+    api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:10.0.0'
 
 
 

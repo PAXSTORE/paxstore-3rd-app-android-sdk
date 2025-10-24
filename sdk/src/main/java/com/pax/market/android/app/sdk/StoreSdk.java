@@ -26,6 +26,7 @@ import com.pax.market.api.sdk.java.api.update.UpdateApi;
 import com.pax.market.api.sdk.java.base.client.ProxyDelegate;
 import com.pax.market.api.sdk.java.base.constant.Constants;
 import com.pax.market.api.sdk.java.base.exception.NotInitException;
+import com.pax.market.cloudmsg.crypto.CloudmsgCrypto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -425,6 +426,13 @@ public class StoreSdk {
         PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_TERMINAL_INFO_TIME, System.currentTimeMillis());
 
         BaseApiService.getInstance(context).getBaseTerminalInfo(callback);
+    }
+
+    public String aesDecrypt(String encryptedData) {
+        if (appSecret == null) {
+            logger.error("Store sdk not initialized");
+        }
+        return CloudmsgCrypto.decryptCloudmsg(encryptedData, appSecret);
     }
 
     public void openAppDetailPage(String packageName, Context context) {
