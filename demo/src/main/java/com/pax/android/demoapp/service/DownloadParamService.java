@@ -62,7 +62,7 @@ public class DownloadParamService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         spUtil = new SPUtil();
         //todo Specifies the download path for the parameter file, you can replace the path to your app's internal storage for security.
-        saveFilePath = getFilesDir() + "/YourPath";
+        saveFilePath = getFilesDir() + "/YourPath/";
 
         //show downloading info in main page
         updateUI(DemoConstants.DOWNLOAD_STATUS_START);
