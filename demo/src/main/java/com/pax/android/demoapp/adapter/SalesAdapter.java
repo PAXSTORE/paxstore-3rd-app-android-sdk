@@ -41,19 +41,15 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SalesRecord item = SalesRecords.get(position);
 
-        // 设置商品名称和日期
         holder.tvProductName.setText(item.getProduct());
         holder.tvDate.setText(item.getEventTime());
 
-        // 设置销售额（格式化为美元）
         String salesText = decimalFormat.format(item.getSales()) + "$";
         holder.tvSalesAmount.setText(salesText);
 
-        // 设置利润（根据正负设置颜色）
 
         holder.tvProfitAmount.setText(decimalFormat.format(item.getProfit()) + "$");
 
-        // 设置类别
         holder.tvCategory.setText(item.getCategory());
     }
 
@@ -62,7 +58,6 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.ViewHolder> 
         return SalesRecords.size();
     }
 
-    // 添加新项目到顶部的方法
     public void addItemToTop(SalesRecord newItem) {
         SalesRecords.add(0, newItem);
         notifyItemInserted(0);

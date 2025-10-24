@@ -12,7 +12,7 @@ public class SalesRecord {
     private int quantity;
     private double discount;
     private double profit;
-    private int lineNumber; // 记录原始行号
+    private int lineNumber;
 
     public SalesRecord() {
     }
@@ -34,7 +34,6 @@ public class SalesRecord {
         this.lineNumber = lineNumber;
     }
 
-    // Getter 和 Setter 方法
     public String getEventTime() {
         return eventTime;
     }

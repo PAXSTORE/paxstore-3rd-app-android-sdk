@@ -30,8 +30,6 @@ Gradle:
 <font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Maven center, please update your gradle to integrate with our latest sdk.**
 </font>
 
-Make sure your gradle plugin is higher than 8.3.0 and use jdk 19+.
-
  Add the dependency
 
 ```
