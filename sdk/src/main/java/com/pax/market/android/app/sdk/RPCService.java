@@ -72,7 +72,7 @@ public class RPCService extends Service {
         try {
             token = NimbusJwtHelper.generateHs512Token(appKey, generateExpirationDate(), secretKey);
         } catch (JOSEException e) {
-            Log.e("ttt", "generateHs512Token failed: " + e);
+            Log.e("RPCService", "generateHs512Token failed: " + e);
         }
         return token;
     }
