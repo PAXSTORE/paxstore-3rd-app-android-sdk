@@ -69,14 +69,14 @@ public class SyncApiStrategy extends SyncApi {
             return merchantObject;
         }
         PreferencesUtils.putLong(context, CommonConstants.SP_LAST_GET_MERCHANT_TIME, System.currentTimeMillis());
-        MerchantObject notAllowResult = checkAllowGetTerminalInfo(merchantObject, sdkObject);
+        MerchantObject notAllowResult = checkAllowGetTerminalInfo(merchantObject);
         if (notAllowResult != null) return notAllowResult;
 
         merchantObject = super.getMerchantInfo();
         return merchantObject;
     }
 
-    private MerchantObject checkAllowGetTerminalInfo(MerchantObject merchantObject, SdkObject sdkObject) {
+    private MerchantObject checkAllowGetTerminalInfo(MerchantObject merchantObject) {
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         TerminalInfo terminalInfo = new TerminalInfo();
         BaseApiService.getInstance(context).getBaseTerminalInfo(new BaseApiService.ICallBack() {
@@ -91,8 +91,13 @@ public class SyncApiStrategy extends SyncApi {
 
             @Override
             public void onError(Exception e) {
-                terminalInfo.setBussinessCode(-1);
-                terminalInfo.setMessage("aidl error from STORE CLIENT: " + e);
+                if (QueryResult.GET_INFO_NOT_ALLOWED.getMsg().equals(e.getMessage())) {
+                    terminalInfo.setBussinessCode(2171);
+                    terminalInfo.setMessage("Merchant information is not allowed");
+                } else {
+                    terminalInfo.setBussinessCode(-1);
+                    terminalInfo.setMessage("aidl error from STORE CLIENT: " + e);
+                }
                 Log.e("getMerchantInfo", "aidl error from STORE CLIENT: " + e);
                 countDownLatch.countDown();
             }
@@ -105,8 +110,8 @@ public class SyncApiStrategy extends SyncApi {
         }
 
         if (terminalInfo.getBussinessCode() != ResultCode.SUCCESS.getCode()) {
-            merchantObject.setMessage(sdkObject.getMessage());
-            merchantObject.setBusinessCode(sdkObject.getBusinessCode());
+            merchantObject.setMessage(terminalInfo.getMessage());
+            merchantObject.setBusinessCode(terminalInfo.getBussinessCode());
             return merchantObject;
         }
         return null;

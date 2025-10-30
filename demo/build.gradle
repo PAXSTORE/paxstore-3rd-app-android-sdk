@@ -44,7 +44,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
 
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:10.0.103002-SNAPSHOT'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:10.0.103007-SNAPSHOT'
 
      //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
