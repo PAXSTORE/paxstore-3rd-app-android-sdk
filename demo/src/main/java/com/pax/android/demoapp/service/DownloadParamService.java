@@ -74,7 +74,7 @@ public class DownloadParamService extends IntentService {
 
             downloadResult = StoreSdk.getInstance().paramApi().downloadParamToPath(getApplication().getPackageName(),
                     com.pax.android.demoapp.BuildConfig.VERSION_CODE, saveFilePath);
-
+            Log.d("DownloadParamService", "downloadResult.getDownloadedParamList(): " + downloadResult.getDownloadedParamList());
         } catch (NotInitException e) {
             Log.e(TAG, "e:" + e);
         }
