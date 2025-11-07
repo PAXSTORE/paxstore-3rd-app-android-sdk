@@ -7,7 +7,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 31
         versionCode 1095
-        versionName "10.0.1-SNAPSHOT"
+        versionName "10.0.1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
