@@ -77,3 +77,4 @@
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.preference.Preference
 
+-keep class com.pax.market.api.sdk.java.base.exception.** { *; }
