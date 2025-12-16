@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
 
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
+}
+
 android {
     compileSdkVersion 29
 
@@ -31,6 +35,11 @@ android {
         aidl true
     }
     namespace 'com.pax.market.android.app.sdk'
+    compileOptions {
+        //It is strongly recommended to set it to Java 8 or Java 11 for the best compatibility.
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -43,8 +52,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
 
 
-    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:10.0.1'
-    api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:10.0.0'
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:10.0.203-SNAPSHOT'
+    api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:10.0.106-SNAPSHOT'
 
 
 
