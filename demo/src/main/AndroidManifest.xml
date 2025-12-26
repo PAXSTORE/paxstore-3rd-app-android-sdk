@@ -30,6 +30,7 @@
 
         <service
             android:name=".service.DownloadParamService"
+            android:foregroundServiceType="dataSync"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS"/>

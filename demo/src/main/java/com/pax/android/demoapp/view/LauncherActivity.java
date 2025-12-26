@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -55,7 +56,18 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
         msgReceiver = new MsgReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DemoConstants.UPDATE_VIEW_ACTION);
-        registerReceiver(msgReceiver, intentFilter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13及以上
+            registerReceiver(
+                    msgReceiver,
+                    intentFilter,
+                    Context.RECEIVER_NOT_EXPORTED
+            );
+        } else {
+            // Android 13以下
+            registerReceiver(msgReceiver, intentFilter);
+        }
+
 
         viewPager = findViewById(R.id.viewpager);
         mGroup = findViewById(R.id.r_group);
