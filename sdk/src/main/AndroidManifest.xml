@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <!--   FOR MARKET CLIENT  -->
     <uses-permission android:name="com.market.android.app.OPEN_DETAIL_PAGE" />
     <uses-permission android:name="com.market.android.app.OPEN_DOWNLOAD_LIST" />
@@ -40,6 +41,7 @@
 
 
         <service android:name=".ParamService"
+            android:foregroundServiceType="shortService"
             android:permission="com.market.android.app.sdk.DOWNLOAD_PARAM_SERVICE"
             android:exported="true">
             <intent-filter>
@@ -47,7 +49,10 @@
                 <category android:name="${applicationId}"/>
             </intent-filter>
         </service>
-        <service android:name=".DelayService" />
+
+        <service android:name=".DelayService"
+            android:foregroundServiceType="shortService"
+            android:exported="false"/>
 
 
 

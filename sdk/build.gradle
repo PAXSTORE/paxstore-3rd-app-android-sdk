@@ -5,11 +5,11 @@ java {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 34
 
         manifestPlaceholders = [versionName : "${version}"]
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
