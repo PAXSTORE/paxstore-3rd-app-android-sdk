@@ -9,7 +9,8 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 34
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 29
 
         manifestPlaceholders = [versionName : "${version}"]
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

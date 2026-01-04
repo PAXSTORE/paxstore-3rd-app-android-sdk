@@ -1,5 +1,6 @@
 package com.pax.android.demoapp.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -43,6 +44,7 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
         return handler;
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,14 +59,12 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DemoConstants.UPDATE_VIEW_ACTION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13及以上
             registerReceiver(
                     msgReceiver,
                     intentFilter,
                     Context.RECEIVER_NOT_EXPORTED
             );
         } else {
-            // Android 13以下
             registerReceiver(msgReceiver, intentFilter);
         }
 
@@ -97,7 +97,6 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
 
         recivers.add((PushFragment)PushFragment);
         FragAdapter adapter = new FragAdapter(getSupportFragmentManager(), fragments);
-        //设定适配器
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

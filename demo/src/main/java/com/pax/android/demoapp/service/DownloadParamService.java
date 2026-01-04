@@ -2,6 +2,8 @@ package com.pax.android.demoapp.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -99,7 +101,12 @@ public class DownloadParamService extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
+            NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params", ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+        } else {
+            NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params", 0);
+
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 

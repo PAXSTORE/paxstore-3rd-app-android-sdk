@@ -3,6 +3,7 @@ package com.pax.market.android.app.sdk;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -35,7 +36,11 @@ public class DelayService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        NotificationUtils.showForeGround(this, "Delay Service");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
+            NotificationUtils.showForeGround(this, "Delay Service", ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE);
+        } else {
+            NotificationUtils.showForeGround(this, "Delay Service", 0);
+        }
         Log.d("DelayService", "delayService onStartCommand");
         if (handler == null) {
             handler = new Handler();
