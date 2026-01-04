@@ -32,7 +32,7 @@ public class ParamService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
-            NotificationUtils.showForeGround(this, "Param Service", ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE);
+            NotificationUtils.showForeGround(this, "Param Service", NotificationUtils.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
         } else {
             NotificationUtils.showForeGround(this, "Param Service", 0);
         }

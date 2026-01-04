@@ -37,7 +37,7 @@ public class DelayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
-            NotificationUtils.showForeGround(this, "Delay Service", ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE);
+            NotificationUtils.showForeGround(this, "Delay Service", NotificationUtils.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
         } else {
             NotificationUtils.showForeGround(this, "Delay Service", 0);
         }

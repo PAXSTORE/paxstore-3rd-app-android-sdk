@@ -22,8 +22,9 @@
     <application android:label="@string/app_name">
 
         <service android:name=".RPCService"
-                 android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
-                 android:exported="true">
+            android:foregroundServiceType="dataSync"
+            android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
+            android:exported="true">
             <intent-filter>
                 <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
             </intent-filter>
@@ -41,7 +42,7 @@
 
 
         <service android:name=".ParamService"
-            android:foregroundServiceType="shortService"
+            android:foregroundServiceType="dataSync"
             android:permission="com.market.android.app.sdk.DOWNLOAD_PARAM_SERVICE"
             android:exported="true">
             <intent-filter>
@@ -51,7 +52,7 @@
         </service>
 
         <service android:name=".DelayService"
-            android:foregroundServiceType="shortService"
+            android:foregroundServiceType="dataSync"
             android:exported="false"/>
 
 

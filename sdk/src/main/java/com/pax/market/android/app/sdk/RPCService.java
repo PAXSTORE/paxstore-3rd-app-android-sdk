@@ -60,7 +60,7 @@ public class RPCService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
-            NotificationUtils.showForeGround(this, "Install Inquirer", ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+            NotificationUtils.showForeGround(this, "Install Inquirer", NotificationUtils.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
         } else {
             NotificationUtils.showForeGround(this, "Install Inquirer", 0);
         }

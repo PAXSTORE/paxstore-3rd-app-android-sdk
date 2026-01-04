@@ -14,6 +14,7 @@ import com.pax.market.android.app.sdk.R;
 
 public class NotificationUtils {
     private static final int NOTIFICATION_ID = 1002;
+    public static final int FOREGROUND_SERVICE_TYPE_DATA_SYNC = 1 << 0;
 
     private static final String NOTIFICATION_CHANNEL_ID = "com.pax.market.android.app.sdk";
 
