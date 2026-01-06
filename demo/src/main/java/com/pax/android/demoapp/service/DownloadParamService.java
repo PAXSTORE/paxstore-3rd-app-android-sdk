@@ -2,7 +2,6 @@ package com.pax.android.demoapp.service;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -14,8 +13,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.pax.android.demoapp.base.DemoConstants;
 import com.pax.android.demoapp.R;
+import com.pax.android.demoapp.base.DemoConstants;
 import com.pax.android.demoapp.utils.SPUtil;
 import com.pax.market.android.app.sdk.StoreSdk;
 import com.pax.market.android.app.sdk.util.NotificationUtils;
@@ -102,7 +101,7 @@ public class DownloadParamService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
-            NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params", ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+            NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params", NotificationUtils.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
         } else {
             NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params", 0);
 
