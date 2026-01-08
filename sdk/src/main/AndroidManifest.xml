@@ -10,6 +10,7 @@
     <uses-permission android:name="com.market.android.app.OPEN_DOWNLOAD_LIST" />
     <uses-permission android:name="com.market.android.app.ONLINE_LOCATION" />
     <uses-permission android:name="com.market.android.app.SN_HOST" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
 
 <!--    <uses-permission android:name="com.market.android.app.OLD_LOCATION" />-->
