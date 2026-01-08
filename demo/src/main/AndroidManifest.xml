@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="com.market.android.app.API_MERCHANT_INFO" />
 
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".base.BaseApplication"
         android:icon="@mipmap/logo_demo"
