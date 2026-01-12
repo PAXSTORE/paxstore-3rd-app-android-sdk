@@ -28,6 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.pax.android.demoapp.base.DemoConstants;
 import com.pax.android.demoapp.R;
 import com.pax.android.demoapp.adapter.FragAdapter;
+import com.pax.android.demoapp.utils.CustomToast;
 import com.pax.market.android.app.sdk.msg.utils.AdvertisementDialog;
 
 import java.util.ArrayList;
@@ -153,9 +154,9 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
 
         if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Notification permission permitted", Toast.LENGTH_SHORT).show();
+                CustomToast.makeText(this, "Notification permission permitted", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Notification permission is denied. You will not receive any reminders.", Toast.LENGTH_SHORT).show();
+                CustomToast.makeText(this, "Notification permission is denied. You will not receive any reminders.", Toast.LENGTH_SHORT).show();
             }
         }
     }
