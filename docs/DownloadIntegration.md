@@ -16,16 +16,19 @@ Refer to the [SetUp](../README.md)
 
 ### 3：Download Parameters API
 `Notice: If you have integrated with our sdk before, you need to do some changes to migrate to our newest one.
-Registing receiver is no more needed, just registering the IntentService will be enough.`
+Registering receiver is no more needed, just registering the IntentService will be enough.`
 
 Register your IntentService
 
-    <service android:name=".DownloadParamService">
-        <intent-filter>
-            <action android:name="com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS"/>
-            <category android:name="${applicationId}"/>
-        </intent-filter>
-    </service>
+        <service
+            android:name=".service.DownloadParamService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS"/>
+                <category android:name="${applicationId}"/>
+            </intent-filter>
+        </service>
 
 Download params in your IntentService. see [DownloadParamService.java](../demo/src/main/java/com/pax/android/demoapp/DownloadParamService.java)
 
@@ -55,7 +58,11 @@ Below codes are needed when your application target devices include Android8+.
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        NotificationUtils.showForeGround(this, "Downloading params");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
+                    NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params", ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+                } else {
+                    NotificationUtils.showForeGround(this, R.drawable.logo_demo_white, "Downloading params", 0);
+                }
         return super.onStartCommand(intent, flags, startId);
     }
 
