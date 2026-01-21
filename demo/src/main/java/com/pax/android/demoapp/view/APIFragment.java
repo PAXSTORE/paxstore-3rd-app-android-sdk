@@ -20,6 +20,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pax.android.demoapp.utils.CustomToast;
+
 import androidx.fragment.app.Fragment;
 
 import com.pax.android.demoapp.base.BaseApplication;
@@ -182,12 +184,12 @@ public class APIFragment extends Fragment {
                                 public void run() {
                                     if (updateObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
                                         if (updateObject.isUpdateAvailable()) {
-                                            Toast.makeText(getContext(), "Update is available", Toast.LENGTH_LONG).show();
+                                            CustomToast.makeText(getContext(), "Update is available", Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), "No Update available", Toast.LENGTH_LONG).show();
+                                            CustomToast.makeText(getContext(), "No Update available", Toast.LENGTH_LONG).show();
                                         }
                                     } else {
-                                        Toast.makeText(getContext(), "errmsg:>>" + updateObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                        CustomToast.makeText(getContext(), "errmsg:>>" + updateObject.getMessage(), Toast.LENGTH_SHORT).show();
                                         Log.w("MessagerActivity", "updateObject.getBusinessCode():"
                                                 + updateObject.getBusinessCode() + "\n msg:" + updateObject.getMessage());
                                     }
@@ -196,7 +198,7 @@ public class APIFragment extends Fragment {
 
                         } catch (NotInitException e) {
                             Log.e(TAG, "e:" + e);
-                            showNotInitToast();
+                            showNotInitCustomToast();
                         }
                         dismissLoadingDialog();
                     }
@@ -230,12 +232,12 @@ public class APIFragment extends Fragment {
                                                     } else {
                                                         msg = "Operation failed: " + sdkObject.toString();
                                                     }
-                                                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                                    CustomToast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                                                 }
                                             });
                                     } catch (NotInitException e) {
                                         Log.e(TAG, "e:" + e);
-                                        showNotInitToast();
+                                        showNotInitCustomToast();
                                     }
                                 }
                             });
@@ -267,12 +269,12 @@ public class APIFragment extends Fragment {
                                                 } else {
                                                     msg = "Operation failed: " + sdkObject.toString();
                                                 }
-                                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                                                CustomToast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     } catch (NotInitException e) {
                                         Log.e(TAG, "e:" + e);
-                                        showNotInitToast();
+                                        showNotInitCustomToast();
                                     }
                                 }
                             });
@@ -299,17 +301,17 @@ public class APIFragment extends Fragment {
                                         if(msgTagObject.getTags()!= null && !msgTagObject.getTags().isEmpty()) {
                                             cloudMsgTagAdapter.loadData(msgTagObject.getTags());
                                         } else {
-                                            Toast.makeText(getContext(), "Tags are empty", Toast.LENGTH_SHORT).show();
+                                            CustomToast.makeText(getContext(), "Tags are empty", Toast.LENGTH_SHORT).show();
                                             cloudMsgTagAdapter.loadData(new ArrayList<String>());
                                         }
                                     } else {
-                                        Toast.makeText(getContext(), "Get tags failed:" + msgTagObject.toString(), Toast.LENGTH_SHORT).show();
+                                        CustomToast.makeText(getContext(), "Get tags failed:" + msgTagObject.toString(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                         } catch (NotInitException e) {
                             Log.e(TAG, "e:" + e);
-                            showNotInitToast();
+                            showNotInitCustomToast();
                         }
                     }
                 }) ;
@@ -355,12 +357,12 @@ public class APIFragment extends Fragment {
                                         msg = "download last success param  Failed >> code: " + downloadResultObject.getBusinessCode()
                                                 + " >> message: " + downloadResultObject.getMessage();
                                     }
-                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                    CustomToast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }
                             });
                         } catch (NotInitException e) {
                             Log.e(TAG, "e:" + e);
-                            showNotInitToast();
+                            showNotInitCustomToast();
                         }
                         dismissLoadingDialog();
                     }
@@ -383,7 +385,7 @@ public class APIFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 OnlineStatusInfo onlineStatusFromPAXSTORE = StoreSdk.getInstance().getOnlineStatusFromPAXSTORE(getActivity().getApplicationContext());
-                Toast.makeText(getContext(), onlineStatusFromPAXSTORE.toString(), Toast.LENGTH_SHORT).show();
+                CustomToast.makeText(getContext(), onlineStatusFromPAXSTORE.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -396,13 +398,13 @@ public class APIFragment extends Fragment {
                     public void onSuccess(Object obj) {
                         TerminalInfo terminalInfo = (TerminalInfo) obj;
                         Log.i("onSuccess: ", terminalInfo.toString());
-                        Toast.makeText(getContext().getApplicationContext(), terminalInfo.toString(), Toast.LENGTH_SHORT).show();
+                        CustomToast.makeText(getContext(), terminalInfo.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Exception e) {
                         Log.i("onError: ", e.toString());
-                        Toast.makeText(getContext().getApplicationContext(), "getTerminalInfo Error:" + e.toString(), Toast.LENGTH_SHORT).show();
+                        CustomToast.makeText(getContext(), "getTerminalInfo Error:" + e.toString(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -428,11 +430,11 @@ public class APIFragment extends Fragment {
                                     } else {
                                         msg = "Get Merchant Failed: " + merchantObject;
                                     }
-                                    Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                                    CustomToast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
                                 }
                             });
                         } catch (NotInitException e) {
-                            showNotInitToast();
+                            showNotInitCustomToast();
                             Log.e(TAG, "e: " + e);
                         }
                         dismissLoadingDialog();
@@ -520,12 +522,12 @@ public class APIFragment extends Fragment {
         }
     }
 
-    private void showNotInitToast() {
+    private void showNotInitCustomToast() {
         LauncherActivity.getHandler().post(new Runnable() {
             @Override
             public void run() {
                 String msg = "Not Init";
-                Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+                CustomToast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -2,7 +2,7 @@
 
 ### 1.SDK implementation
 
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:10.0.0'
+    version 10.0.0+ is required.
 
 ### 2.Init sdk
 

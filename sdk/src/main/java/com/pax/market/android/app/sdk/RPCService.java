@@ -2,6 +2,8 @@ package com.pax.market.android.app.sdk;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -57,7 +59,11 @@ public class RPCService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        NotificationUtils.showForeGround(this, "Install Inquirer");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
+            NotificationUtils.showForeGround(this, "Install Inquirer", NotificationUtils.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+        } else {
+            NotificationUtils.showForeGround(this, "Install Inquirer", 0);
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 

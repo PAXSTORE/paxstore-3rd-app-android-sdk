@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.pax.android.demoapp.base.DemoConstants;
 import com.pax.android.demoapp.R;
+import com.pax.android.demoapp.utils.CustomToast;
 import com.pax.android.demoapp.utils.SPUtil;
 import com.pax.android.demoapp.adapter.DemoListViewAdapter;
 
@@ -116,7 +117,7 @@ public class PushFragment extends Fragment implements FragmentReceiver {
                 //no data. check log for is a correct xml downloaded.
                 detailListView.setVisibility(View.GONE);
                 nodataLayout.setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
+                CustomToast.makeText(getContext(), "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
 
             }
         }else {
@@ -176,7 +177,7 @@ public class PushFragment extends Fragment implements FragmentReceiver {
                 } else {
                     detailListView.setVisibility(View.GONE);
                     nodataLayout.setVisibility(View.VISIBLE);
-                    Toast.makeText(context, "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
+                    CustomToast.makeText(context, "File parse error.Please check the downloaded file.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case DemoConstants.DOWNLOAD_STATUS_START:
