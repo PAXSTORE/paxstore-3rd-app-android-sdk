@@ -21,6 +21,8 @@ import com.pax.android.demoapp.utils.DateUtils;
 import com.pax.android.demoapp.utils.RandomCSVReader;
 import com.pax.android.demoapp.utils.SPUtil;
 import com.pax.market.android.app.sdk.StoreSdk;
+import com.pax.market.android.app.sdk.StoreSdkExtention;
+import com.pax.market.android.app.sdk.device.facade.DeviceInfoFacade;
 import com.pax.market.api.sdk.java.base.dto.SdkObject;
 
 import java.util.ArrayList;
@@ -52,6 +54,8 @@ public class GoInsightActivity extends Activity {
         initData();
         initViews();
         setupRecyclerView();
+        DeviceInfoFacade deviceInfoFacade = new DeviceInfoFacade(this);
+        deviceInfoFacade.requestAllRequiredPermissions(this, 1002);
     }
 
     private void initData() {
@@ -65,7 +69,7 @@ public class GoInsightActivity extends Activity {
                 record.setEventTime(DateUtils.getCurrentDateString());
                 SalesRecords.add(record);
             }
-            uploadList(SalesRecords);
+//            uploadList(SalesRecords);
         }
 
 
@@ -122,7 +126,7 @@ public class GoInsightActivity extends Activity {
     private void uploadData(SalesRecord newItem, List<Map<String, Object>> list, LoadingAlertDialog loadingAlertDialog) {
         new Thread(() -> {
             try {
-                SdkObject sdkObject = StoreSdk.getInstance().goInsightApi().syncTerminalBizData(list);
+                SdkObject sdkObject = StoreSdkExtention.getInstance().goInsightAssociateApi().syncTerminalBizDataWithDeviceInfo(list);
                 if (sdkObject.getBusinessCode() == 0) {
                     runOnUiThread(() -> {
                         if (newItem != null) {
