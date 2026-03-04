@@ -86,10 +86,9 @@ public class BaseApiService implements ProxyDelegate {
                     }
                     setStoreProxyInfo(proxyInfo);
                     String terminalSn = IApiUrlService.Stub.asInterface(service).getSn();
-                    String apiUrl = null;
+                    String apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
                     if (terminalSn == null) {
                         terminalSn = getSN();
-                        apiUrl = IApiUrlService.Stub.asInterface(service).getApiUrl();
                     }
                     String model = IApiUrlService.Stub.asInterface(service).getModel();
                     new InitApiAsyncTask().execute(new InitApiParams(apiCallBack, callback1, apiUrl, terminalSn, model));
