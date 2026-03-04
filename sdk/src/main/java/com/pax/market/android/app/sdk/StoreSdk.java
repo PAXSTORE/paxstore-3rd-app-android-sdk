@@ -1,6 +1,5 @@
 package com.pax.market.android.app.sdk;
 
-import static android.content.ContentValues.TAG;
 import static com.pax.market.android.app.sdk.CommonConstants.ERR_MSG_BIND_PAXSTORE_SERVICE_TOO_FAST;
 
 import android.content.ActivityNotFoundException;
@@ -9,11 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.pax.market.android.app.sdk.dto.DcUrlInfo;
 import com.pax.market.android.app.sdk.dto.OnlineStatusInfo;
 import com.pax.market.android.app.sdk.dto.QueryResult;
 import com.pax.market.android.app.sdk.msg.dto.MediaMesageInfo;
@@ -32,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.TimeZone;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -140,7 +136,6 @@ public class StoreSdk {
                             terminalModel = model;
                             terminalSn = sn;
 
-                            clearLastUrl(context);
                             initApi(context, apiUrl, appKey, appSecret, sn, BaseApiService.getInstance(context), signMethod);
                             semaphore.release(1);
                             logger.debug("initSuccess >> release acquire 1");
@@ -157,15 +152,6 @@ public class StoreSdk {
         }
     }
 
-
-    /**
-     * We need to clear the url cache after re-init to make sure new url take effect.
-     * @param context
-     */
-    private void clearLastUrl(Context context) {
-        PreferencesUtils.remove(context, CommonConstants.SP_LAST_GET_DCURL_TIME);
-    }
-
     /**
      * Get ParamApi instance
      *
@@ -179,7 +165,6 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        paramApi.setBaseUrl(getDcUrl(context, paramApi.getBaseUrl(), false));
         paramApi.setProxyDelegate(BaseApiService.getInstance(context));
         return paramApi;
     }
@@ -197,7 +182,6 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        syncApi.setBaseUrl(getDcUrl(context, syncApi.getBaseUrl(), false));
         syncApi.setProxyDelegate(BaseApiService.getInstance(context));
         return syncApi;
     }
@@ -209,7 +193,6 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        goInsightApi.setBaseUrl(getDcUrl(context, goInsightApi.getBaseUrl(), false));
         goInsightApi.setProxyDelegate(BaseApiService.getInstance(context));
         return goInsightApi;
     }
@@ -227,7 +210,6 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        updateApi.setBaseUrl(getDcUrl(context, updateApi.getBaseUrl(), false));
         updateApi.setProxyDelegate(BaseApiService.getInstance(context));
         return updateApi;
     }
@@ -245,7 +227,6 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        checkServiceApi.setBaseUrl(getDcUrl(context, checkServiceApi.getBaseUrl(), false));
         checkServiceApi.setProxyDelegate(BaseApiService.getInstance(context));
         return checkServiceApi;
     }
@@ -263,7 +244,6 @@ public class StoreSdk {
                 throw new NotInitException("Not initialized");
             }
         }
-        cloudMessageApi.setBaseUrl(getDcUrl(context, cloudMessageApi.getBaseUrl(), false));
         cloudMessageApi.setProxyDelegate(BaseApiService.getInstance(context));
         return cloudMessageApi;
     }
@@ -523,55 +503,6 @@ public class StoreSdk {
         return PreferencesUtils.getObject(context, PushConstants.MEDIA_MESSAGE, MediaMesageInfo.class);
     }
 
-    public String getDcUrl(final Context context, String oriBaseUrl, boolean tid) throws NotInitException {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            throw new NotInitException("Can not do this on MainThread!!");
-        }
 
-        final StringBuilder dcUrl = new StringBuilder();
-
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        BaseApiService.getInstance(context).getDcUrl(new BaseApiService.DcCallBack() {
-
-            @Override
-            public void initSuccess(String baseUrl) {
-                saveLastUrl(baseUrl, context);
-                dcUrl.append(baseUrl);
-                countDownLatch.countDown();
-            }
-
-            @Override
-            public void initFailed(Exception e) {
-                Log.e("StoreSdk", "e:" + e);
-                countDownLatch.countDown();
-            }
-        }, oriBaseUrl);
-
-        try {
-            countDownLatch.await(30, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Log.e(TAG, "e:" + e);
-        }
-        if (dcUrl.toString().isEmpty() || dcUrl.toString().equalsIgnoreCase("null")) {
-            if (tid) {
-                return null;
-            } else {
-                throw new NotInitException("Get baseUrl failed, client is not installed or terminal is not activated.");
-            }
-        }
-        return dcUrl.toString();
-    }
-
-    private void saveLastUrl(final String baseUrl, final Context context) {
-        DcUrlInfo localDcUrlInfo = PreferencesUtils.getObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, DcUrlInfo.class);
-        //update last getDcUrl time if there has been more than one hour.
-        if (localDcUrlInfo == null ||
-                (System.currentTimeMillis() - localDcUrlInfo.getLastAccessTime() > CommonConstants.ONE_HOUR_INTERVAL)) {
-            DcUrlInfo dcUrlInfo1 = new DcUrlInfo();
-            dcUrlInfo1.setDcUrl(baseUrl);
-            dcUrlInfo1.setLastAccessTime(System.currentTimeMillis());
-            PreferencesUtils.putObject(context, CommonConstants.SP_LAST_GET_DCURL_TIME, dcUrlInfo1);
-        }
-    }
 
 }

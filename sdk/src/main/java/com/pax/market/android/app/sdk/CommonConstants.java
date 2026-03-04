@@ -19,7 +19,6 @@ public class CommonConstants {
     public static final String SP_LAST_GET_LOCATION_TIME =  "sp_last_get_location_time";
     public static final String SP_LAST_GET_MERCHANT_TIME =  "sp_last_get_merchant_time";
 
-    public static final String SP_LAST_GET_DCURL_TIME =  "sp_last_get_dcurl_time";
 
     public static final String SP_SMALL_LOGO_ICON = "sp_small_logo_icon";
 
