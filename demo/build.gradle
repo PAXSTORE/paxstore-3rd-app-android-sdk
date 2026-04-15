@@ -51,6 +51,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-goinsight-sdk:1.0.0'
 
 
 //    implementation project(':sdk')
