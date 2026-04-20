@@ -1,5 +1,7 @@
 package com.pax.android.demoapp.view;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,14 +9,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -22,6 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.pax.android.demoapp.base.DemoConstants;
 import com.pax.android.demoapp.R;
 import com.pax.android.demoapp.adapter.FragAdapter;
+import com.pax.android.demoapp.utils.CustomToast;
 import com.pax.market.android.app.sdk.msg.utils.AdvertisementDialog;
 
 import java.util.ArrayList;
@@ -42,6 +49,7 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
         return handler;
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +63,16 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
         msgReceiver = new MsgReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DemoConstants.UPDATE_VIEW_ACTION);
-        registerReceiver(msgReceiver, intentFilter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(
+                    msgReceiver,
+                    intentFilter,
+                    Context.RECEIVER_NOT_EXPORTED
+            );
+        } else {
+            registerReceiver(msgReceiver, intentFilter);
+        }
+
 
         viewPager = findViewById(R.id.viewpager);
         mGroup = findViewById(R.id.r_group);
@@ -85,7 +102,6 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
 
         recivers.add((PushFragment)PushFragment);
         FragAdapter adapter = new FragAdapter(getSupportFragmentManager(), fragments);
-        //设定适配器
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -110,7 +126,39 @@ public class LauncherActivity extends FragmentActivity implements APIFragment.On
 
             }
         });
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            checkNotificationPermission();
+        }, 1500);
+    }
 
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 101;
+
+    private void checkNotificationPermission() {
+        // only above Android 13 (API 33) need to request notification permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // request notification permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        NOTIFICATION_PERMISSION_REQUEST_CODE);
+            }
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                CustomToast.makeText(this, "Notification permission permitted", Toast.LENGTH_SHORT).show();
+            } else {
+                CustomToast.makeText(this, "Notification permission is denied. You will not receive any reminders.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

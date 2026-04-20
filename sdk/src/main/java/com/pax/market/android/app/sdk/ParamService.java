@@ -2,6 +2,7 @@ package com.pax.market.android.app.sdk;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.util.Log;
 
@@ -30,7 +31,11 @@ public class ParamService extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        NotificationUtils.showForeGround(this, "Param Service");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
+            NotificationUtils.showForeGround(this, "Param Service", NotificationUtils.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+        } else {
+            NotificationUtils.showForeGround(this, "Param Service", 0);
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 

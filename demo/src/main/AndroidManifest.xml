@@ -7,8 +7,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="com.market.android.app.API_MERCHANT_INFO" />
+
+
 
     <application
         android:name=".base.BaseApplication"
@@ -30,6 +32,7 @@
 
         <service
             android:name=".service.DownloadParamService"
+            android:foregroundServiceType="dataSync"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS"/>
@@ -39,14 +42,15 @@
 
         <receiver
             android:name=".receiver.PushMessageReceiver"
-                  android:enabled="true"
-                  android:exported="false">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.paxstore.mpush.NOTIFY_DATA_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.DATA_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.NOTIFICATION_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.NOTIFY_MEDIA_MESSAGE_RECEIVED" />
                 <action android:name="com.paxstore.mpush.NOTIFICATION_CLICK" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>

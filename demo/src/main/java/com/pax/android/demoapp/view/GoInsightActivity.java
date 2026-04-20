@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pax.android.demoapp.R;
 import com.pax.android.demoapp.adapter.SalesAdapter;
 import com.pax.android.demoapp.dto.SalesRecord;
+import com.pax.android.demoapp.utils.CustomToast;
 import com.pax.android.demoapp.utils.DateUtils;
 import com.pax.android.demoapp.utils.RandomCSVReader;
 import com.pax.android.demoapp.utils.SPUtil;
@@ -130,7 +131,7 @@ public class GoInsightActivity extends Activity {
                     });
                 } else {
                     runOnUiThread(() -> {
-                        Toast.makeText(GoInsightActivity.this, "Upload failed: " + sdkObject.getBusinessCode() + " > message : " + sdkObject.getMessage(), Toast.LENGTH_LONG).show();
+                        CustomToast.makeText(GoInsightActivity.this, "Upload failed: " + sdkObject.getBusinessCode() + " > message : " + sdkObject.getMessage(), Toast.LENGTH_LONG).show();
 
                     });
                 }
@@ -142,7 +143,7 @@ public class GoInsightActivity extends Activity {
                     if (loadingAlertDialog != null) {
                         loadingAlertDialog.dismiss();
                     }
-                    Toast.makeText(GoInsightActivity.this, "Upload failed:" + e, Toast.LENGTH_LONG).show();
+                    CustomToast.makeText(GoInsightActivity.this, "Upload failed:" + e, Toast.LENGTH_LONG).show();
                 });
             }
         }).start();
