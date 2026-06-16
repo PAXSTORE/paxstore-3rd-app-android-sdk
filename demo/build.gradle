@@ -6,8 +6,8 @@ android {
         applicationId "com.pax.android.demoapp"
         minSdkVersion 19
         targetSdkVersion 34
-        versionCode 1200
-        versionName "10.0.3"
+        versionCode 1300
+        versionName "11.0.0-0616-SNAPSHOT"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -44,7 +44,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
 
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:10.0.3'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:11.0.0-061601-SNAPSHOT'
 
      //to download below imports, please add this to root build.gradle repositories >> maven { url 'https://jitpack.io' }
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

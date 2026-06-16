@@ -24,7 +24,7 @@ if (secretPropsFile.exists()) {
 
 def PUBLISH_GROUP_ID = 'com.whatspos.sdk'
 
-def PUBLISH_ARTIFACT_ID = "paxstore-3rd-app-android-sdk-j"
+def PUBLISH_ARTIFACT_ID = "paxstore-3rd-app-android-sdk"
 
 def PUBLISH_VERSION = project.version
 
