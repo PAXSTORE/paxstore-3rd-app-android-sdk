@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.nimbusds:nimbus-jose-jwt:10.5'
 
 
-    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:11.0.1062301-SNAPSHOT'
+    api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:11.0.1062303-SNAPSHOT'
     api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:10.0.2'
 
 
