@@ -30,10 +30,13 @@ Gradle:
 <font color=#ff8c00>**Notice: Jcenter will not provide free download for our old sdks in 2022 , so we moved our latest sdk to Maven center, please update your gradle to integrate with our latest sdk.**
 </font>
 
+<font color=#ff8c00>**Notice: Please make sure the platform server version is v9.6.0 or higher, otherwise it will make the install inquirer function ineffective.**
+</font>
+
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:10.0.3'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:11.0.0'
 ```
 
 ##### Tips: In the near future, our platform will only support applications integrated with sdk version v8.7.0 or higher. Please upgrade the sdk to the latest version as soon as possible

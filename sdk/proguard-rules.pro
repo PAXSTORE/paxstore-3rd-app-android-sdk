@@ -77,4 +77,5 @@
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.preference.Preference
 
+-dontwarn com.google.errorprone.annotations.CanIgnoreReturnValue
 -keep class com.pax.market.api.sdk.java.base.exception.** { *; }
