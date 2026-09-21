@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Looper;
@@ -31,6 +32,7 @@ import com.pax.market.cloudmsg.crypto.CloudmsgCrypto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
@@ -48,6 +50,8 @@ public class StoreSdk {
     private static final String PAXSTORE_DOWNLOADLIST_PAGE = "com.pax.market.android.app.presentation.downloadlist.view.activity.DownloadListActivity";
 
     private static final String URI_PREFIX = "market://detail?id=%s";
+    private static final String RPC_SERVICE_CLASS_NAME = "com.pax.market.android.app.sdk.RPCService";
+    private static final String RPC_SERVICE_ACTION_SUFFIX = ".ACTION_RPC_SERVICE";
     private static volatile StoreSdk instance;
     private ParamApiStrategy paramApi;
     private SyncApiStrategy syncApi;
@@ -314,10 +318,18 @@ public class StoreSdk {
      * <p>
      * You can implement {@link com.pax.market.android.app.sdk.StoreSdk.Inquirer#isReadyUpdate()}
      * to tell Store App whether your app can be updated now.
+     * <p>
+     * Since v11.1.0 the RPCService declaration is no longer merged into your app's manifest
+     * automatically. Make sure you have registered RPCService in your own AndroidManifest.xml,
+     * otherwise an IllegalStateException is thrown here and your app will crash on startup
+     * instead of being upgraded directly without being asked.
+     * See docs/InstallInquirerIntegration.md and docs/Migrations.md.
      *
      * @param inquirer
+     * @throws IllegalStateException if RPCService is not registered in your AndroidManifest.xml
      */
     public void initInquirer(final Inquirer inquirer) {
+        verifyRpcServiceRegistered(context);
         RPCService.initInquirer(appKey, appSecret, new RPCService.Inquirer() {
             @Override
             public boolean isReadyUpdate() {
@@ -333,14 +345,93 @@ public class StoreSdk {
      * @param appKey
      * @param appSecret
      * @param inquirer
+     * @deprecated use {@link #initInquirerOnly(Context, String, String, Inquirer)} which is able to
+     * verify the RPCService manifest registration for you.
      */
+    @Deprecated
     public void initInquirerOnly(String appKey, String appSecret, final Inquirer inquirer) {
+        if (context == null) {
+            logger.warn(">>> initInquirerOnly(appKey, appSecret, inquirer) cannot verify RPCService "
+                    + "registration before StoreSdk.init(...), please use initInquirerOnly(context, appKey, appSecret, inquirer) instead.");
+        } else {
+            verifyRpcServiceRegistered(context);
+        }
         RPCService.initInquirer(appKey, appSecret, new RPCService.Inquirer() {
             @Override
             public boolean isReadyUpdate() {
                 return inquirer.isReadyUpdate();
             }
         });
+    }
+
+    /**
+     * If you simply wish to utilize the InstallInquirer function without any other functions,
+     * you can directly invoke this method.
+     *
+     * @param context used to verify the RPCService manifest registration
+     * @param appKey
+     * @param appSecret
+     * @param inquirer
+     * @throws IllegalStateException if RPCService is not registered in your AndroidManifest.xml
+     */
+    public void initInquirerOnly(Context context, String appKey, String appSecret, final Inquirer inquirer) {
+        verifyRpcServiceRegistered(context);
+        RPCService.initInquirer(appKey, appSecret, new RPCService.Inquirer() {
+            @Override
+            public boolean isReadyUpdate() {
+                return inquirer.isReadyUpdate();
+            }
+        });
+    }
+
+    /**
+     * Since v11.1.0 the RPCService declaration is no longer merged into the host app manifest.
+     * Apps willing to keep the update inquirer working must declare it in their own
+     * AndroidManifest.xml. This method throws an IllegalStateException when the service is
+     * missing, so a mis-integrated app fails fast on startup instead of being silently
+     * upgraded directly. This also covers apps that configured
+     * lintOptions { abortOnError false } and let the build-time check pass.
+     */
+    private void verifyRpcServiceRegistered(Context context) {
+        if (context == null) {
+            logger.warn(">>> StoreSdk is not initialized yet, skip RPCService registration check.");
+            return;
+        }
+        Context appContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
+        Intent intent = new Intent(appContext.getPackageName() + RPC_SERVICE_ACTION_SUFFIX);
+        List<ResolveInfo> services = appContext.getPackageManager().queryIntentServices(intent, 0);
+        if (services != null) {
+            for (ResolveInfo info : services) {
+                if (info.serviceInfo != null && isRpcService(info.serviceInfo.name)) {
+                    return; //RPCService registered, everything is fine
+                }
+            }
+        }
+        String message = "RPCService(Install/Update Inquirer) is NOT registered in your AndroidManifest.xml! "
+                + "Since SDK v11.1.0 the service is no longer merged into your app's manifest automatically. "
+                + "Declare <service android:name=\"" + RPC_SERVICE_CLASS_NAME
+                + "\" android:foregroundServiceType=\"dataSync\" android:permission=\"com.market.android.app.sdk.INSTALL_INQUIRER\" "
+                + "android:exported=\"true\"> with action \"${applicationId}"
+                + RPC_SERVICE_ACTION_SUFFIX + "\" if you want the update inquirer, "
+                + "otherwise remove the initInquirer() call. See docs/InstallInquirerIntegration.md.";
+        logger.error(">>> {}", message);
+        throw new IllegalStateException(message);
+    }
+
+    /**
+     * The manifest entry may point to RPCService itself or to a subclass of it,
+     * both keep the update inquirer working.
+     */
+    private boolean isRpcService(String declaredClassName) {
+        if (RPC_SERVICE_CLASS_NAME.equals(declaredClassName)) {
+            return true;
+        }
+        try {
+            Class<?> declared = Class.forName(declaredClassName, false, getClass().getClassLoader());
+            return RPCService.class.isAssignableFrom(declared);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     /**

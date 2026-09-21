@@ -10,10 +10,32 @@ When your application returns false to isReadyUpdate(), PAXSTORE client will try
 
 
 
+:red_square: :red_square: :red_square: Please note: Since SDK v11.1.0, the RPCService declaration is NO LONGER merged into your app's manifest automatically. If you want the update inquirer, you MUST declare the service in your own AndroidManifest.xml (see step 2 below), otherwise `initInquirer()` / `initInquirerOnly()` throws an `IllegalStateException` at runtime and your app will crash on startup. A build-time lint error (`PaxStoreRpcServiceNotRegistered`) will remind you if you forget the declaration, even if your project sets `lintOptions { abortOnError false }` the runtime crash still applies.
+
+
+
 ### 1：Initialization of Sdk
 Refer to the [SetUp](../README.md)
 
-### 2: Update Inquirer
+### 2: Register RPCService in your AndroidManifest.xml
+Since v11.1.0 the SDK no longer registers `RPCService` for you. Add the service declaration below inside the `<application>` element of YOUR AndroidManifest.xml to enable the update inquirer:
+
+```xml
+<service android:name="com.pax.market.android.app.sdk.RPCService"
+    android:foregroundServiceType="dataSync"
+    android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
+    </intent-filter>
+</service>
+```
+
+Note:
+- If you do NOT want the update inquirer, simply skip this step and do not call `initInquirer()`, then your app will be upgraded directly without being asked.
+- Your app also needs the `android.permission.FOREGROUND_SERVICE` and `android.permission.FOREGROUND_SERVICE_DATA_SYNC` permissions (they are still merged from the SDK manifest).
+
+### 3: Update Inquirer
 Update inquirer: Your app will be asked whether it can be updated when there is a new version afther you
 integrated this function.
 
@@ -68,5 +90,5 @@ Integrate with this function only need to call initInquirer() after you init Sto
         }
     }
 
-### 3: Update Inquirer Flow Chart
+### 4: Update Inquirer Flow Chart
 ![InstallInquirer logic](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/docs/images/InstallInquirerlogic.png)

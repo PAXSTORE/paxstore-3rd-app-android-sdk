@@ -30,6 +30,18 @@
         <activity android:name="com.pax.android.demoapp.view.GoInsightActivity" />
 
 
+        <!-- Update Inquirer (Install Inquirer): since v11.1.0 the SDK no longer merges RPCService into your
+             manifest automatically. Declare it here only if you want the "ask before update" behavior.
+             See docs/InstallInquirerIntegration.md -->
+        <service android:name="com.pax.market.android.app.sdk.RPCService"
+            android:foregroundServiceType="dataSync"
+            android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
+            </intent-filter>
+        </service>
+
         <service
             android:name=".service.DownloadParamService"
             android:foregroundServiceType="dataSync"

@@ -1,5 +1,48 @@
 # Migrations
 
+## Migration to 11.1.0
+
+### RPCService (Update Inquirer) is no longer merged into your app's manifest
+
+Since v11.1.0 the SDK no longer declares `RPCService` in its own AndroidManifest.xml, which means apps integrating the SDK are no longer forced to ship the update inquirer service by default.
+
+| Scenario | What to do |
+|------|-------------|
+| You want the update inquirer ("ask me before updating my app") | Declare `RPCService` in YOUR AndroidManifest.xml and keep calling `initInquirer()` |
+| You do not need the update inquirer | Remove the `initInquirer()` / `initInquirerOnly()` calls, no manifest change needed |
+
+#### If you keep the update inquirer
+
+Add the service declaration below inside the `<application>` element of your AndroidManifest.xml:
+
+```xml
+<service android:name="com.pax.market.android.app.sdk.RPCService"
+    android:foregroundServiceType="dataSync"
+    android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
+    </intent-filter>
+</service>
+```
+
+Refer to [InstallInquirerIntegration](InstallInquirerIntegration.md) for the full guide.
+
+#### Build-time safety net
+
+The SDK now bundles a custom lint check (issue id `PaxStoreRpcServiceNotRegistered`). If your code calls `initInquirer()` / `initInquirerOnly()` while `RPCService` is not declared in the manifest, you will get a fatal lint error at build time:
+
+```
+BaseApplication.java:69: Error: The Update Inquirer API is called but
+com.pax.market.android.app.sdk.RPCService is not registered in AndroidManifest.xml,
+the SDK will throw an IllegalStateException at runtime and the app will crash on startup.
+[PaxStoreRpcServiceNotRegistered]
+```
+
+- Release builds (`assembleRelease` / `lintVitalRelease`) fail automatically (unless your project disables `abortOnError`).
+- Android Studio also highlights the call site with the same error and a ready-to-copy `<service>` snippet.
+- Even if your project sets `lintOptions { abortOnError false }` and lets the build pass, `StoreSdk.initInquirer(...)` throws an `IllegalStateException` at runtime when the service is still missing, so the app crashes on startup instead of being silently upgraded without being asked.
+
 ## Migration to 10.0.2
 
 ## Migration Summary

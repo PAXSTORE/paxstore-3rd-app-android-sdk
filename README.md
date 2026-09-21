@@ -33,10 +33,13 @@ Gradle:
 <font color=#ff8c00>**Notice: Please make sure the platform server version is v9.6.0 or higher, otherwise it will make the install inquirer function ineffective.**
 </font>
 
+<font color=#ff8c00>**Notice: Since SDK v11.1.0, the update inquirer service (RPCService) is no longer merged into your app's manifest automatically. If you need the "ask before update" behavior, declare RPCService in your own AndroidManifest.xml, otherwise just remove the initInquirer() call. A build-time lint check (`PaxStoreRpcServiceNotRegistered`) will guide you through the migration. See [Migrations](docs/Migrations.md).**
+</font>
+
  Add the dependency
 
 ```
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:11.0.0'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:11.1.0'
 ```
 
 ##### Tips: In the near future, our platform will only support applications integrated with sdk version v8.7.0 or higher. Please upgrade the sdk to the latest version as soon as possible

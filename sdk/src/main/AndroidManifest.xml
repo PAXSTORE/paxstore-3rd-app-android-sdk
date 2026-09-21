@@ -22,14 +22,9 @@
 
     <application android:label="@string/app_name">
 
-        <service android:name=".RPCService"
-            android:foregroundServiceType="dataSync"
-            android:permission="com.market.android.app.sdk.INSTALL_INQUIRER"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="${applicationId}.ACTION_RPC_SERVICE" />
-            </intent-filter>
-        </service>
+        <!-- Since v11.1.0 RPCService (Install/Update Inquirer) is no longer merged into the host app manifest.
+             Apps willing to use the Update Inquirer feature must declare it in their OWN AndroidManifest.xml,
+             see docs/InstallInquirerIntegration.md and docs/Migrations.md -->
 
         <receiver android:name=".DownloadParamReceiver"
             android:permission="com.market.android.app.sdk.DOWNLOAD_PARAM_BD"

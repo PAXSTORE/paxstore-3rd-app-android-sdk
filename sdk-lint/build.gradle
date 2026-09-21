@@ -1,0 +1,15 @@
+apply plugin: 'java-library'
+
+java {
+    //lint-api's transitive dependencies require at least Java 11, and this also
+    //keeps the checks loadable on AGP 7.x (JDK 11) and AGP 8.x (JDK 17) Gradle daemons
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    //Compile only: the real implementation is provided by the consumer's
+    //Android Gradle Plugin (its bundled lint) at analysis time.
+    //Keep this version in sync with the AGP version used by this repository.
+    compileOnly 'com.android.tools.lint:lint-api:31.3.2'
+}

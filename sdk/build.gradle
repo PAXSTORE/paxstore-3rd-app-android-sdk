@@ -54,6 +54,11 @@ dependencies {
     api 'com.whatspos.sdk:paxstore-3rd-app-java-sdk:11.0.0'
     api 'com.whatspos.sdk:paxstore-3rd-app-android-cloud-msg-sdk:10.0.2'
 
+    //Embed the custom lint checks into the published AAR, so apps integrating this SDK
+    //get a build-time error when they call the update inquirer APIs without registering
+    //RPCService in their manifest (required since v11.1.0)
+    lintPublish project(':sdk-lint')
+
 
 
 //    test
