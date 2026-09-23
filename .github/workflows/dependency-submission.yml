@@ -24,5 +24,6 @@ jobs:
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@v4
         with:
-          # Only submit runtime and compile dependencies, exclude buildscript classpath (e.g. Android Gradle Plugin)
-          configuration-types: 'runtime,compile'
+          # Exclude buildscript classpath (AGP / OWASP plugin and their transitive netty, jackson, bouncycastle...)
+          # Must be anchored: bare 'classpath' would also match compileClasspath / runtimeClasspath and empty the graph
+          dependency-graph-exclude-configurations: '^classpath$'
