@@ -47,7 +47,7 @@ dependencies {
 
     //Dogfood the local sdk module so the bundled lint checks (RPCService registration)
     //also apply to this demo app during development
-    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:11.1.0091401-SNAPSHOT'
+    implementation 'com.whatspos.sdk:paxstore-3rd-app-android-sdk:11.1.0101501-SNAPSHOT'
 
     //Load the SDK's bundled lint checks (RPCService registration) for this demo app.
     //Maven consumers get them automatically from the lint.jar embedded in the published AAR;
