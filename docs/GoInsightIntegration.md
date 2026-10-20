@@ -12,6 +12,12 @@ Refer to the [SetUp](../README.md)
 ### 3.Upload BizData Sample
 _**:red_square::red_square::red_square: Attention: If the upload fails, you need to apply your own strategy to upload it again.**_
 
+> **Note on upload failure handling:**
+>
+> 1. The `syncTerminalBizData(List bizDataList)` method invoked below may fail. On failure, `SdkObject.getBusinessCode()` returns a non-zero value. Refer to the [Possible business codes](#possible-business-codes) table at the bottom of this page for the meaning of each code and handle the corresponding error condition accordingly.
+> 2. The SDK does **not** persist or buffer the submitted data on the device. When an upload fails, the data is not retained by the SDK and will be lost unless the application takes responsibility for it.
+> 3. It is strongly recommended that the application implement its own local persistence and retry strategy — for example, storing the failed payload and re-uploading it later (with backoff) once the underlying cause (e.g. network interruption, service unavailability, or a configuration issue) has been resolved — to prevent the loss of important business data.
+
         // You have to create dataSet in GoInsight, and each key you uploaded should exists in dataSet.
         // You will find how to create dataSet in our GoInsight document.
         // Four kinds of value supported, including Text, Number, Date, and Image.
@@ -27,7 +33,7 @@ _**:red_square::red_square::red_square: Attention: If the upload fails, you need
                     map.put("tradeTime", System.currentTimeMillis());
                     list.add(map);
                 }
-
+    
                 try {
                     SdkObject sdkObject = StoreSdk.getInstance().goInsightApi().syncTerminalBizData(list);
                     if (sdkObject.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
@@ -49,9 +55,15 @@ If you want to upload associate data together with bizdata, please refer to [GoI
 
 |Business Code|Message|Description|
 |:---|:---|:---|
-|24012|VAS is not enabled|&nbsp;|
-|24022|There is no valid data source for app in GoInsight|&nbsp;|
-|24023|Operation failed, please upgrade GoInsight to premium version.|&nbsp;|
+|1000|Parameter bizDataList should not be null|`bizDataList` is null or empty|
+|1001|getBytes() error| `getBytes("UTF-8")` on the serialized JSON body threw `UnsupportedEncodingException` — i.e. the running JVM does not support the UTF-8 charset. UTF-8 is a required charset on standard Java/Android runtimes, so this is extremely rare and usually indicates a non-standard/broken JVM. The returned message appends the original exception text for diagnosis.        |
+|1002|list exceeds the max size allow, max list size limits to 2MB|request body exceeds 2MB limit|
+|24012|VAS is not enabled|GoInsight VAS not enabled for market/agent|
+|24021|This feature is not supported by the app|App does not support Insight (non-sandbox only)|
+|24022|There is no valid data source for app in GoInsight|No valid dataset/datasource configured for app in GoInsight|
+|24023|Operation failed, please upgrade GoInsight to premium version.|Upgrade GoInsight to premium version|
+|36020|No more than {0} data can be sent in a sandbox test|Sandbox single request limit exceeded (default ≤ 1000, `{0}` is the per-request limit)|
+|36021|The sandbox test has exceeded the limit of {0} entries in {1} hours, please try again later|Sandbox 24h cumulative limit exceeded (default ≤ 1000/24h, `{0}` is the cumulative limit, `{1}` is the hour window)|
 
 **Possible abnormal http codes**
 

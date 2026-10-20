@@ -314,6 +314,11 @@ public class StoreSdk {
      * <p>
      * You can implement {@link com.pax.market.android.app.sdk.StoreSdk.Inquirer#isReadyUpdate()}
      * to tell Store App whether your app can be updated now.
+     * <p>
+     * Note: apps integrating the SDK but NOT calling this method are allowed to update by
+     * default — the RPCService merged from the SDK manifest answers "ready to update" on
+     * their behalf. Only apps that call this method enter the update-inquirer logic where
+     * {@link com.pax.market.android.app.sdk.StoreSdk.Inquirer#isReadyUpdate()} decides.
      *
      * @param inquirer
      */
@@ -329,6 +334,10 @@ public class StoreSdk {
     /**
      * If you simply wish to utilize the InstallInquirer function without any other functions,
      * you can directly invoke this method.
+     * <p>
+     * Note: like {@link #initInquirer(Inquirer)}, apps integrating the SDK without calling
+     * this method are allowed to update by default; only apps that call it enter the
+     * update-inquirer logic.
      *
      * @param appKey
      * @param appSecret
