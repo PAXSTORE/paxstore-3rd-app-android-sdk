@@ -8,6 +8,8 @@ When your application returns false to isReadyUpdate(), PAXSTORE client will try
 
 :red_square: :red_square: :red_square: Please note: Please make sure the platform server version is v9.6.0 or higher, otherwise it will make the install inquirer function ineffective.
 
+:red_square: :red_square: :red_square: Please note: Apps integrating the SDK but NOT calling `initInquirer()` are allowed to update BY DEFAULT — the `RPCService` merged from the SDK manifest answers "ready to update" on their behalf, so updates pushed from PAXSTORE are always allowed. Only apps that call `initInquirer()` enter the update-inquirer logic, where your own `isReadyUpdate()` return value decides whether the update is allowed.
+
 
 
 ### 1：Initialization of Sdk

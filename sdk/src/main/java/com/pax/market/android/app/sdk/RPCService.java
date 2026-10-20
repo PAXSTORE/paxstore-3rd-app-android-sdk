@@ -44,6 +44,13 @@ public class RPCService extends Service {
     private static String mAppSecret;
     private Messenger messenger = new Messenger(new MessengerHandler());
 
+    /**
+     * Registers the update inquirer callback. Only apps that call this method go through
+     * the update-inquirer logic, where {@link Inquirer#isReadyUpdate()} decides whether
+     * the app can be updated. Apps integrating the SDK without calling this method are
+     * updated by default: the RPCService (merged from the SDK manifest) answers
+     * "ready to update" on their behalf.
+     */
     public static void initInquirer(String appKey, String appSecret, Inquirer inquirer) {
         mAppKey = appKey;
         mAppSecret = appSecret;
