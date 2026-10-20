@@ -33,7 +33,7 @@ Gradle:
 <font color=#ff8c00>**Notice: Please make sure the platform server version is v9.6.0 or higher, otherwise it will make the install inquirer function ineffective.**
 </font>
 
-<font color=#ff8c00>**Notice: Since SDK v11.1.0, the update inquirer service (RPCService) is no longer merged into your app's manifest automatically. If you need the "ask before update" behavior, declare RPCService in your own AndroidManifest.xml, otherwise just remove the initInquirer() call. A build-time lint check (`PaxStoreRpcServiceNotRegistered`) will guide you through the migration. See [Migrations](docs/Migrations.md).**
+<font color=#ff8c00>**Notice: Since SDK v11.1.0, the update inquirer service (RPCService) is no longer merged into your app's manifest automatically, and the update inquirer APIs have been renamed from initInquirer()/initInquirerOnly() to registerUpdateInquirer()/registerUpdateInquirerOnly(). If you need the "ask before update" behavior, declare RPCService in your own AndroidManifest.xml and call the renamed APIs, otherwise just remove the call. A build-time lint check (`PaxStoreRpcServiceNotRegistered`) will guide you through the migration. See [Migrations](docs/Migrations.md).**
 </font>
 
  Add the dependency

@@ -109,21 +109,21 @@ boolean init = StoreSdk.getInstance().checkInitialization();
 
 Store app will ask you before installing the new version of your app. Ignore this if you don't have Update inquirer requirement. You can implement com.pax.market.android.app.sdk.StoreSdk.Inquirer#isReadyUpdate() to tell Store App whether your app can be updated now.
 
-:red_square: Since SDK v11.1.0, `RPCService` is no longer merged into your app's manifest automatically. If you use the update inquirer, you must declare `RPCService` in your own AndroidManifest.xml first, see [InstallInquirerIntegration](InstallInquirerIntegration.md). A build-time lint error (`PaxStoreRpcServiceNotRegistered`) will remind you if the declaration is missing, and `initInquirer()` / `initInquirerOnly()` throws an `IllegalStateException` at runtime if the service is still not registered, so the app crashes on startup instead of being silently upgraded without being asked.
+:red_square: Since SDK v11.1.0, `RPCService` is no longer merged into your app's manifest automatically, and the update inquirer APIs have been renamed from `initInquirer()` / `initInquirerOnly()` to `registerUpdateInquirer()` / `registerUpdateInquirerOnly()`. If you use the update inquirer, you must declare `RPCService` in your own AndroidManifest.xml first, see [InstallInquirerIntegration](InstallInquirerIntegration.md). A build-time lint error (`PaxStoreRpcServiceNotRegistered`) will remind you if the declaration is missing, and an error is logged at runtime if the service is still not registered, so the update inquirer silently stops working.
 
 ```
 // Update inquirer api
-public void initInquirer(final Inquirer inquirer) {...}
+public void registerUpdateInquirer(final Inquirer inquirer) {...}
 ```
 
 If you simply wish to utilize the InstallInquirer function without any other functions, you can directly invoke this method (available since v11.1.0, it also verifies the RPCService manifest registration for you):
 
 ```
 // Update inquirer only api
-public void initInquirerOnly(Context context, String appKey, String appSecret, final Inquirer inquirer) {...}
+public void registerUpdateInquirerOnly(Context context, String appKey, String appSecret, final Inquirer inquirer) {...}
 ```
 
-The old signature `initInquirerOnly(String appKey, String appSecret, Inquirer inquirer)` is deprecated, use the Context-aware overload instead.
+The old APIs `initInquirer(Inquirer)` and `initInquirerOnly(String, String, Inquirer)` were removed in v11.1.0, use the renamed APIs instead.
 
 ### Initialize api directly
 

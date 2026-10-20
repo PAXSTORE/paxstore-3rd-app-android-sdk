@@ -27,10 +27,13 @@ import java.util.List;
 
 /**
  * Since PAXSTORE Android SDK v11.1.0 the {@code RPCService} declaration is no longer
- * merged into the host app's manifest automatically. Apps that keep calling the
- * update inquirer APIs ({@code StoreSdk.initInquirer(...)} / {@code initInquirerOnly(...)} /
- * {@code RPCService.initInquirer(...)}) must declare the service in their own
- * AndroidManifest.xml, otherwise the inquirer silently stops working.
+ * merged into the host app's manifest automatically, and the update inquirer APIs have
+ * been renamed from {@code initInquirer(...)} / {@code initInquirerOnly(...)} to
+ * {@code registerUpdateInquirer(...)} / {@code registerUpdateInquirerOnly(...)} so that
+ * legacy integrations fail at compile time. Apps that keep calling the renamed APIs
+ * ({@code StoreSdk.registerUpdateInquirer(...)} / {@code registerUpdateInquirerOnly(...)} /
+ * {@code RPCService.registerUpdateInquirer(...)}) must declare the service in their own
+ * AndroidManifest.xml, otherwise the update inquirer silently stops working.
  *
  * <p>This detector reports a fatal error when such an API call is found in the app
  * sources while the manifest does not declare the service, so old customers get a
@@ -51,7 +54,9 @@ public class RpcServiceRegistrationDetector extends Detector implements XmlScann
             "PaxStoreRpcServiceNotRegistered",
             "RPCService must be registered in AndroidManifest.xml to use the Update Inquirer",
             "Since PAXSTORE Android SDK v11.1.0 the RPCService declaration is no longer merged into "
-                    + "your app's manifest automatically. If you want PAXSTORE client to ask your app "
+                    + "your app's manifest automatically, and the update inquirer APIs have been renamed "
+                    + "from initInquirer()/initInquirerOnly() to registerUpdateInquirer()/"
+                    + "registerUpdateInquirerOnly(). If you want PAXSTORE client to ask your app "
                     + "before it gets updated, declare the service in your own AndroidManifest.xml:\n"
                     + "\n"
                     + "<service android:name=\"com.pax.market.android.app.sdk.RPCService\"\n"
@@ -63,12 +68,11 @@ public class RpcServiceRegistrationDetector extends Detector implements XmlScann
                     + "    </intent-filter>\n"
                     + "</service>\n"
                     + "\n"
-                    + "Without this declaration the SDK throws an IllegalStateException at runtime "
-                    + "when initInquirer()/initInquirerOnly() is called, so the app crashes on startup "
-                    + "instead of being silently upgraded without being asked.\n"
+                    + "Without this declaration the update inquirer silently stops working after "
+                    + "upgrading the SDK (an error is logged at runtime when the API is called).\n"
                     + "\n"
                     + "If you do not need the update inquirer anymore, simply remove the "
-                    + "initInquirer()/initInquirerOnly() call from your code.\n"
+                    + "registerUpdateInquirer()/registerUpdateInquirerOnly() call from your code.\n"
                     + "\n"
                     + "See docs/InstallInquirerIntegration.md and docs/Migrations.md for details.",
             Category.CORRECTNESS,
@@ -88,7 +92,7 @@ public class RpcServiceRegistrationDetector extends Detector implements XmlScann
 
     @Override
     public List<String> getApplicableMethodNames() {
-        return Arrays.asList("initInquirer", "initInquirerOnly");
+        return Arrays.asList("registerUpdateInquirer", "registerUpdateInquirerOnly");
     }
 
     @Override
@@ -147,8 +151,8 @@ public class RpcServiceRegistrationDetector extends Detector implements XmlScann
         Location location = callLocation != null ? callLocation : Location.create(context.file);
         context.report(ISSUE, location,
                 "The Update Inquirer API is called but `com.pax.market.android.app.sdk.RPCService` "
-                        + "is not registered in AndroidManifest.xml, the SDK will throw an "
-                        + "IllegalStateException at runtime and the app will crash on startup.");
+                        + "is not registered in AndroidManifest.xml, the update inquirer will "
+                        + "silently stop working after upgrading the SDK.");
     }
 
     /**

@@ -320,17 +320,17 @@ public class StoreSdk {
      * to tell Store App whether your app can be updated now.
      * <p>
      * Since v11.1.0 the RPCService declaration is no longer merged into your app's manifest
-     * automatically. Make sure you have registered RPCService in your own AndroidManifest.xml,
-     * otherwise an IllegalStateException is thrown here and your app will crash on startup
-     * instead of being upgraded directly without being asked.
+     * automatically, and the old initInquirer()/initInquirerOnly() methods have been removed.
+     * Make sure you have registered RPCService in your own AndroidManifest.xml and call this
+     * renamed method instead, otherwise an error is logged and the update inquirer silently
+     * stops working after upgrading the SDK.
      * See docs/InstallInquirerIntegration.md and docs/Migrations.md.
      *
      * @param inquirer
-     * @throws IllegalStateException if RPCService is not registered in your AndroidManifest.xml
      */
-    public void initInquirer(final Inquirer inquirer) {
+    public void registerUpdateInquirer(final Inquirer inquirer) {
         verifyRpcServiceRegistered(context);
-        RPCService.initInquirer(appKey, appSecret, new RPCService.Inquirer() {
+        RPCService.registerUpdateInquirer(appKey, appSecret, new RPCService.Inquirer() {
             @Override
             public boolean isReadyUpdate() {
                 return inquirer.isReadyUpdate();
@@ -342,41 +342,14 @@ public class StoreSdk {
      * If you simply wish to utilize the InstallInquirer function without any other functions,
      * you can directly invoke this method.
      *
+     * @param context used to check the RPCService manifest registration
      * @param appKey
      * @param appSecret
      * @param inquirer
-     * @deprecated use {@link #initInquirerOnly(Context, String, String, Inquirer)} which is able to
-     * verify the RPCService manifest registration for you.
      */
-    @Deprecated
-    public void initInquirerOnly(String appKey, String appSecret, final Inquirer inquirer) {
-        if (context == null) {
-            logger.warn(">>> initInquirerOnly(appKey, appSecret, inquirer) cannot verify RPCService "
-                    + "registration before StoreSdk.init(...), please use initInquirerOnly(context, appKey, appSecret, inquirer) instead.");
-        } else {
-            verifyRpcServiceRegistered(context);
-        }
-        RPCService.initInquirer(appKey, appSecret, new RPCService.Inquirer() {
-            @Override
-            public boolean isReadyUpdate() {
-                return inquirer.isReadyUpdate();
-            }
-        });
-    }
-
-    /**
-     * If you simply wish to utilize the InstallInquirer function without any other functions,
-     * you can directly invoke this method.
-     *
-     * @param context used to verify the RPCService manifest registration
-     * @param appKey
-     * @param appSecret
-     * @param inquirer
-     * @throws IllegalStateException if RPCService is not registered in your AndroidManifest.xml
-     */
-    public void initInquirerOnly(Context context, String appKey, String appSecret, final Inquirer inquirer) {
+    public void registerUpdateInquirerOnly(Context context, String appKey, String appSecret, final Inquirer inquirer) {
         verifyRpcServiceRegistered(context);
-        RPCService.initInquirer(appKey, appSecret, new RPCService.Inquirer() {
+        RPCService.registerUpdateInquirer(appKey, appSecret, new RPCService.Inquirer() {
             @Override
             public boolean isReadyUpdate() {
                 return inquirer.isReadyUpdate();
@@ -387,10 +360,9 @@ public class StoreSdk {
     /**
      * Since v11.1.0 the RPCService declaration is no longer merged into the host app manifest.
      * Apps willing to keep the update inquirer working must declare it in their own
-     * AndroidManifest.xml. This method throws an IllegalStateException when the service is
-     * missing, so a mis-integrated app fails fast on startup instead of being silently
-     * upgraded directly. This also covers apps that configured
-     * lintOptions { abortOnError false } and let the build-time check pass.
+     * AndroidManifest.xml. This method logs an error when the service is missing so the
+     * integrator can find the cause in logcat, but it never throws, so a mis-integrated
+     * app is not crashed (the update inquirer just silently stops working).
      */
     private void verifyRpcServiceRegistered(Context context) {
         if (context == null) {
@@ -413,9 +385,8 @@ public class StoreSdk {
                 + "\" android:foregroundServiceType=\"dataSync\" android:permission=\"com.market.android.app.sdk.INSTALL_INQUIRER\" "
                 + "android:exported=\"true\"> with action \"${applicationId}"
                 + RPC_SERVICE_ACTION_SUFFIX + "\" if you want the update inquirer, "
-                + "otherwise remove the initInquirer() call. See docs/InstallInquirerIntegration.md.";
+                + "otherwise remove the registerUpdateInquirer() call. See docs/InstallInquirerIntegration.md.";
         logger.error(">>> {}", message);
-        throw new IllegalStateException(message);
     }
 
     /**
@@ -603,7 +574,7 @@ public class StoreSdk {
     }
 
     /**
-     * callback of update inquirer {@link #initInquirer}
+     * callback of update inquirer {@link #registerUpdateInquirer}
      * this method will tell store app that whether your app can be updated.
      */
     public interface Inquirer {

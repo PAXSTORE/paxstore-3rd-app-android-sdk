@@ -43,7 +43,7 @@ public class BaseApplication extends Application {
             @Override
             public void initSuccess() {
                 Log.i(TAG, "initSuccess.");
-                initInquirer();
+                registerUpdateInquirer();
             }
 
             @Override
@@ -63,10 +63,10 @@ public class BaseApplication extends Application {
     }
 
 
-    private void initInquirer() {
+    private void registerUpdateInquirer() {
 
         //todo 2. Init checking of whether app can be updated
-        StoreSdk.getInstance().initInquirer(new StoreSdk.Inquirer() {
+        StoreSdk.getInstance().registerUpdateInquirer(new StoreSdk.Inquirer() {
             @Override
             public boolean isReadyUpdate() {
                 Log.i(TAG, "call business function....isReadyUpdate = " + isReadyToUpdate);

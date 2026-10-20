@@ -2,7 +2,6 @@ package com.pax.market.android.app.sdk;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,7 +43,7 @@ public class RPCService extends Service {
     private static String mAppSecret;
     private Messenger messenger = new Messenger(new MessengerHandler());
 
-    public static void initInquirer(String appKey, String appSecret, Inquirer inquirer) {
+    public static void registerUpdateInquirer(String appKey, String appSecret, Inquirer inquirer) {
         mAppKey = appKey;
         mAppSecret = appSecret;
         RPCService.inquirer = inquirer;

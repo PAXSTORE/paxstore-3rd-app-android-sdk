@@ -8,8 +8,24 @@ Since v11.1.0 the SDK no longer declares `RPCService` in its own AndroidManifest
 
 | Scenario | What to do |
 |------|-------------|
-| You want the update inquirer ("ask me before updating my app") | Declare `RPCService` in YOUR AndroidManifest.xml and keep calling `initInquirer()` |
-| You do not need the update inquirer | Remove the `initInquirer()` / `initInquirerOnly()` calls, no manifest change needed |
+| You want the update inquirer ("ask me before updating my app") | Declare `RPCService` in YOUR AndroidManifest.xml and keep calling `registerUpdateInquirer()` |
+| You do not need the update inquirer | Remove the update inquirer calls (old `initInquirer()` / `initInquirerOnly()` no longer compile), no manifest change needed |
+
+#### Behavior change for apps that do NOT use the update inquirer
+
+Before v11.1.0, apps that never called the inquirer API still carried the SDK-merged `RPCService`, which answered "ready to update" by default — updates pushed from PAXSTORE were **allowed by default** for those apps, equivalent to the "force update" path of the [Update Inquirer flow chart](InstallInquirerIntegration.md), skipping the foreground/background judgment.
+
+Since v11.1.0 those apps no longer carry `RPCService`, so PAXSTORE client takes the "not integrated" branch of the flow chart: an update is only allowed while the app is **in the background** ("Update not allowed" while it is in the foreground). No action is needed if this behavior is acceptable; integrate the update inquirer if the app must decide by itself.
+
+#### Update inquirer APIs renamed (compile-time break)
+
+The update inquirer APIs have been renamed in v11.1.0 so that legacy integrations fail at compile time (`cannot find symbol`) and the change cannot be missed:
+
+| Old API (removed) | New API |
+|---|---|
+| `StoreSdk.initInquirer(Inquirer)` | `StoreSdk.registerUpdateInquirer(Inquirer)` |
+| `StoreSdk.initInquirerOnly(String, String, Inquirer)` | `StoreSdk.registerUpdateInquirerOnly(Context, String, String, Inquirer)` |
+| `RPCService.initInquirer(String, String, Inquirer)` | `RPCService.registerUpdateInquirer(String, String, Inquirer)` |
 
 #### If you keep the update inquirer
 
@@ -30,18 +46,18 @@ Refer to [InstallInquirerIntegration](InstallInquirerIntegration.md) for the ful
 
 #### Build-time safety net
 
-The SDK now bundles a custom lint check (issue id `PaxStoreRpcServiceNotRegistered`). If your code calls `initInquirer()` / `initInquirerOnly()` while `RPCService` is not declared in the manifest, you will get a fatal lint error at build time:
+The SDK now bundles a custom lint check (issue id `PaxStoreRpcServiceNotRegistered`). If your code calls `registerUpdateInquirer()` / `registerUpdateInquirerOnly()` while `RPCService` is not declared in the manifest, you will get a fatal lint error at build time:
 
 ```
 BaseApplication.java:69: Error: The Update Inquirer API is called but
 com.pax.market.android.app.sdk.RPCService is not registered in AndroidManifest.xml,
-the SDK will throw an IllegalStateException at runtime and the app will crash on startup.
+the update inquirer will silently stop working after upgrading the SDK.
 [PaxStoreRpcServiceNotRegistered]
 ```
 
 - Release builds (`assembleRelease` / `lintVitalRelease`) fail automatically (unless your project disables `abortOnError`).
 - Android Studio also highlights the call site with the same error and a ready-to-copy `<service>` snippet.
-- Even if your project sets `lintOptions { abortOnError false }` and lets the build pass, `StoreSdk.initInquirer(...)` throws an `IllegalStateException` at runtime when the service is still missing, so the app crashes on startup instead of being silently upgraded without being asked.
+- Even if your project sets `lintOptions { abortOnError false }` and lets the build pass, `StoreSdk.registerUpdateInquirer(...)` logs an error at runtime when the service is still missing (the app is not crashed), so check logcat if the update inquirer stops working.
 
 ## Migration to 10.0.2
 
