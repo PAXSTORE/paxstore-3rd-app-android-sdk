@@ -1,0 +1,29 @@
+name: Dependency Submission
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: write
+
+jobs:
+  dependency-submission:
+    name: Dependency Submission
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Generate and submit dependency graph
+        uses: gradle/actions/dependency-submission@v4
+        with:
+          # Exclude buildscript classpath (AGP / OWASP plugin and their transitive netty, jackson, bouncycastle...)
+          # Must be anchored: bare 'classpath' would also match compileClasspath / runtimeClasspath and empty the graph
+          dependency-graph-exclude-configurations: '^classpath$'
