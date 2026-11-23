@@ -15,7 +15,19 @@
 | 16109       | Sdk replace variables failed | Replace param variables failed                                            |
 | 16110       | Sdk init failed              | Init sdk failed                                                           |
 | 16111       | Sdk file not found           | File not found, FileNotFoundException occurred                            |
+| 16112       | Sdk download ioexception     | IOException occurred during param file download                           |
+| 16113       | Sdk download cellular not allowed | Download is not allowed on cellular network (the task is Wi-Fi only)  |
+| 16114       | No host available            | No available host to connect                                              |
+| 16115       | Api called too fast          | API called too frequently                                                 |
+| 16116       | Sdk sha256 failed            | Download file sha256 is wrong                                             |
+| 16117       | Sdk sha256 or signature not found | SHA256 or signature not found in the task                            |
+| 16118       | Sdk sha256 signature failed  | SHA256 signature verification failed                                      |
+| 16119       | Sdk already downloaded       | Params already downloaded, apply result has not been reported yet         |
+| 16120       | Param no last success found  | No last successful parameter download task is found                       |
+| 16121       | Upload file too large        | Uploaded file is too large                                                |
+| 16122       | Upload file remark too long  | Uploaded file remark is too long                                          |
 | -1          |                              | Un code                                                                   |
+| -10         | No params to download        | No param download task exists in the backend                              |
 | 129         | Authentication failed        | Auth failed / missing App context                                         |
 | 1016        | App Authentication failed   | App key/secret/signature invalid                       |
 | 1010        | App is invalid              | App invalid in market/terminal                         |
